@@ -1,44 +1,44 @@
 //void READ_FFT_STEREO(float smoothing) {
 //
-//  float left_volume  = 0.00;
+//  float leftVolume  = 0.00;
 //  float right_volume  = 0.00;
 //
-//  if (fft_l.available() && fft_r.available()) {
+//  if (fftL.available() && fft_r.available()) {
 //
 //    for (uint8_t band = 0; band < NUM_BANDS; band++) {
 //
 //      uint16_t currentBin = fftBins[band];
 //      uint16_t nextBin = fftBins[band + 1] - 1;
 //
-//      uint8_t previousLeftAmp = levels_l[band];
-//      uint8_t previousRightAmp = levels_r[band];
+//      uint8_t previousLeftAmp = levelsL[band];
+//      uint8_t previousRightAmp = levelsR[band];
 //
-//      float currentLeftAmp = fft_l.read(currentBin, nextBin) * 255.0;
+//      float currentLeftAmp = fftL.read(currentBin, nextBin) * 255.0;
 //      float currentRightAmp = fft_r.read(currentBin, nextBin) * 255.0;
 //
 //      //currentLeftAmp = lerp8by8(previousLeftAmp, currentLeftAmp, smoothing); // higher === smoother!
-//      levels_l[band]  = previousLeftAmp + (currentLeftAmp - previousLeftAmp)  * smoothing;
+//      levelsL[band]  = previousLeftAmp + (currentLeftAmp - previousLeftAmp)  * smoothing;
 //      //      currentLeftAmp = constrain(currentLeftAmp, 10, 255);
-//      //      levels_l[band] = map(currentLeftAmp, 10, 255, 0, 255);
+//      //      levelsL[band] = map(currentLeftAmp, 10, 255, 0, 255);
 //
 //      //currentRightAmp = lerp8by8(previousRightAmp, currentRightAmp, smoothing); // higher === smoother!
-//      levels_r[band]  = previousRightAmp + (currentRightAmp - previousRightAmp)  * smoothing;
+//      levelsR[band]  = previousRightAmp + (currentRightAmp - previousRightAmp)  * smoothing;
 //      //      currentRightAmp = constrain(currentRightAmp, 10, 255);
-//      //      levels_r[band] = map(currentRightAmp, 10, 255, 0, 255);
+//      //      levelsR[band] = map(currentRightAmp, 10, 255, 0, 255);
 //
-//      left_volume += levels_l[band];
-//      right_volume += levels_r[band];
+//      leftVolume += levelsL[band];
+//      right_volume += levelsR[band];
 //
 //    }
-//    float left_factor = half_pos / left_volume;
+//    float leftFactor = half_pos / leftVolume;
 //    float right_factor = half_pos / right_volume;
-//    //uint16_t left_factor_16 = 18000 / left_volume; // was HALF_POS_16
+//    //uint16_t leftFactor_16 = 18000 / leftVolume; // was HALF_POS_16
 //
 //    for (uint8_t band = 0; band < NUM_BANDS; band++) {
-//      uint8_t mappedLeftAmp = levels_l[band] * left_factor;
-//      uint8_t mappedRightAmp = levels_r[band] * right_factor;
-//      mapped_left[band] = mappedLeftAmp;
-//      mapped_right[band] = mappedRightAmp;
+//      uint8_t mappedLeftAmp = levelsL[band] * leftFactor;
+//      uint8_t mappedRightAmp = levelsR[band] * right_factor;
+//      scaledLevelsL[band] = mappedLeftAmp;
+//      scaledLevelsR[band] = mappedRightAmp;
 //    }
 //
 //  }

@@ -1,7 +1,11 @@
+void readRN52Event() {
+  printRN52("Q");
+}
+
 void echoRN52(String command) {
   buffer="";
   static bool wait_for_RN52 = true;
-  unsigned long start_time;
+  unsigned long startTime;
   unsigned long end_time;
 
   while (HWSERIAL.available()==0);
@@ -10,9 +14,9 @@ void echoRN52(String command) {
     while (!buffer.endsWith("\r\n")) {
       if (HWSERIAL.available()) buffer.concat(char(HWSERIAL.read()));
     }
-    start_time = millis();
-    end_time = start_time;
-    while((end_time - start_time) <= 20) {
+    startTime = millis();
+    end_time = startTime;
+    while((end_time - startTime) <= 20) {
       if (HWSERIAL.available() > 0) {
         wait_for_RN52 = true;
         break;

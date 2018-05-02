@@ -6,17 +6,19 @@
   Designed by Drew André: www.drewandre.net, www.linkedin.com/in/drewandre, www.instagram.com/_drewandre
 */
 
-#define PALETTE_VERSION 0x0000
-#define PALETTE_VOLTAGE 5
-#define PALETTE_AMPERAGE 2000
-
 #include <Arduino.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
+
 #include <Wire.h>
 // #include <EEPROM.h>
 #include <Audio.h>
 #include <FastLED.h>
+
+// ---------------------- Palette config ---------------------- //
+#define PALETTE_VERSION 0x0000
+#define PALETTE_VOLTAGE 5
+#define PALETTE_AMPERAGE 2000
 
 // ---------------------- Debug config ---------------------- //
 #define DEBUG
@@ -26,7 +28,7 @@
   // #define PRINT_FFT
   // #define PLAY_TONE_SWEEP_ON_STARTUP
   // #define PRINT_MAPPED_FFT
-  // #define PRINT_LED_FRAMERATE
+  #define PRINT_LED_FRAMERATE
   // #define PRINT_AUDIO_MEMORY
 #endif
 
@@ -42,7 +44,7 @@ const uint16_t HALF_POS = NUM_LEDS * 0.5;
 CRGB leds[NUM_LEDS];
 
 // ---------------------- RN52 config ---------------------- //
-#define RN52_GPI02 8 // RN52 GPIO2 event notifier pin (default HIGH, HIGH -> LOW for 100ms on connected device event)
+#define RN52_GPI02_PIN 8 // RN52 GPIO2 event notifier pin (default HIGH, HIGH -> LOW for 100ms on connected device event)
 #define RN52_ANALOG_OUTPUT
 // #define CHECK_RN52_FACTORY_SETTINGS
 #define HWSERIAL Serial1     // RX1 + TX1
@@ -63,8 +65,8 @@ AudioInputI2S        audioInput;
 AudioInputI2Sslave   audioInput;
 #endif
 
-AudioAnalyzeFFT1024  fft_l;
-AudioConnection      patchCord3(audioInput, 0, fft_l, 0);
+AudioAnalyzeFFT1024  fftL;
+AudioConnection      patchCord3(audioInput, 0, fftL, 0);
 
 #ifdef PLAY_TONE_SWEEP_ON_STARTUP
 AudioSynthToneSweep  tone_sweep;
@@ -74,13 +76,14 @@ AudioConnection      patchCord5(tone_sweep, 0, audioOutput, 1);
 
 AudioControlSGTL5000 SGTL5000;
 
-const uint16_t NUM_BANDS = 32;
-const uint16_t MAX_BIN = 511;
+// ---------------------- FFT config -------------------------- //
+#define NUM_BANDS 32
+#define MAX_BIN 511
 uint16_t fftBins[NUM_BANDS];
-uint8_t levels_l[NUM_BANDS];
-uint8_t levels_r[NUM_BANDS];
-uint8_t mapped_left[NUM_BANDS];
-uint8_t mapped_right[NUM_BANDS];
+uint8_t levelsL[NUM_BANDS];
+uint8_t levelsR[NUM_BANDS];
+uint8_t scaledLevelsL[NUM_BANDS];
+uint8_t scaledLevelsR[NUM_BANDS];
 
 // ---------------------- color palette config ---------------------- //
 // uint8_t maxChanges = 45; // speed for switching between palettes
@@ -90,44 +93,40 @@ uint8_t mapped_right[NUM_BANDS];
 // uint8_t gCurrentPaletteNumber;
 // uint8_t palette;
 // // EEMPROM saved variables
-// unsigned int palette_address = 0;
-// unsigned int effect_address  = 1;
+// unsigned int paletteAddress = 0;
+// unsigned int effectAddress  = 1;
 // // changed from CRGB::Black
 // CRGBPalette16 gCurrentPalette(gGradientPalettes[gGradientPaletteCount]);
 // CRGBPalette16 gTargetPalette(gGradientPalettes[gGradientPaletteCount + 1]);
 
 uint8_t hue = 0, saturation = 255, brightness = 255;
-uint8_t ihue, fhue;
+uint8_t iHue, fHue;
 uint8_t spectrumWidth = 36;
 
 // ---------------------- noise config ----------------------- //
 uint32_t x, y, z, dist;
 uint16_t scale = 12;
 uint16_t speed = 2;
-uint8_t xoffset, yoffset;
+uint8_t xOffset, yOffset;
 uint8_t olddata, data, newdata;
-uint16_t data_twelve;
+uint16_t dataTwelve;
 
 // ---------------------- effect config ----------------------- //
 uint8_t effect;
-const uint8_t num_modes = 5;
+const uint8_t NUM_MODES = 5;
+bool calculateScaledFFT = false;
 
 // ---------------------- strip config ---------------------- //
-const uint8_t segment_length = NUM_LEDS / NUM_BANDS;
-const uint8_t hue_length = floor(255 / NUM_BANDS - 1);
-const float palette_index_increment = 248.0 / NUM_LEDS;
-const uint16_t palette_index_increment_twelve = 4095 / NUM_LEDS;
-
-void readRN52Event() {
-  Serial.println("wow");
-}
+const uint8_t segmentLength = NUM_LEDS / NUM_BANDS;
+const uint8_t HUE_LENGTH = floor(255 / NUM_BANDS - 1);
+const float PALETTE_INDEX_INCREMENT = 248.0 / NUM_LEDS;
+const uint16_t PALETTE_INDEX_INCREMENT_twelve = 4095 / NUM_LEDS;
 
 void setup() {
   INITIALIZE();
 }
 
+// float i;
 void loop() {
-  EVERY_N_MILLISECONDS(50) {
-    READ_FFT_LEFT(0.2);
-  }
+  mapFFTLeft();
 }

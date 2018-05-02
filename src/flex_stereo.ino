@@ -15,13 +15,13 @@
 //
 //  for (int band = 0; band < NUM_BANDS; band++) {
 //
-//    uint8_t currentLeftAmp = levels_l[band];
-//    uint8_t currentRightAmp = levels_r[band];
+//    uint8_t currentLeftAmp = levelsL[band];
+//    uint8_t currentRightAmp = levelsR[band];
 //
-//    left_point -= mapped_left[band];
-//    right_point += mapped_right[band];
+//    left_point -= scaledLevelsL[band];
+//    right_point += scaledLevelsR[band];
 //
-//    current_hue += hue_length;
+//    current_hue += HUE_LENGTH;
 //
 //    for (uint8_t i = left_pos; i > left_point; i--) {
 //      leds[i] += CHSV(current_hue, 255, currentLeftAmp);

@@ -9,7 +9,7 @@
 //#ifdef demo_cycle
 //  EVERY_N_SECONDS(10) {
 //    effect++;
-//    if (effect > num_modes) {
+//    if (effect > NUM_MODES) {
 //      effect = 0;
 //    }
 //  }
@@ -22,13 +22,13 @@
 //      print_fft();
 //      break;
 //    case 1:
-//      raw_audio_fft_left();
+//      raw_audio_fftLeft();
 //      break;
 //    case 2:
-//      map_fft_left();
+//      mapFFTLeft();
 //      break;
 //    case 3:
-//      flex_fft_left();
+//      flex_fftLeft();
 //      break;
 //    case 4:
 //      radiate_left();

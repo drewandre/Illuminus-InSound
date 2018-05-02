@@ -27,7 +27,7 @@
 //   uint16_t colorIndex = 0;
 //   for ( int i = 0; i < NUM_LEDS; i++) {
 //     leds[i] = ColorFromPalette12( gCurrentPalette, colorIndex, brightness, LINEARBLEND);
-//     colorIndex += palette_index_increment;
+//     colorIndex += PALETTE_INDEX_INCREMENT;
 //   }
 // }
 //
@@ -37,7 +37,7 @@
 //   uint16_t colorIndex_twelve = 0;
 //   for ( int i = 0; i < NUM_LEDS; i++) {
 //     leds[i] = ColorFromPalette12(gCurrentPalette, colorIndex_twelve, brightness, LINEARBLEND);
-//     colorIndex_twelve += palette_index_increment_twelve;
+//     colorIndex_twelve += PALETTE_INDEX_INCREMENT_twelve;
 //   }
 //   //display_leds();
 // }

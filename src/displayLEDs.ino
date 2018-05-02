@@ -1,12 +1,14 @@
-void DISPLAY_LEDS() {
+void displayLEDs() {
   //FastLED.setBrightness(255);
   FastLED.show();
 
 #ifdef PRINT_LED_FRAMERATE
-  Serial.print("LED framerate: ");
-  Serial.print(LEDS.getFPS());
-  Serial.print("/second");
-  Serial.println();
+  EVERY_N_SECONDS(5) {
+    Serial.print("LED framerate: ");
+    Serial.print(LEDS.getFPS());
+    Serial.print("/second");
+    Serial.println();
+  }
 #endif
 }
 
@@ -28,8 +30,8 @@ void showAnalogRGB( const CRGB& rgb)
 }
 
 void display_encoder_fft_average() {
-//  uint8_t bass_l = averageFFTPortion(levels_l, NUM_BANDS, 0, 3); // 0 => 2
-//  uint8_t mids_l = averageFFTPortion(levels_l, NUM_BANDS, 13, 25); // 30 => 60
-//  uint8_t high_l = averageFFTPortion(levels_l, NUM_BANDS, 29, 35); // 255 => MAX_BIN
+//  uint8_t bass_l = averageFFTPortion(levelsL, NUM_BANDS, 0, 3); // 0 => 2
+//  uint8_t mids_l = averageFFTPortion(levelsL, NUM_BANDS, 13, 25); // 30 => 60
+//  uint8_t high_l = averageFFTPortion(levelsL, NUM_BANDS, 29, 35); // 255 => MAX_BIN
 //  showAnalogRGB(CRGB(bass_l, mids_l, high_l));
 }

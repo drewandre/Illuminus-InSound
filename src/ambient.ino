@@ -11,10 +11,10 @@
 //
 //   for (int i = 11; i < NUM_LEDS - 14; i++) {
 //
-//     data_twelve = inoise16(x + (i * scale_twelve), y + (dist + scale_twelve), z) % 4095;
-//     data_twelve = constrain(data_twelve, 0, 4095);
+//     dataTwelve = inoise16(x + (i * scale_twelve), y + (dist + scale_twelve), z) % 4095;
+//     dataTwelve = constrain(dataTwelve, 0, 4095);
 //
-//     leds[i] = ColorFromPalette12( gCurrentPalette, data_twelve, 255, LINEARBLEND);
+//     leds[i] = ColorFromPalette12( gCurrentPalette, dataTwelve, 255, LINEARBLEND);
 //
 //   }
 //

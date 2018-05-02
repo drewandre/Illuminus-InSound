@@ -1,6 +1,6 @@
 void INITIALIZE() {
 #ifdef DEBUG
-unsigned long start_time = millis();
+unsigned long startTime = millis();
   initSerial();
   Serial.println("\n---------------------- INITIALIZING ----------------------\n");
 #endif
@@ -11,11 +11,11 @@ unsigned long start_time = millis();
   // initNoise();
 
 #ifdef DEBUG
-  unsigned long total_time = millis() - start_time;
+  unsigned long totalTime = millis() - startTime;
   Serial.println();
   Serial.print(DEVICE_NAME); Serial.print(" configured!\n\n");
   Serial.print("Dev startup time:\t");
-  Serial.print(total_time);
+  Serial.print(totalTime);
   Serial.println("ms");
   Serial.print("\n---------------------- "); Serial.print(DEVICE_NAME); Serial.print(" MAIN APPLICATION LOOP ----------------------\n");
 #endif
@@ -30,12 +30,12 @@ void initSerial() {
 
 void initEEPROM() {
 #ifdef DEBUG
-  unsigned long start_time = millis();
+  unsigned long startTime = millis();
 #endif
 #ifdef DEBUG
-  unsigned long total_time = millis() - start_time;
+  unsigned long totalTime = millis() - startTime;
   Serial.print("Settings restored:\t");
-  Serial.print(total_time);
+  Serial.print(totalTime);
   Serial.print("ms");
   Serial.println("\n");
 #endif
@@ -43,7 +43,7 @@ void initEEPROM() {
 
 void initRN52() {
 #ifdef DEBUG
-  unsigned long start_time = millis();
+  unsigned long startTime = millis();
 #endif
   pinMode(RN52_CMD_PIN, OUTPUT);
   digitalWrite(RN52_CMD_PIN, HIGH); // exit data mode
@@ -67,12 +67,12 @@ void initRN52() {
   printRN52("D"); // prints status
   printRN52("V"); // prints version number
 
-  pinMode(RN52_GPI02, INPUT);
-  attachInterrupt(digitalPinToInterrupt(RN52_GPI02), readRN52Event, CHANGE);
+  pinMode(RN52_GPI02_PIN, INPUT);
+  attachInterrupt(digitalPinToInterrupt(RN52_GPI02_PIN), readRN52Event, CHANGE);
 
-  unsigned long total_time = millis() - start_time;
+  unsigned long totalTime = millis() - startTime;
   Serial.print("RN52 Initialized:\t");
-  Serial.print(total_time);
+  Serial.print(totalTime);
   Serial.print("ms");
   Serial.println("\n");
 #endif
@@ -81,7 +81,7 @@ void initRN52() {
 
 void initWS2812B() {
 #ifdef DEBUG
-  unsigned long start_time = millis();
+  unsigned long startTime = millis();
 #endif
   FastLED.addLeds<STRIP_TYPE, DATA_PIN, COLOR_ORDER>(leds, NUM_LEDS);
 #ifdef LED_COLOR_CORRECTION
@@ -93,9 +93,9 @@ void initWS2812B() {
   FastLED.show();
   delay(10);
 #ifdef DEBUG
-  unsigned long total_time = millis() - start_time;
+  unsigned long totalTime = millis() - startTime;
   Serial.print("Leds Initialized:\t");
-  Serial.print(total_time);
+  Serial.print(totalTime);
   Serial.print("ms");
   Serial.println();
 #endif
@@ -103,7 +103,7 @@ void initWS2812B() {
 
 void initSGTL5000() {
 #ifdef DEBUG
-  unsigned long start_time = millis();
+  unsigned long startTime = millis();
 #endif
   float e = getFFTBins();
   AudioMemory(20);
@@ -138,9 +138,9 @@ void initSGTL5000() {
     Serial.println("Done");
   }
   #endif
-  unsigned long total_time = millis() - start_time;
+  unsigned long totalTime = millis() - startTime;
   Serial.print("Audio Initialized:\t");
-  Serial.print(total_time);
+  Serial.print(totalTime);
   Serial.println("ms");
   Serial.print("FFT NUM_BANDS:\t\t");
   Serial.println(NUM_BANDS);
@@ -201,15 +201,15 @@ float FindE(int bands, int bins) {
 }
 
 void initNoise() {
-  unsigned long start_time = millis();
+  unsigned long startTime = millis();
   x = random16();
   y = random16();
   z = random16();
   dist = random16(12345);
 #ifdef DEBUG
-  unsigned long total_time = millis() - start_time;
+  unsigned long totalTime = millis() - startTime;
   Serial.print("Noise values set:\t");
-  Serial.print(total_time);
+  Serial.print(totalTime);
   Serial.println("ms");
 #endif
 }
