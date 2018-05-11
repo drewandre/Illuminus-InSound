@@ -1,15 +1,5 @@
 void displayLEDs() {
-  //FastLED.setBrightness(255);
   FastLED.show();
-
-#ifdef PRINT_LED_FRAMERATE
-  EVERY_N_SECONDS(5) {
-    Serial.print("LED framerate: ");
-    Serial.print(LEDS.getFPS());
-    Serial.print("/second");
-    Serial.println();
-  }
-#endif
 }
 
 void setPartialPixel(uint16_t pos, CRGB & color) {
@@ -20,18 +10,4 @@ void setPartialPixel(uint16_t pos, CRGB & color) {
   c2.nscale8(frac);
   leds[idx] = c1;
   leds[idx + 1] = c2;
-}
-
-void showAnalogRGB( const CRGB& rgb)
-{
-//  analogWrite(REDPIN,   255 - rgb.r );
-//  analogWrite(GREENPIN, 255 - rgb.g );
-//  analogWrite(BLUEPIN,  255 - rgb.b );
-}
-
-void display_encoder_fft_average() {
-//  uint8_t bass_l = averageFFTPortion(levelsL, NUM_BANDS, 0, 3); // 0 => 2
-//  uint8_t mids_l = averageFFTPortion(levelsL, NUM_BANDS, 13, 25); // 30 => 60
-//  uint8_t high_l = averageFFTPortion(levelsL, NUM_BANDS, 29, 35); // 255 => MAX_BIN
-//  showAnalogRGB(CRGB(bass_l, mids_l, high_l));
 }

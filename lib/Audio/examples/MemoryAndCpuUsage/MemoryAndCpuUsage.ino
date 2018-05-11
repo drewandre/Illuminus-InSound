@@ -87,21 +87,21 @@ void loop() {
 
   // play the bass tone every 8th time
   if (count == 4) {
-	sine1.amplitude(0.6);
-	sine1.frequency(100);
-	envelope2.noteOn();
+  	sine1.amplitude(0.6);
+  	sine1.frequency(100);
+  	envelope2.noteOn();
   }
   if (count == 12) {
-	sine1.amplitude(0.3);
-	sine1.frequency(120);
-	envelope2.noteOn();
+  	sine1.amplitude(0.3);
+  	sine1.frequency(120);
+  	envelope2.noteOn();
   }
 
   // turn off the sine wave, which saves
   // CPU power (especially since the sine goes
   // to a CPU-hungry FFT analysis)
   if (count == 6) {
-	sine1.amplitude(0);
+	  sine1.amplitude(0);
   }
 
   // check for incoming characters from the serial monitor
@@ -151,4 +151,3 @@ void loop() {
   delay(speed);
 
 }
-

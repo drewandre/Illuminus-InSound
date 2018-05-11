@@ -3,30 +3,30 @@ void mapFFTLeft() {
   static uint16_t i, pos, point;
   static float fHue;
 
- // nscale8(leds, NUM_LEDS, 220);
- //fadeToBlackBy(leds,NUM_LEDS,9);
- readFFTLeft(1);
+  // nscale8(leds, NUM_LEDS, 220);
+  // fadeToBlackBy(leds,NUM_LEDS,9);
+  if (readFFT(1, false, false)) {
+    pos = 0;
+    point = 0;
+    fHue = 0;
 
- pos = 0;
- point = 0;
- fHue = 0;
+    for (band = 0; band < NUM_BANDS - 1; band++) {
+      point += segmentLength;
+      if (band == NUM_BANDS - 1) {
+        point = NUM_LEDS - 1;
+      }
+      currentBrightness = levelsL[band];
 
- for (band = 0; band < NUM_BANDS - 1; band++) {
-   point += segmentLength;
-   if (band == NUM_BANDS - 1) {
-     point = NUM_LEDS - 1;
-   }
-   currentBrightness = levelsL[band];
+      for (i = pos; i < point; i++) {
+        leds[i] += CHSV(fHue, 255, currentBrightness);
+        fHue = i * 1.65;
+      }
+      pos = point;
+    }
 
-   for (i = pos; i < point; i++) {
-     leds[i] += CHSV(fHue, 255, currentBrightness);
-     fHue = i * 1.65;
-   }
-   pos = point;
- }
-
- blur1d(leds, NUM_LEDS, 1);
- displayLEDs();
+    blur1d(leds, NUM_LEDS, 1);
+    FastLED.show();
+  }
 }
 
 
@@ -72,7 +72,7 @@ void mapFFTLeft() {
 //}
 
 
-//void display_fftLeft_old() {
+//void display_fft_left_old() {
 //
 //  changePalette();
 //

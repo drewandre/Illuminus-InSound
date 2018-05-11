@@ -10,6 +10,8 @@ unsigned long startTime = millis();
   initWS2812B();
   // initNoise();
 
+  BM64SERIAL.begin(115200);
+
 #ifdef DEBUG
   unsigned long totalTime = millis() - startTime;
   Serial.println();

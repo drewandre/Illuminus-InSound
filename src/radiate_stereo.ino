@@ -12,9 +12,9 @@
 //   uint8_t mids_l = fftL.read(30, 200);
 //   uint8_t high_l = fftL.read(250, MAX_BIN);
 //
-//   uint8_t bass_r = fft_r.read(1, 2);
-//   uint8_t mids_r = fft_r.read(30, 200);
-//   uint8_t high_r = fft_r.read(250, MAX_BIN);
+//   uint8_t bass_r = fftR.read(1, 2);
+//   uint8_t mids_r = fftR.read(30, 200);
+//   uint8_t high_r = fftR.read(250, MAX_BIN);
 //
 //   //  if (bass_l < 8) {
 //   //    bass_l = 0;

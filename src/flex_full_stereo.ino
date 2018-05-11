@@ -59,7 +59,7 @@
 //
 //  static float flex_low_pass_stereo = 0.14;
 //
-//  if (fftL.available() && fft_r.available()) {
+//  if (fftL.available() && fftR.available()) {
 //
 //    //Serial.println("---------------------------------------------------------");
 //

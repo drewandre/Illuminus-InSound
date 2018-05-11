@@ -15,8 +15,14 @@
 #include <Audio.h>
 #include <FastLED.h>
 
+
+
+
+// ---------------------- BM64 config ---------------------- //
+#define BM64SERIAL Serial4     // RX4 (31) + TX4 (32)
+
 // ---------------------- Palette config ---------------------- //
-#define PALETTE_VERSION 0x0000
+#define PALETTE_VERSION 0x0001
 #define PALETTE_VOLTAGE 5
 #define PALETTE_AMPERAGE 2000
 
@@ -24,12 +30,11 @@
 #define DEBUG
 #ifdef DEBUG
   #define SWSERIAL_BAUD 115200 // RN52 must be at either 115200 or 9600 (if 9600 GPIO7 should be pulled low)
+  // #define PRINT_MCU_PERFORMANCE
   #define PRINT_RN52
   // #define PRINT_FFT
-  // #define PLAY_TONE_SWEEP_ON_STARTUP
   // #define PRINT_MAPPED_FFT
-  #define PRINT_LED_FRAMERATE
-  // #define PRINT_AUDIO_MEMORY
+  // #define PLAY_TONE_SWEEP_ON_STARTUP
 #endif
 
 // ---------------------- WS2812b config ---------------------- //
@@ -38,13 +43,13 @@
 #define NUM_LEDS 144
 #define COLOR_ORDER GRB
 #define LED_COLOR_CORRECTION TypicalLEDStrip
-const uint16_t NUM_LEDS_16 = NUM_LEDS * 255;
-const uint16_t HALF_POS_16 = NUM_LEDS_16 * 0.5;
+// const uint16_t NUM_LEDS_16 = NUM_LEDS * 255;
+// const uint16_t HALF_POS_16 = NUM_LEDS_16 * 0.5;
 const uint16_t HALF_POS = NUM_LEDS * 0.5;
 CRGB leds[NUM_LEDS];
 
 // ---------------------- RN52 config ---------------------- //
-#define RN52_GPI02_PIN 8 // RN52 GPIO2 event notifier pin (default HIGH, HIGH -> LOW for 100ms on connected device event)
+#define RN52_GPI02_PIN 8     // RN52 GPIO2 event notifier pin (default HIGH, HIGH -> LOW for 100ms on connected device event)
 #define RN52_ANALOG_OUTPUT
 // #define CHECK_RN52_FACTORY_SETTINGS
 #define HWSERIAL Serial1     // RX1 + TX1
@@ -66,12 +71,14 @@ AudioInputI2Sslave   audioInput;
 #endif
 
 AudioAnalyzeFFT1024  fftL;
+AudioAnalyzeFFT1024  fftR;
 AudioConnection      patchCord3(audioInput, 0, fftL, 0);
+AudioConnection      patchCord4(audioInput, 1, fftR, 0);
 
 #ifdef PLAY_TONE_SWEEP_ON_STARTUP
 AudioSynthToneSweep  tone_sweep;
-AudioConnection      patchCord4(tone_sweep, 0, audioOutput, 0);
-AudioConnection      patchCord5(tone_sweep, 0, audioOutput, 1);
+AudioConnection      patchCord5(tone_sweep, 0, audioOutput, 0);
+AudioConnection      patchCord6(tone_sweep, 0, audioOutput, 1);
 #endif
 
 AudioControlSGTL5000 SGTL5000;
@@ -126,7 +133,42 @@ void setup() {
   INITIALIZE();
 }
 
-// float i;
 void loop() {
-  mapFFTLeft();
+#ifdef PRINT_MCU_PERFORMANCE
+  printMCUPerformance();
+#endif
+
+  // mapFFTLeft();
+
+  readBM64();
+}
+
+void readBM64() {
+  // buffer="";
+  // static buffer = [];
+  static bool wait_for_BM64 = true;
+  unsigned long startTime;
+  unsigned long end_time;
+
+  while (BM64SERIAL.available()==0);
+  // buffer.concat(BM64SERIAL.read());
+  Serial.print("BM64>\t");
+  Serial.print(BM64SERIAL.read());
+  while(wait_for_BM64) {
+    // if (BM64SERIAL.available()) buffer.concat(BM64SERIAL.read());
+    if (BM64SERIAL.available()) Serial.print(BM64SERIAL.read());
+    startTime = millis();
+    end_time = startTime;
+    while((end_time - startTime) <= 20) {
+      if (BM64SERIAL.available() > 0) {
+        wait_for_BM64 = true;
+        break;
+      }
+      end_time = millis();
+      wait_for_BM64 = false;
+    }
+  }
+  wait_for_BM64 = true;
+  // Serial.print("BM64> "); Serial.print(buffer, HEX);
+  Serial.println();
 }
