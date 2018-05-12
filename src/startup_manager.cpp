@@ -1,8 +1,12 @@
+#include <Audio.h>
+#include <FastLED.h>
+#include <env_config.h>
 #include <initialize.h>
+#include <bluetooth_manager.h>
 
 void initialize() {
 #ifdef DEBUG
-unsigned long startTime = millis();
+static unsigned long startTime = millis();
   initSerial();
   Serial.println("\n---------------------- INITIALIZING ----------------------\n");
 #endif
@@ -56,20 +60,20 @@ void initRN52() {
   #ifdef DEBUG
     Serial.println("Configuring RN52...");
   #endif
-    setRN52("SN", DEVICE_NAME); // sets device name
+    // setRN52("SN", DEVICE_NAME); // sets device name
     // http://bluetooth-pentest.narod.ru/software/bluetooth_class_of_device-service_generator.html
-    setRN52("SC", "20043C"); // COD -- Audio, Audio/Video, Video Display and Loudspeaker
+    // setRN52("SC", "20043C"); // COD -- Audio, Audio/Video, Video Display and Loudspeaker
     // setRN52("ST", "00"); // mutes disable tones
   #ifdef RN52_ANALOG_OUTPUT
-    setRN52("S|", "00"); // sets audio output to analog out
-    setRN52("SS", "0x09"); // sets speaker gain to maximum
+    // setRN52("S|", "00"); // sets audio output to analog out
+    // setRN52("SS", "0x09"); // sets speaker gain to maximum
   #else
-    setRN52("S|", "0102");
+    // setRN52("S|", "0102");
   #endif
   // }
 #ifdef DEBUG
-  printRN52("D"); // prints status
-  printRN52("V"); // prints version number
+  // printRN52("D"); // prints status
+  // printRN52("V"); // prints version number
 
   pinMode(RN52_GPI02_PIN, INPUT);
   attachInterrupt(digitalPinToInterrupt(RN52_GPI02_PIN), readRN52Event, CHANGE);
@@ -167,7 +171,7 @@ float getFFTBins() {
     for (b = 0; b < bands; b++) {         // Test and print the bins from the calculated E
       n = pow(e, b);
       d = int(n + 0.5);
-      fftBins[b] = count;
+      extern uint16_t fftBins[b] = count;
       count += d - 1;
       ++count;
     }
@@ -206,10 +210,10 @@ float FindE(int bands, int bins) {
 
 void initNoise() {
   unsigned long startTime = millis();
-  x = random16();
-  y = random16();
-  z = random16();
-  dist = random16(12345);
+  // x = random16();
+  // y = random16();
+  // z = random16();
+  // dist = random16(12345);
 #ifdef DEBUG
   unsigned long totalTime = millis() - startTime;
   Serial.print("Noise values set:\t");

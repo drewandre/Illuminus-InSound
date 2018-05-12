@@ -1,6 +1,8 @@
-#include <led_effects.h>
+#include <animation_generator.h>
 
 void mode() {
+
+  static uint8_t effect;
 
 #ifdef FIXED_LED_EFFECT
   effect = effect_fixed_num;
@@ -15,7 +17,7 @@ void mode() {
  }
 #endif
 
-  switch (0) {
+  switch (effect) {
   // switch (effect) {
     case 0:
       //ambient_twelve();

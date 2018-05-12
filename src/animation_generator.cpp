@@ -1,3 +1,11 @@
+// ---------------------- noise config ----------------------- //
+// uint32_t x, y, z, dist;
+// uint16_t scale = 12;
+// uint16_t speed = 2;
+// uint8_t xOffset, yOffset;
+// uint8_t olddata, data, newdata;
+// uint16_t dataTwelve;
+
 /*
 void mapFFTLeft() {
   static uint8_t band, currentBrightness;
