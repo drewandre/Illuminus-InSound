@@ -1,8 +1,10 @@
+#include <FastLED.h>
+
 void displayLEDs() {
   FastLED.show();
 }
 
-void setPartialPixel(uint16_t pos, CRGB & color) {
+void setPartialPixel(uint16_t pos, CRGB & color, CRGB leds) {
   CRGB c1(color), c2(color);
   uint8_t frac = pos & 0xFF;
   uint8_t idx = pos >> 8;

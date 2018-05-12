@@ -1,4 +1,6 @@
-void INITIALIZE() {
+#include <initialize.h>
+
+void initialize() {
 #ifdef DEBUG
 unsigned long startTime = millis();
   initSerial();
@@ -10,7 +12,7 @@ unsigned long startTime = millis();
   initWS2812B();
   // initNoise();
 
-  BM64SERIAL.begin(115200);
+  BM64SERIAL.begin(BM64_SERIAL_BAUD);
 
 #ifdef DEBUG
   unsigned long totalTime = millis() - startTime;

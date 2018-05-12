@@ -1,10 +1,16 @@
+#include <PALETTE.cpp>
+// #include <FastLED.h>
+
 void printMCUPerformance() {
+  // static unsigned long previousMillis = 0;
+  // static long interval = 1000;
+
   static long loops = 0;
   loops++;
 
   EVERY_N_SECONDS(1) {
     Serial.println();
-    
+
     // print MCU speed
     Serial.print("CPU speed (approx):\t\t"); Serial.print(loops); Serial.print("/second");
     Serial.println();

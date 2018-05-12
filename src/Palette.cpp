@@ -11,20 +11,28 @@
 #include <avr/interrupt.h>
 
 #include <Wire.h>
-// #include <EEPROM.h>
 #include <Audio.h>
 #include <FastLED.h>
 
-
-
+#include <initialize.h>
+#include <util.h>
+#include <bluetooth_manager.h>
 
 // ---------------------- BM64 config ---------------------- //
-#define BM64SERIAL Serial4     // RX4 (31) + TX4 (32)
+#define BM64SERIAL Serial4 // RX4 (31) + TX4 (32)
+#define BM64_SERIAL_BAUD 115200
 
 // ---------------------- Palette config ---------------------- //
 #define PALETTE_VERSION 0x0001
 #define PALETTE_VOLTAGE 5
 #define PALETTE_AMPERAGE 2000
+/*
+enum {
+  PALETTE_VERSION = 0x0001
+  PALETTE_VOLTAGE 5
+  PALETTE_AMPERAGE 2000
+}
+*/
 
 // ---------------------- Debug config ---------------------- //
 #define DEBUG
@@ -119,7 +127,7 @@ uint8_t olddata, data, newdata;
 uint16_t dataTwelve;
 
 // ---------------------- effect config ----------------------- //
-uint8_t effect;
+extern uint8_t effect;
 const uint8_t NUM_MODES = 5;
 bool calculateScaledFFT = false;
 
@@ -130,7 +138,7 @@ const float PALETTE_INDEX_INCREMENT = 248.0 / NUM_LEDS;
 const uint16_t PALETTE_INDEX_INCREMENT_twelve = 4095 / NUM_LEDS;
 
 void setup() {
-  INITIALIZE();
+  initialize();
 }
 
 void loop() {
