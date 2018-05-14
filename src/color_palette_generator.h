@@ -1,11 +1,14 @@
 //
+
 // // Gradient palette "GMT_rainbow_gp", originally from
-// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/gmt/tn/GMT_rainbow.png.index.html
+// //
+// http://soliton.vm.bytemark.co.uk/pub/cpt-city/gmt/tn/GMT_rainbow.png.index.html
 // // converted for FastLED with gammas (2.6, 2.2, 2.5)
 // // Size: 1204 bytes of program space.
 //
 // // Gradient palette "GMT_seis_gp", originally from
-// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/gmt/tn/GMT_seis.png.index.html
+// //
+// http://soliton.vm.bytemark.co.uk/pub/cpt-city/gmt/tn/GMT_seis.png.index.html
 // // converted for FastLED with gammas (2.6, 2.2, 2.5)
 // // Size: 40 bytes of program space.
 //
@@ -37,7 +40,8 @@
 //
 //
 // // Gradient palette "bhw1_04_gp", originally from
-// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/bhw/bhw1/tn/bhw1_04.png.index.html
+// //
+// http://soliton.vm.bytemark.co.uk/pub/cpt-city/bhw/bhw1/tn/bhw1_04.png.index.html
 // // converted for FastLED with gammas (2.6, 2.2, 2.5)
 // // Size: 20 bytes of program space.
 //
@@ -53,7 +57,8 @@
 //
 // // AMERICAN/FRENCH FLAG:
 // // Gradient palette "French_flag_smooth_gp", originally from
-// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/ggr/tn/French_flag_smooth.png.index.html
+// //
+// http://soliton.vm.bytemark.co.uk/pub/cpt-city/ggr/tn/French_flag_smooth.png.index.html
 // // converted for FastLED with gammas (2.6, 2.2, 2.5)
 // // Size: 20 bytes of program space.
 //
@@ -66,7 +71,8 @@
 // };
 //
 // // Gradient palette "spectrum_rainbow_medium_gp", originally from
-// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/ocal/tn/spectrum-rainbow-medium.png.index.html
+// //
+// http://soliton.vm.bytemark.co.uk/pub/cpt-city/ocal/tn/spectrum-rainbow-medium.png.index.html
 // // converted for FastLED with gammas (2.6, 2.2, 2.5)
 // // Size: 28 bytes of program space.
 //
@@ -81,7 +87,8 @@
 // };
 //
 // // Gradient palette "Split_Complementary_06_gp", originally from
-// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/nd/vermillion/tn/Split_Complementary_06.png.index.html
+// //
+// http://soliton.vm.bytemark.co.uk/pub/cpt-city/nd/vermillion/tn/Split_Complementary_06.png.index.html
 // // converted for FastLED with gammas (2.6, 2.2, 2.5)
 // // Size: 20 bytes of program space.
 //
@@ -94,7 +101,8 @@
 // };
 //
 // // Gradient palette "Blue_Magenta_White_gp", originally from
-// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/nd/basic/tn/Blue_Magenta_White.png.index.html
+// //
+// http://soliton.vm.bytemark.co.uk/pub/cpt-city/nd/basic/tn/Blue_Magenta_White.png.index.html
 // // converted for FastLED with gammas (2.6, 2.2, 2.5)
 // // Size: 20 bytes of program space.
 //
@@ -107,7 +115,8 @@
 // };
 //
 // // Gradient palette "Magenta_Yellow_Magenta_gp", originally from
-// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/nd/basic/tn/Magenta_Yellow_Magenta.png.index.html
+// //
+// http://soliton.vm.bytemark.co.uk/pub/cpt-city/nd/basic/tn/Magenta_Yellow_Magenta.png.index.html
 // // converted for FastLED with gammas (2.6, 2.2, 2.5)
 // // Size: 20 bytes of program space.
 //
@@ -120,7 +129,8 @@
 // };
 //
 // // Gradient palette "Yellow_Red_Magenta_gp", originally from
-// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/nd/basic/tn/Yellow_Red_Magenta.png.index.html
+// //
+// http://soliton.vm.bytemark.co.uk/pub/cpt-city/nd/basic/tn/Yellow_Red_Magenta.png.index.html
 // // converted for FastLED with gammas (2.6, 2.2, 2.5)
 // // Size: 20 bytes of program space.
 //
@@ -133,7 +143,8 @@
 // };
 //
 // // Gradient palette "rgi_15_gp", originally from
-// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/ds/rgi/tn/rgi_15.png.index.html
+// //
+// http://soliton.vm.bytemark.co.uk/pub/cpt-city/ds/rgi/tn/rgi_15.png.index.html
 // // converted for FastLED with gammas (2.6, 2.2, 2.5)
 // // Size: 36 bytes of program space.
 //
@@ -150,7 +161,8 @@
 // };
 //
 // // Gradient palette "Analogous_1_gp", originally from
-// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/nd/red/tn/Analogous_1.png.index.html
+// //
+// http://soliton.vm.bytemark.co.uk/pub/cpt-city/nd/red/tn/Analogous_1.png.index.html
 // // converted for FastLED with gammas (2.6, 2.2, 2.5)
 // // Size: 20 bytes of program space.
 //
@@ -163,7 +175,8 @@
 // };
 //
 // // Gradient palette "gr64_hult_gp", originally from
-// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/hult/tn/gr64_hult.png.index.html
+// //
+// http://soliton.vm.bytemark.co.uk/pub/cpt-city/hult/tn/gr64_hult.png.index.html
 // // converted for FastLED with gammas (2.6, 2.2, 2.5)
 // // Size: 32 bytes of program space.
 //
@@ -179,7 +192,8 @@
 // };
 //
 // // Gradient palette "Fuschia_7_gp", originally from
-// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/ds/fuschia/tn/Fuschia-7.png.index.html
+// //
+// http://soliton.vm.bytemark.co.uk/pub/cpt-city/ds/fuschia/tn/Fuschia-7.png.index.html
 // // converted for FastLED with gammas (2.6, 2.2, 2.5)
 // // Size: 20 bytes of program space.
 //
@@ -192,7 +206,8 @@
 // };
 //
 // // Gradient palette "es_emerald_dragon_08_gp", originally from
-// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/es/emerald_dragon/tn/es_emerald_dragon_08.png.index.html
+// //
+// http://soliton.vm.bytemark.co.uk/pub/cpt-city/es/emerald_dragon/tn/es_emerald_dragon_08.png.index.html
 // // converted for FastLED with gammas (2.6, 2.2, 2.5)
 // // Size: 16 bytes of program space.
 //
@@ -204,7 +219,8 @@
 // };
 //
 // // Gradient palette "Magenta_Evening_gp", originally from
-// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/nd/atmospheric/tn/Magenta_Evening.png.index.html
+// //
+// http://soliton.vm.bytemark.co.uk/pub/cpt-city/nd/atmospheric/tn/Magenta_Evening.png.index.html
 // // converted for FastLED with gammas (2.6, 2.2, 2.5)
 // // Size: 28 bytes of program space.
 //
@@ -219,7 +235,8 @@
 // };
 //
 // // Gradient palette "Pink_Purple_gp", originally from
-// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/nd/atmospheric/tn/Pink_Purple.png.index.html
+// //
+// http://soliton.vm.bytemark.co.uk/pub/cpt-city/nd/atmospheric/tn/Pink_Purple.png.index.html
 // // converted for FastLED with gammas (2.6, 2.2, 2.5)
 // // Size: 44 bytes of program space.
 //
@@ -238,7 +255,8 @@
 // };
 //
 // // Gradient palette "Sunset_Real_gp", originally from
-// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/nd/atmospheric/tn/Sunset_Real.png.index.html
+// //
+// http://soliton.vm.bytemark.co.uk/pub/cpt-city/nd/atmospheric/tn/Sunset_Real.png.index.html
 // // converted for FastLED with gammas (2.6, 2.2, 2.5)
 // // Size: 28 bytes of program space.
 //
@@ -253,7 +271,8 @@
 // };
 //
 // // Gradient palette "Blue_Cyan_Yellow_gp", originally from
-// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/nd/basic/tn/Blue_Cyan_Yellow.png.index.html
+// //
+// http://soliton.vm.bytemark.co.uk/pub/cpt-city/nd/basic/tn/Blue_Cyan_Yellow.png.index.html
 // // converted for FastLED with gammas (2.6, 2.2, 2.5)
 // // Size: 20 bytes of program space.
 //
@@ -266,7 +285,8 @@
 // };
 //
 // // Gradient palette "es_pinksplash_12_gp", originally from
-// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/es/pink_splash/tn/es_pinksplash_12.png.index.html
+// //
+// http://soliton.vm.bytemark.co.uk/pub/cpt-city/es/pink_splash/tn/es_pinksplash_12.png.index.html
 // // converted for FastLED with gammas (2.6, 2.2, 2.5)
 // // Size: 28 bytes of program space.
 //
@@ -310,7 +330,8 @@
 // //};
 //
 // // Gradient palette "bhw1_three_gp", originally from
-// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/bhw/bhw1/tn/bhw1_three.png.index.html
+// //
+// http://soliton.vm.bytemark.co.uk/pub/cpt-city/bhw/bhw1/tn/bhw1_three.png.index.html
 // // converted for FastLED with gammas (2.6, 2.2, 2.5)
 // // Size: 32 bytes of program space.
 //
@@ -326,7 +347,8 @@
 // };
 //
 // // Gradient palette "Accent_05_gp", originally from
-// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/cb/qual/tn/Accent_05.png.index.html
+// //
+// http://soliton.vm.bytemark.co.uk/pub/cpt-city/cb/qual/tn/Accent_05.png.index.html
 // // converted for FastLED with gammas (2.6, 2.2, 2.5)
 // // Size: 40 bytes of program space.
 //
@@ -344,7 +366,8 @@
 // };
 //
 // // Gradient palette "rainbow_gp", originally from
-// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/ds9/tn/rainbow.png.index.html
+// //
+// http://soliton.vm.bytemark.co.uk/pub/cpt-city/ds9/tn/rainbow.png.index.html
 // // converted for FastLED with gammas (2.6, 2.2, 2.5)
 // // Size: 24 bytes of program space.
 //
@@ -358,7 +381,8 @@
 // };
 //
 // // Gradient palette "rgi_13_gp", originally from
-// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/ds/rgi/tn/rgi_13.png.index.html
+// //
+// http://soliton.vm.bytemark.co.uk/pub/cpt-city/ds/rgi/tn/rgi_13.png.index.html
 // // converted for FastLED with gammas (2.6, 2.2, 2.5)
 // // Size: 12 bytes of program space.
 //
@@ -369,7 +393,8 @@
 // };
 //
 // // Gradient palette "Fire_1_gp", originally from
-// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/ds/icons/tn/Fire-1.png.index.html
+// //
+// http://soliton.vm.bytemark.co.uk/pub/cpt-city/ds/icons/tn/Fire-1.png.index.html
 // // converted for FastLED with gammas (2.6, 2.2, 2.5)
 // // Size: 12 bytes of program space.
 //
@@ -380,7 +405,8 @@
 // };
 //
 // // Gradient palette "Fuschia_8_gp", originally from
-// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/ds/fuschia/tn/Fuschia-8.png.index.html
+// //
+// http://soliton.vm.bytemark.co.uk/pub/cpt-city/ds/fuschia/tn/Fuschia-8.png.index.html
 // // converted for FastLED with gammas (2.6, 2.2, 2.5)
 // // Size: 12 bytes of program space.
 //
@@ -391,7 +417,8 @@
 // };
 //
 // // Gradient palette "GMT_sealand_gp", originally from
-// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/gmt/tn/GMT_sealand.png.index.html
+// //
+// http://soliton.vm.bytemark.co.uk/pub/cpt-city/gmt/tn/GMT_sealand.png.index.html
 // // converted for FastLED with gammas (2.6, 2.2, 2.5)
 // // Size: 80 bytes of program space.
 //
@@ -419,7 +446,8 @@
 // };
 //
 // // Gradient palette "GMT_seafloor_gp", originally from
-// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/gmt/tn/GMT_seafloor.png.index.html
+// //
+// http://soliton.vm.bytemark.co.uk/pub/cpt-city/gmt/tn/GMT_seafloor.png.index.html
 // // converted for FastLED with gammas (2.6, 2.2, 2.5)
 // // Size: 88 bytes of program space.
 //
@@ -449,7 +477,8 @@
 // };
 //
 // // Gradient palette "GMT_cool_gp", originally from
-// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/gmt/tn/GMT_cool.png.index.html
+// //
+// http://soliton.vm.bytemark.co.uk/pub/cpt-city/gmt/tn/GMT_cool.png.index.html
 // // converted for FastLED with gammas (2.6, 2.2, 2.5)
 // // Size: 8 bytes of program space.
 //
@@ -459,12 +488,14 @@
 // };
 //
 // // Gradient palette "Tropical_Colors_gp", originally from
-// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/ggr/tn/Tropical_Colors.png.index.html
+// //
+// http://soliton.vm.bytemark.co.uk/pub/cpt-city/ggr/tn/Tropical_Colors.png.index.html
 // // converted for FastLED with gammas (2.6, 2.2, 2.5)
 // // Size: 116 bytes of program space.
 //
 // // Gradient palette "Yellow_Orange_gp", originally from
-// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/ggr/tn/Yellow_Orange.png.index.html
+// //
+// http://soliton.vm.bytemark.co.uk/pub/cpt-city/ggr/tn/Yellow_Orange.png.index.html
 // // converted for FastLED with gammas (2.6, 2.2, 2.5)
 // // Size: 20 bytes of program space.
 //
@@ -533,12 +564,14 @@
 //   255,   0, 255, 44
 // };
 // // Gradient palette "cbcYlOrRd_gp", originally from
-// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/jjg/cbcont/seq/tn/cbcYlOrRd.png.index.html
+// //
+// http://soliton.vm.bytemark.co.uk/pub/cpt-city/jjg/cbcont/seq/tn/cbcYlOrRd.png.index.html
 // // converted for FastLED with gammas (2.6, 2.2, 2.5)
 // // Size: 40 bytes of program space.
 //
 // // Gradient palette "cbcReds_gp", originally from
-// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/jjg/cbcont/seq/tn/cbcReds.png.index.html
+// //
+// http://soliton.vm.bytemark.co.uk/pub/cpt-city/jjg/cbcont/seq/tn/cbcReds.png.index.html
 // // converted for FastLED with gammas (2.6, 2.2, 2.5)
 // // Size: 40 bytes of program space.
 //
@@ -555,7 +588,8 @@
 //   255,  24,  0,  1
 // };
 // // Gradient palette "cbcGreens_gp", originally from
-// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/jjg/cbcont/seq/tn/cbcGreens.png.index.html
+// //
+// http://soliton.vm.bytemark.co.uk/pub/cpt-city/jjg/cbcont/seq/tn/cbcGreens.png.index.html
 // // converted for FastLED with gammas (2.6, 2.2, 2.5)
 // // Size: 40 bytes of program space.
 //
@@ -572,7 +606,8 @@
 //   255,   0, 13,  1
 // };
 // // Gradient palette "cbcSpectral_gp", originally from
-// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/jjg/cbcont/div/tn/cbcSpectral.png.index.html
+// //
+// http://soliton.vm.bytemark.co.uk/pub/cpt-city/jjg/cbcont/div/tn/cbcSpectral.png.index.html
 // // converted for FastLED with gammas (2.6, 2.2, 2.5)
 // // Size: 92 bytes of program space.
 //
@@ -603,7 +638,8 @@
 // };
 //
 // // Gradient palette "Spectral_gp", originally from
-// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/jjg/polarity/tn/Spectral.png.index.html
+// //
+// http://soliton.vm.bytemark.co.uk/pub/cpt-city/jjg/polarity/tn/Spectral.png.index.html
 // // converted for FastLED with gammas (2.6, 2.2, 2.5)
 // // Size: 40 bytes of program space.
 //
@@ -621,7 +657,8 @@
 // };
 //
 // // Gradient palette "srtYlOrRd04_gp", originally from
-// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/jjg/serrate/seq/tn/srtYlOrRd04.png.index.html
+// //
+// http://soliton.vm.bytemark.co.uk/pub/cpt-city/jjg/serrate/seq/tn/srtYlOrRd04.png.index.html
 // // converted for FastLED with gammas (2.6, 2.2, 2.5)
 // // Size: 32 bytes of program space.
 //
@@ -674,7 +711,8 @@
 //
 //
 // // Gradient palette "slopese_gp", originally from
-// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/esdb/tn/slopese.png.index.html
+// //
+// http://soliton.vm.bytemark.co.uk/pub/cpt-city/esdb/tn/slopese.png.index.html
 // // converted for FastLED with gammas (2.6, 2.2, 2.5)
 // // Size: 32 bytes of program space.
 //
@@ -691,12 +729,14 @@
 //
 //
 // // Gradient palette "bhw1_bluee_gp", originally from
-// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/bhw/bhw1/tn/bhw1_bluee.png.index.html
+// //
+// http://soliton.vm.bytemark.co.uk/pub/cpt-city/bhw/bhw1/tn/bhw1_bluee.png.index.html
 // // converted for FastLED with gammas (2.6, 2.2, 2.5)
 // // Size: 12 bytes of program space.
 //
 // // Gradient palette "bhw1_hello_gp", originally from
-// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/bhw/bhw1/tn/bhw1_hello.png.index.html
+// //
+// http://soliton.vm.bytemark.co.uk/pub/cpt-city/bhw/bhw1/tn/bhw1_hello.png.index.html
 // // converted for FastLED with gammas (2.6, 2.2, 2.5)
 // // Size: 32 bytes of program space.
 //
@@ -712,22 +752,26 @@
 // };
 //
 // // Gradient palette "bhw2_36_gp", originally from
-// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/bhw/bhw2/tn/bhw2_36.png.index.html
+// //
+// http://soliton.vm.bytemark.co.uk/pub/cpt-city/bhw/bhw2/tn/bhw2_36.png.index.html
 // // converted for FastLED with gammas (2.6, 2.2, 2.5)
 // // Size: 12 bytes of program space.
 //
 // // Gradient palette "bhw2_35_gp", originally from
-// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/bhw/bhw2/tn/bhw2_35.png.index.html
+// //
+// http://soliton.vm.bytemark.co.uk/pub/cpt-city/bhw/bhw2/tn/bhw2_35.png.index.html
 // // converted for FastLED with gammas (2.6, 2.2, 2.5)
 // // Size: 28 bytes of program space.
 //
 // // Gradient palette "bhw2_thanks_gp", originally from
-// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/bhw/bhw2/tn/bhw2_thanks.png.index.html
+// //
+// http://soliton.vm.bytemark.co.uk/pub/cpt-city/bhw/bhw2/tn/bhw2_thanks.png.index.html
 // // converted for FastLED with gammas (2.6, 2.2, 2.5)
 // // Size: 36 bytes of program space.
 //
 // // Gradient palette "bhw3_16_gp", originally from
-// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/bhw/bhw3/tn/bhw3_16.png.index.html
+// //
+// http://soliton.vm.bytemark.co.uk/pub/cpt-city/bhw/bhw3/tn/bhw3_16.png.index.html
 // // converted for FastLED with gammas (2.6, 2.2, 2.5)
 // // Size: 28 bytes of program space.
 //
@@ -750,9 +794,12 @@
 // const TProgmemRGBGradientPalettePtr gGradientPalettes[] = {
 //   // rainbow
 //   // BI_gp,
-//   //GMT_seis_gp, // classic rainbow: http://soliton.vm.bytemark.co.uk/pub/cpt-city/gmt/tn/GMT_seis.png.index.html
-//   // GMT_sealand_gp, // classic desaturated rainbow: http://soliton.vm.bytemark.co.uk/pub/cpt-city/gmt/tn/GMT_sealand.png.index.html
-//   //rgi_15_gp, // gorgeous purple, reds, pinks, blues: http://soliton.vm.bytemark.co.uk/pub/cpt-city/ds/rgi/tn/rgi_15.png.index.html
+//   //GMT_seis_gp, // classic rainbow:
+// http://soliton.vm.bytemark.co.uk/pub/cpt-city/gmt/tn/GMT_seis.png.index.html
+//   // GMT_sealand_gp, // classic desaturated rainbow:
+// http://soliton.vm.bytemark.co.uk/pub/cpt-city/gmt/tn/GMT_sealand.png.index.html
+//   //rgi_15_gp, // gorgeous purple, reds, pinks, blues:
+// http://soliton.vm.bytemark.co.uk/pub/cpt-city/ds/rgi/tn/rgi_15.png.index.html
 //
 //
 //   //bhw3_16_gp,

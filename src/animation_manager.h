@@ -1,1 +1,1 @@
-void mode(void);
+void animationManagerTask(void);
