@@ -1,7 +1,7 @@
-#include <env.h>
+#include "./audio_analyzer.h"
+#include "./audio_manager.h"
 
-// extern float smoothing;
-// extern bool  stereo, calculateScaledFFT;
+#include <env.h>
 
 bool readFFT(float smoothing,
              bool  stereo,
@@ -31,14 +31,17 @@ bool readFFT(float smoothing,
         currentLeftAmp   = fftL.read(currentBin, nextBin) * 255.0;
         currentRightAmp  = fftR.read(currentBin, nextBin) * 255.0;
 
-        currentLeftAmp = lerp8by8(previousLeftAmp, currentLeftAmp, smoothing);
-        currentLeftAmp = previousLeftAmp + (currentLeftAmp - previousLeftAmp) *
+        // currentLeftAmp = lerp8by8(previousLeftAmp, currentLeftAmp,
+        //                           smoothing);
+        currentLeftAmp = previousLeftAmp + (currentLeftAmp - previousLeftAmp)
+                         *
                          smoothing;
         currentLeftAmp = constrain(currentLeftAmp, 1, 255.0);
         levelsL[band]  = map(currentLeftAmp, 1, 255, 0, 255.0);
 
         // higher === smoother!
-        currentRightAmp = lerp8by8(previousRightAmp, currentRightAmp, smoothing);
+        // currentRightAmp = lerp8by8(previousRightAmp, currentRightAmp,
+        //                            smoothing);
 
         currentRightAmp = previousRightAmp +
                           (currentRightAmp - previousRightAmp) * smoothing;
@@ -50,29 +53,31 @@ bool readFFT(float smoothing,
           rightVolume += levelsR[band];
         }
       #ifdef PRINT_FFT
-        cout << levelsL[band] << endl << "\t";
+        Serial << levelsL[band] << endl << "\t";
       #endif // ifdef PRINT_FFT
       }
     #ifdef PRINT_FFT
-      cout << endl;
+      Serial << endl;
     #endif // ifdef PRINT_FFT
 
       if (calculateScaledFFT) {
         leftFactor  = CENTER_LED_POS / leftVolume;
         rightFactor = CENTER_LED_POS / rightVolume;
 
-        // uint16_t leftFactor_16 = 18000 / leftVolume; // was CENTER_LED_POS_16
+        // uint16_t leftFactor_16 = 18000 / leftVolume; // was
+        // CENTER_LED_POS_16
+
         for (band = 0; band < NUM_BANDS; band++) {
           mappedLeftAmp       = levelsL[band] * leftFactor;
           mappedRightAmp      = levelsR[band] * rightFactor;
           scaledLevelsL[band] = mappedLeftAmp;
           scaledLevelsR[band] = mappedRightAmp;
-          #ifdef PRINT_MAPPED_FFT
-          cout << scaledLevelsL[band] << "\t";
-          #endif // ifdef PRINT_MAPPED_FFT
+        #ifdef PRINT_MAPPED_FFT
+          Serial << scaledLevelsL[band] << "\t";
+        #endif // ifdef PRINT_MAPPED_FFT
         }
       #ifdef PRINT_MAPPED_FFT
-        cout << endl;
+        Serial << endl;
       #endif // ifdef PRINT_MAPPED_FFT
       }
       return true;
@@ -92,33 +97,36 @@ bool readFFT(float smoothing,
 
         // currentLeftAmp = lerp8by8(previousLeftAmp, currentLeftAmp,
         // smoothing); // higher === smoother!
-        currentLeftAmp = previousLeftAmp + (currentLeftAmp - previousLeftAmp) *
+        currentLeftAmp = previousLeftAmp + (currentLeftAmp - previousLeftAmp)
+                         *
                          smoothing;
         currentLeftAmp = constrain(currentLeftAmp, 1, 255);
         levelsL[band]  = map(currentLeftAmp, 1, 255, 0, 255);
 
         leftVolume += levelsL[band];
       #ifdef PRINT_FFT
-        cout << levelsL[band] << "\t";
+        Serial << levelsL[band] << "\t";
       #endif // ifdef PRINT_FFT
       }
-      #ifdef PRINT_FFT
-      cout << endl;
-      #endif // ifdef PRINT_FFT
+    #ifdef PRINT_FFT
+      Serial << endl;
+    #endif // ifdef PRINT_FFT
 
       if (calculateScaledFFT) {
         leftFactor = CENTER_LED_POS / leftVolume;
 
-        // uint16_t leftFactor_16 = 18000 / leftVolume; // was CENTER_LED_POS_16
+        // uint16_t leftFactor_16 = 18000 / leftVolume; // was
+        // CENTER_LED_POS_16
+
         for (band = 0; band < NUM_BANDS; band++) {
           mappedLeftAmp       = levelsL[band] * leftFactor;
           scaledLevelsL[band] = mappedLeftAmp;
         #ifdef PRINT_MAPPED_FFT
-          cout << scaledLevelsL[band] << "\t";
+          Serial << scaledLevelsL[band] << "\t";
         #endif // ifdef PRINT_MAPPED_FFT
         }
       #ifdef PRINT_MAPPED_FFT
-        cout << endl;
+        Serial << endl;
       #endif // ifdef PRINT_MAPPED_FFT
       }
       return true;
@@ -132,7 +140,8 @@ uint8_t averageFFTPortion(uint8_t *array,
                           uint16_t len,
                           uint16_t startIndex,
                           uint16_t endIndex) {
-  // ex: uint8_t bass_l = averageFFTPortion(levelsL, NUM_BANDS, 0, 3); // 0 => 2
+  // ex: uint8_t bass_l = averageFFTPortion(levelsL, NUM_BANDS, 0, 3); // 0
+  // = > 2
   static uint16_t sum, portion;
 
   sum     = 0;

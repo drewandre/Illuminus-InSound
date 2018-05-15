@@ -1,14 +1,19 @@
-#include <env.h>
+#include <Audio.h>
 
-#include <startup_manager.h>
-#include <bluetooth_manager.h>
+#include "../leds/led_manager.h"
+#include "./startup_manager.h"
+#include "../audio/audio_analyzer.h"
+
+#include <env.h>
 
 void startup() {
 #ifdef DEBUG
   static unsigned long startTime = millis();
+
   initSerial();
-  cout << "\n---------------------- INITIALIZING ----------------------\n";
+  Serial << "\n---------------------- INITIALIZING // ----------------------\n";
 #endif // ifdef DEBUG
+
   initInterrupts();
 
   // initEEPROM();
@@ -21,10 +26,11 @@ void startup() {
   BM64_SERIAL.begin(BM64_SERIAL_BAUD);
 
 #ifdef DEBUG
-  unsigned long totalTime = millis() - startTime;
-  cout << endl << DEVICE_NAME;
-  cout << " configured!\n\n" << "Dev startup time:\t" << totalTime << "ms\n";
-  cout << "\n---------------------- " << DEVICE_NAME <<
+  static unsigned long totalTime = millis() - startTime;
+
+  Serial << "\n" << DEVICE_NAME << " configured!\n\n" <<
+    "Dev startup time:\t" <<
+    totalTime << "ms\n" << "\n---------------------- " << DEVICE_NAME <<
     " MAIN APPLICATION LOOP ----------------------\n";
 #endif // ifdef DEBUG
 }
@@ -32,42 +38,47 @@ void startup() {
 void initSerial() {
 #ifdef DEBUG
   Serial.begin(SWSERIAL_BAUD);
+  Serial << '\n';
 
   while (!Serial) ;
 #endif // ifdef DEBUG
 }
 
 void initInterrupts() {
-  // pinMode(RN52_GPI02_PIN, INPUT);
-  // attachInterrupt(digitalPinToInterrupt(RN52_GPI02_PIN), readRN52Event,
-  // CHANGE);
+  pinMode(RN52_GPI02_PIN, INPUT);
 
-  attachInterrupt(digitalPinToInterrupt(BM64_UART_TX_IND), BM64RxInterrupt,
-                  CHANGE);
+  //   attachInterrupt(digitalPinToInterrupt(RN52_GPI02_PIN),   readRN52Event,
+  //                   CHANGE);
+  //
+  //   attachInterrupt(digitalPinToInterrupt(BM64_UART_TX_IND), BM64RxInterrupt,
+  //                   CHANGE);
 }
 
 void initEEPROM() {
 #ifdef DEBUG
-  unsigned long startTime = millis();
+  static unsigned long startTime = millis();
 #endif // ifdef DEBUG
+
 #ifdef DEBUG
-  unsigned long totalTime = millis() - startTime;
-  cout << "Settings restored:\t" << totalTime << "ms" << "\n\n";
+  static unsigned long totalTime = millis() - startTime;
+
+  Serial << "Settings restored:\t" << totalTime << "ms" << "\n\n";
 #endif // ifdef DEBUG
 }
 
 void initRN52() {
 #ifdef DEBUG
-  unsigned long startTime = millis();
+  static unsigned long startTime = millis();
 #endif // ifdef DEBUG
-  pinMode(RN52_CMD_PIN, OUTPUT);
-  digitalWrite(RN52_CMD_PIN, HIGH); // exit data mode
-  HWSERIAL.begin(HWSERIAL_BAUD);
+
+  // pinMode(RN52_CMD_PIN, OUTPUT);
+  // digitalWrite(RN52_CMD_PIN, HIGH); // exit data mode
+  // HWSERIAL.begin(HWSERIAL_BAUD);
 
   // if (RN52FactorySettings()) { // checks if device name is equal to
   // DEVICE_NAME
 #ifdef DEBUG
-  cout << "Configuring RN52...";
+  Serial << "Configuring RN52...";
 #endif // ifdef DEBUG
 
   // setRN52("SN", DEVICE_NAME); // sets device name
@@ -75,14 +86,14 @@ void initRN52() {
   // setRN52("SC", "20043C"); // COD -- Audio, Audio/Video, Video Display and
   // Loudspeaker
   // setRN52("ST", "00"); // mutes disable tones
-  // #ifdef RN52_ANALOG_OUTPUT
+  #ifdef RN52_ANALOG_OUTPUT
 
   // setRN52("S|", "00"); // sets audio output to analog out
   // setRN52("SS", "0x09"); // sets speaker gain to maximum
   // #else // ifdef RN52_ANALOG_OUTPUT
 
   // setRN52("S|", "0102");
-  // #endif // ifdef RN52_ANALOG_OUTPUT
+  #endif // ifdef RN52_ANALOG_OUTPUT
 
   // }
 #ifdef DEBUG
@@ -94,40 +105,50 @@ void initRN52() {
   // attachInterrupt(digitalPinToInterrupt(RN52_GPI02_PIN), readRN52Event,
   // CHANGE);
 
-  unsigned long totalTime = millis() - startTime;
-  cout << "RN52 Initialized:\t" << totalTime << "ms" << "\n\n";
+  static unsigned long totalTime = millis() - startTime;
+  Serial << "RN52 Initialized:\t" << totalTime << "ms" << "\n\n";
 #endif // ifdef DEBUG
 }
 
 void initWS2812B() {
-  CRGB leds[NUM_LEDS];
-
 #ifdef DEBUG
-  unsigned long startTime = millis();
+  static unsigned long startTime = millis();
 #endif // ifdef DEBUG
+
   FastLED.addLeds<STRIP_TYPE, DATA_PIN, COLOR_ORDER>(leds, NUM_LEDS);
+
 #ifdef LED_COLOR_CORRECTION
   FastLED.setCorrection(LED_COLOR_CORRECTION);
+  Serial <<
+    "\n~~~~~~~~~~~~~~~~~~~~~~ set framerate to 69 ~~~~~~~~~~~~~~~~~~~~~~\n\n";
 #endif // ifdef LED_COLOR_CORRECTION
-  FastLED.setMaxPowerInVoltsAndMilliamps(PALETTE_VOLTAGE, PALETTE_AMPERAGE);
+
+  FastLED.setMaxRefreshRate(69);
   FastLED.setBrightness(255);
+  FastLED.setMaxPowerInVoltsAndMilliamps(PALETTE_VOLTAGE, PALETTE_AMPERAGE);
+
   fill_solid(leds, NUM_LEDS, CRGB::Black);
   FastLED.show();
   delay(10);
+
 #ifdef DEBUG
-  unsigned long totalTime = millis() - startTime;
-  cout << "Leds Initialized:\t" << totalTime << "ms\n";
+  static unsigned long totalTime = millis() - startTime;
+  Serial << "Leds Initialized:\t" << totalTime << "ms" << endl;
 #endif // ifdef DEBUG
 }
 
 void initSGTL5000() {
 #ifdef DEBUG
-  unsigned long startTime = millis();
+  static unsigned long startTime = millis();
 #endif // ifdef DEBUG
+
   float e = getFFTBins();
+
   AudioMemory(20);
+
   SGTL5000.enable(); // only if audio out (audio out just comes from RN52 --
                      // audio in would require SGTL5000)
+
 #ifdef RN52_ANALOG_OUTPUT
 
   // WARNING: DO NOT uncomment if using AudioInputI2Sslave -- two inputs (one
@@ -136,7 +157,7 @@ void initSGTL5000() {
   SGTL5000.lineInLevel(15);
 #endif // ifdef RN52_ANALOG_OUTPUT
 
-  // SGTL5000.volume(0.5);
+  SGTL5000.volume(0.5);
 
 #ifdef DEBUG
   # ifdef PLAY_TONE_SWEEP_ON_STARTUP
@@ -148,7 +169,7 @@ void initSGTL5000() {
     float t_timex      = 2; // Length of time for the sweep in seconds
 
     if (!tone_sweep.play(t_ampx, t_lox, t_hix, t_timex)) {
-      cout << "AudioSynthToneSweep - begin failed" << "\n";
+      Serial << "AudioSynthToneSweep - begin failed" << "\n";
 
       while (1) ;
     }
@@ -158,20 +179,22 @@ void initSGTL5000() {
 
     if (!tone_sweep.play(t_ampx, t_hix, t_lox, t_timex)) { // and now reverse
                                                            // the sweep
-      cout << "AudioSynthToneSweep - begin failed" << endl;
+      Serial << "AudioSynthToneSweep - begin failed" << "\n";
 
       while (1) ;
     }
 
     while (tone_sweep.isPlaying()) ;  // wait for the sweep to end
-    cout << "Done" << "\n"
+    Serial << "Done" << "\n"
   }
   # endif // ifdef PLAY_TONE_SWEEP_ON_STARTUP
-  unsigned long totalTime = millis() - startTime;
-  cout << "Audio Initialized:\t" << totalTime << "ms" << endl;
-  cout << "FFT NUM_BANDS:\t\t" << NUM_BANDS << endl;
-  cout << "FFT MAX_BIN:\t\t" << MAX_BIN << "hz" << endl;
-  cout << "FFT E calculation:\t" << e << endl;
+
+  static unsigned long totalTime = millis() - startTime;
+
+  Serial << "Audio Initialized:\t" << totalTime << "ms" << endl;
+  Serial << "FFT NUM_BANDS:\t\t" << NUM_BANDS << endl;
+  Serial << "FFT MAX_BIN:\t\t" << MAX_BIN << "hz" << endl;
+  Serial << "FFT E calculation:\t" << e << endl;
 #endif // ifdef DEBUG
 }
 
@@ -179,13 +202,12 @@ float getFFTBins() {
   float e, n;
   uint16_t b, bands, bins, count = 0, d;
 
-  bands = NUM_BANDS;              // Frequency bands; (Adjust to desired value)
+  bands = NUM_BANDS;              // Frequency bands; (Adjust to desiredvalue)
   bins  = MAX_BIN;
   e     = FindE(bands, bins);     // Find calculated E value
 
   if (e) {                        // If a value was returned continue
     for (b = 0; b < bands; b++) { // Test and print the bins from the calculated
-                                  // E
       n          = pow(e, b);
       d          = int(n + 0.5);
       fftBins[b] = count;
@@ -195,9 +217,10 @@ float getFFTBins() {
   }
 #ifdef DEBUG
   else {
-    cout << "Error calculating FFT bins\n"; // Error, something happened
+    Serial << "Error calculating FFT bins\n"; // Error, something happened
   }
 #endif // ifdef DEBUG
+
   return e;
 }
 
@@ -216,10 +239,11 @@ float FindE(uint8_t bands, uint8_t bins) {
       count += d;
     }
 
-    if (count > bins) {        // We calculated over our last bin
-      eTest     -= increment;  // Revert back to previous calculation increment
-      increment /= 10.0;       // Get a finer detailed calculation & increment a
-                               // decimal point lower
+    if (count > bins) {       // We calculated over our last bin
+      eTest     -= increment; // Revert back to previous calculation
+      increment /= 10.0;      // Get a finer detailed calculation & increment a
+
+      // decimal point lower
     }
     else if (count == bins)    // We found the correct E
       return eTest;            // Return calculated E
@@ -232,14 +256,17 @@ float FindE(uint8_t bands, uint8_t bins) {
 }
 
 void initNoise() {
-  unsigned long startTime = millis();
+#ifdef DEBUG
+  static unsigned long startTime = millis();
+#endif // ifdef DEBUG
 
-  // x = random16();
-  // y = random16();
-  // z = random16();
+  // x    = random16();
+  // y    = random16();
+  // z    = random16();
   // dist = random16(12345);
 #ifdef DEBUG
-  unsigned long totalTime = millis() - startTime;
-  cout << "Noise values set:\t" << totalTime << "ms" << endl;
+  static unsigned long totalTime = millis() - startTime;
+
+  Serial << "Noise values set:\t" << totalTime << "ms" << "\n";
 #endif // ifdef DEBUG
 }

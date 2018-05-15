@@ -7,19 +7,19 @@
       www.instagram.com/_drewandre
  */
 
-// #include <env.h>
+#include "./animations/animation_manager.h"
+#include "./leds/led_manager.h"
+#include "./startup/startup_manager.h"
+#include "./helpers/performance_monitor/performance_monitor.h"
 
-#include <animation_manager.h>
-#include <led_manager.h>
-#include <startup_manager.h>
-#include <performance_monitor.h>
+#include <env.h>
 
 
 void setup() {
   startup();
 }
 
-int main() {
+void loop() {
 #ifdef PRINT_MCU_PERFORMANCE
   printMCUPerformance();
 #endif // ifdef PRINT_MCU_PERFORMANCE

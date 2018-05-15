@@ -1,9 +1,18 @@
+#include "../leds/led_manager.h"
+#include "../audio/audio_analyzer.h"
+
 #include <env.h>
 
-#include <led_manager.h>
-#include <audio_analyzer.h>
+struct CRGB leds[NUM_LEDS];
+
+uint16_t fftBins[NUM_BANDS];
+uint8_t  levelsL[NUM_BANDS];
+uint8_t  levelsR[NUM_BANDS];
+uint8_t  scaledLevelsL[NUM_BANDS];
+uint8_t  scaledLevelsR[NUM_BANDS];
 
 // ---------------------- noise variables ----------------------- //
+
 // uint32_t x, y, z, dist;
 // uint16_t scale = 12;
 // uint16_t speed = 2;
@@ -18,9 +27,9 @@
 
 
 void mapFFTLeft() {
-  static uint8_t  band, currentBrightness;
-  static uint16_t i, pos, point;
-  static float    fHue;
+  static int   band, currentBrightness;
+  static int   i, pos, point;
+  static float fHue;
 
   // nscale8(leds, NUM_LEDS, 220);
   // fadeToBlackBy(leds,NUM_LEDS,9);
@@ -35,6 +44,7 @@ void mapFFTLeft() {
       if (band == NUM_BANDS - 1) {
         point = NUM_LEDS - 1;
       }
+
       currentBrightness = levelsL[band];
 
       for (i = pos; i < point; i++) {
@@ -43,10 +53,40 @@ void mapFFTLeft() {
       }
       pos = point;
     }
-
     blur1d(leds, NUM_LEDS, 1);
   }
 }
+
+// void mapFFTLeft() {
+//   static uint8_t  band, currentBrightness;
+//   static uint16_t i, pos, point;
+//   static float    fHue;
+//
+//   // nscale8(leds, NUM_LEDS, 220);
+//   // fadeToBlackBy(leds,NUM_LEDS,9);
+//   if (readFFT(1, false, false)) {
+//     pos   = 0;
+//     point = 0;
+//     fHue  = 0;
+//
+//     for (band = 0; band < NUM_BANDS - 1; band++) {
+//       point += FFT_FIXED_SEGMENT_LENGTH;
+//
+//       if (band == NUM_BANDS - 1) {
+//         point = NUM_LEDS - 1;
+//       }
+//       currentBrightness = levelsL[band];
+//
+//       for (i = pos; i < point; i++) {
+//         leds[i] += CHSV(fHue, 255, currentBrightness);
+//         fHue     = i * 1.65;
+//       }
+//       pos = point;
+//     }
+//
+//     blur1d(leds, NUM_LEDS, 1);
+//   }
+// }
 
 /*
    void splatter() {
@@ -254,7 +294,8 @@ void mapFFTLeft() {
    leds[half_pos].nscale8(200);
 
    uint8_t bass_l = averageFFTPortion(levelsL, NUM_BANDS, 0, 3); // 0 => 2
-   uint8_t mids_l = averageFFTPortion(levelsL, NUM_BANDS, 13, 25); // 30 => 60
+   uint8_t mids_l = averageFFTPortion(levelsL, NUM_BANDS, 13, 25); // 30 =>
+   60
    uint8_t high_l = averageFFTPortion(levelsL, NUM_BANDS, 29, 35); // 255 =>
       MAX_BIN
 
@@ -418,7 +459,8 @@ void mapFFTLeft() {
 
    for (int i = 11; i < NUM_LEDS - 14; i++) {
 
-    dataTwelve = inoise16(x + (i * scale_twelve), y + (dist + scale_twelve), z)
+    dataTwelve = inoise16(x + (i * scale_twelve), y + (dist + scale_twelve),
+   z)
        % 4095;
     dataTwelve = constrain(dataTwelve, 0, 4095);
 
@@ -491,7 +533,8 @@ void mapFFTLeft() {
    leds[half_pos].nscale8(200);
 
    uint8_t bass_l = averageFFTPortion(levelsL, NUM_BANDS, 0, 3); // 0 => 2
-   uint8_t mids_l = averageFFTPortion(levelsL, NUM_BANDS, 13, 25); // 30 => 60
+   uint8_t mids_l = averageFFTPortion(levelsL, NUM_BANDS, 13, 25); // 30 =>
+   60
    uint8_t high_l = averageFFTPortion(levelsL, NUM_BANDS, 29, 35); // 255 =>
       MAX_BIN
 
@@ -639,7 +682,12 @@ void mapFFTLeft() {
    //
    //  if (fftL.available() && fftR.available()) {
    //
-   //    //Serial.println("---------------------------------------------------------");
+   //
+
+
+
+
+   //Serial.println("---------------------------------------------------------");
    //
    //    READ_FFT();
    //
@@ -665,16 +713,19 @@ void mapFFTLeft() {
    //      //      if (band == 0) {
    //      //        next_hue += HUE_LENGTH;
    //      //
-   //      //        left_current_brightness  = (levelsL[band] + levelsR[band])
+   //      //        left_current_brightness  = (levelsL[band] +
+   levelsR[band])
  * 0.5 * SCALE;
    //      //        left_current_brightness  = prev_brightness_left +
-      (left_current_brightness - prev_brightness_left)  * flex_low_pass_stereo;
+      (left_current_brightness - prev_brightness_left)  *
+   flex_low_pass_stereo;
    //      //        levelsL[band] = left_current_brightness;
    //      //        right_current_brightness = left_current_brightness;
    //      //
    //      //        left_next_brightness     = levelsL[band + 1] * SCALE;
    //      //        left_next_brightness     = prev_brightness_k_left +
-      (left_next_brightness - prev_brightness_k_left)  * flex_low_pass_stereo;
+      (left_next_brightness - prev_brightness_k_left)  *
+   flex_low_pass_stereo;
    //      //
    //      //        right_current_brightness  = levelsR[band] * SCALE;
    //      //        right_current_brightness  = prev_brightness_right +
@@ -684,7 +735,8 @@ void mapFFTLeft() {
    //      //
    //      //        right_next_brightness     = levelsR[band + 1] * SCALE;
    //      //        right_next_brightness     = prev_brightness_k_right +
-      (right_next_brightness - prev_brightness_k_right)  * flex_low_pass_stereo;
+      (right_next_brightness - prev_brightness_k_right)  *
+   flex_low_pass_stereo;
    //      //
    //      //      }
    //
@@ -694,12 +746,14 @@ void mapFFTLeft() {
    //
    //      left_current_brightness  = levelsL[band] * SCALE;
    //      left_current_brightness  = prev_brightness_left +
-      (left_current_brightness - prev_brightness_left)  * flex_low_pass_stereo;
+      (left_current_brightness - prev_brightness_left)  *
+   flex_low_pass_stereo;
    //      levelsL[band] = left_current_brightness;
    //
    //      //      left_next_brightness     = levelsL[band + 1] * SCALE;
    //      //      left_next_brightness     = prev_brightness_k_left +
-      (left_next_brightness - prev_brightness_k_left)  * flex_low_pass_stereo;
+      (left_next_brightness - prev_brightness_k_left)  *
+   flex_low_pass_stereo;
    //
    //      right_current_brightness  = levelsR[band] * SCALE;
    //      right_current_brightness  = prev_brightness_right +
@@ -715,7 +769,8 @@ void mapFFTLeft() {
    //
    //      //      right_next_brightness     = levelsR[band + 1] * SCALE;
    //      //      right_next_brightness     = prev_brightness_k_right +
-      (right_next_brightness - prev_brightness_k_right)  * flex_low_pass_stereo;
+      (right_next_brightness - prev_brightness_k_right)  *
+   flex_low_pass_stereo;
    //
    //      //}
    //
@@ -725,7 +780,8 @@ void mapFFTLeft() {
    //      //
    //      //        left_current_brightness  = left_next_brightness;
    //      //        //left_current_brightness  = prev_brightness_left +
-      (left_current_brightness - prev_brightness_left)  * flex_low_pass_stereo;
+      (left_current_brightness - prev_brightness_left)  *
+   flex_low_pass_stereo;
    //      //
    //      //        right_current_brightness  = right_next_brightness;
    //      //        //right_current_brightness  = prev_brightness_right +
@@ -740,7 +796,8 @@ void mapFFTLeft() {
    //      //      }
    //
    //
-   //      if (band == NUM_BANDS - 1) { // prevent from drawing outside of strip
+   //      if (band == NUM_BANDS - 1) { // prevent from drawing outside of
+   strip
       dimensions
    //        left_point = 0;
    //        right_point = NUM_LEDS - 1;
@@ -774,3 +831,5 @@ void mapFFTLeft() {
    //#endif
    //
  */
+
+//

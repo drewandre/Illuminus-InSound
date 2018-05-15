@@ -1,9 +1,9 @@
+#include "./animation_generator.h"
+#include "../bluetooth/bluetooth_manager.h"
+
 #include <env.h>
 
-#include <animation_generator.h>
-#include <bluetooth_manager.h>
-
-extern uint8_t currentAnimation;
+uint8_t currentAnimation;
 
 void animationManagerTask() {
 #ifdef FIXED_LED_EFFECT

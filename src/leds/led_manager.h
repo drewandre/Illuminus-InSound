@@ -1,4 +1,6 @@
-#include <FastLED.h>
+#include <env.h>
+
+extern struct CRGB leds[NUM_LEDS];
 
 void ledDisplayTask(void);
 void setPartialPixel(uint16_t pos,
