@@ -1,7 +1,7 @@
 #include "./audio_analyzer.h"
-#include "./audio_manager.h"
 
-#include <env.h>
+struct AudioAnalyzeFFT1024 fftL;
+struct AudioAnalyzeFFT1024 fftR;
 
 bool readFFT(float smoothing,
              bool  stereo,

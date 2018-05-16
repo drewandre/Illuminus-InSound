@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <FastLED.h>
+#include <Audio.h>
 
 #include "./helpers/Streaming.h"
 
@@ -13,7 +14,8 @@
 // #define PRINT_MCU_PERFORMANCE
   # define PRINT_RN52
 
-// #define PRINT_FFT
+// # define PRINT_FFT
+
 // #define PRINT_MAPPED_FFT
 // #define PLAY_TONE_SWEEP_ON_STARTUP
 #endif // ifdef DEBUG

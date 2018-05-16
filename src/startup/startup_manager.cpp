@@ -1,10 +1,15 @@
 #include <Audio.h>
 
 #include "../leds/led_manager.h"
-#include "./startup_manager.h"
-#include "../audio/audio_analyzer.h"
 
-#include <env.h>
+#include "./startup_manager.h"
+
+// #include "../audio/audio_manager.h"
+// #include "../audio/audio_analyzer.h"
+
+struct AudioControlSGTL5000 SGTL5000;
+
+uint16_t fftBins[NUM_BANDS];
 
 void startup() {
 #ifdef DEBUG
@@ -146,18 +151,20 @@ void initSGTL5000() {
 
   AudioMemory(20);
 
-  SGTL5000.enable(); // only if audio out (audio out just comes from RN52 --
-                     // audio in would require SGTL5000)
+  // SGTL5000.enable(); // only if audio out (audio out just comes from RN52 --
+  // audio in would require SGTL5000)
 
 #ifdef RN52_ANALOG_OUTPUT
 
   // WARNING: DO NOT uncomment if using AudioInputI2Sslave -- two inputs (one
   // from the line below) will stress pin 13
-  SGTL5000.inputSelect(AUDIO_IN);
-  SGTL5000.lineInLevel(15);
+
+  // SGTL5000.inputSelect(AUDIO_IN);
+  // SGTL5000.lineInLevel(15);
+
 #endif // ifdef RN52_ANALOG_OUTPUT
 
-  SGTL5000.volume(0.5);
+  // SGTL5000.volume(0.5);
 
 #ifdef DEBUG
   # ifdef PLAY_TONE_SWEEP_ON_STARTUP

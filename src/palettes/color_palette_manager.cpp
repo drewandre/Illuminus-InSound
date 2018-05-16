@@ -1,8 +1,6 @@
 #include "./color_palette_list.h"
 #include "../leds/led_manager.h"
 
-#include <env.h>
-
 const TProgmemRGBGradientPalettePtr gGradientPalettes[] = {
   bhw1_hello_gp,
   wr_gp,

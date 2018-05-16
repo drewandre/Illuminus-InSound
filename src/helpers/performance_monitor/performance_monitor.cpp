@@ -1,10 +1,4 @@
-#include <Audio.h>
-
-// #include "../../audio/audio_analyzer.h"
-
-// #include "../../audio/audio_manager.h"
-
-#include <env.h>
+#include "../../audio/audio_manager.h"
 
 void printMCUPerformance() {
   static long loops = 0;
