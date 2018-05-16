@@ -9,15 +9,25 @@
 
 // ---------------------- Debug config ---------------------- //
 #ifdef DEBUG
-  # define SWSERIAL_BAUD 115200 // RN52 must be at either 115200 or 9600 (if
-// 9600 GPIO7 should be pulled low)
-// #define PRINT_MCU_PERFORMANCE
+
+// # define PRINT_MCU_PERFORMANCE
+
+  # define SWSERIAL_BAUD 115200
+
+  # define BT_USE_RN52 // else use BM64
+  # define RN52_ANALOG_OUTPUT
+
   # define PRINT_RN52
 
-// # define PRINT_FFT
 
-// #define PRINT_MAPPED_FFT
-// #define PLAY_TONE_SWEEP_ON_STARTUP
+  # define DEMO_CYCLE
+  # define FIXED_ANIMATION_INDEX 0
+
+  # define PRINT_FFT
+
+// # define PRINT_MAPPED_FFT
+// # define PLAY_TONE_SWEEP_ON_STARTUP
+
 #endif // ifdef DEBUG
 
 // -------------------- Palette config -------------------- //
@@ -65,8 +75,8 @@
 #define PALETTE_INDEX_INCREMENT_TWELVE 4095 / NUM_LEDS;
 
 // -------------- Animation Controller config --------------- //
-#define NUM_MODES 5
-
+#define NUM_ANIMATIONS 5
+#define SECONDS_PER_DEMO_ANIMATION 10
 
 // --------------------- EEPROM config --------------------- //
 // #define PALETTE_ADDRESS 0

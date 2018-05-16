@@ -1,8 +1,6 @@
 #include "../leds/led_manager.h"
 #include "../audio/audio_analyzer.h"
 
-// #include <env.h>
-
 struct CRGB leds[NUM_LEDS];
 
 uint8_t levelsL[NUM_BANDS];
@@ -24,6 +22,9 @@ uint8_t scaledLevelsR[NUM_BANDS];
 // uint8_t iHue, fHue;
 // uint8_t spectrumWidth = 36;
 
+void readFFTTest() {
+  readFFT(1, false, false);
+}
 
 void mapFFTLeft() {
   static int   band, currentBrightness;

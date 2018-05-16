@@ -1,8 +1,10 @@
 #include <Audio.h>
 
 #include "../leds/led_manager.h"
-
+#include "../bluetooth/bluetooth_manager.h"
 #include "./startup_manager.h"
+
+#include <env.h>
 
 // #include "../audio/audio_manager.h"
 // #include "../audio/audio_analyzer.h"
@@ -19,11 +21,19 @@ void startup() {
   Serial << "\n---------------------- INITIALIZING // ----------------------\n";
 #endif // ifdef DEBUG
 
-  initInterrupts();
 
   // initEEPROM();
-  // initRN52();
+
+  initInterrupts();
+
+#ifdef BT_USE_RN52
+  initRN52();
+#else // ifdef BT_USE_RN52
+  initBM64();
+#endif // ifdef BT_USE_RN52
+
   initSGTL5000();
+
   initWS2812B();
 
   // initNoise();
@@ -50,8 +60,7 @@ void initSerial() {
 }
 
 void initInterrupts() {
-  pinMode(RN52_GPI02_PIN, INPUT);
-
+  // pinMode(RN52_GPI02_PIN, INPUT);
   //   attachInterrupt(digitalPinToInterrupt(RN52_GPI02_PIN),   readRN52Event,
   //                   CHANGE);
   //
@@ -76,9 +85,9 @@ void initRN52() {
   static unsigned long startTime = millis();
 #endif // ifdef DEBUG
 
-  // pinMode(RN52_CMD_PIN, OUTPUT);
-  // digitalWrite(RN52_CMD_PIN, HIGH); // exit data mode
-  // HWSERIAL.begin(HWSERIAL_BAUD);
+  pinMode(RN52_CMD_PIN, OUTPUT);
+  digitalWrite(RN52_CMD_PIN, HIGH); // exit data mode
+  HWSERIAL.begin(HWSERIAL_BAUD);
 
   // if (RN52FactorySettings()) { // checks if device name is equal to
   // DEVICE_NAME
@@ -86,34 +95,32 @@ void initRN52() {
   Serial << "Configuring RN52...";
 #endif // ifdef DEBUG
 
-  // setRN52("SN", DEVICE_NAME); // sets device name
+  setRN52("SN", DEVICE_NAME); // sets device name
   // http://bluetooth-pentest.narod.ru/software/bluetooth_class_of_device-service_generator.html
-  // setRN52("SC", "20043C"); // COD -- Audio, Audio/Video, Video Display and
+  setRN52("SC", "20043C"); // COD -- Audio, Audio/Video, Video Display and
   // Loudspeaker
-  // setRN52("ST", "00"); // mutes disable tones
+  setRN52("ST", "00");     // mutes disable tones
   #ifdef RN52_ANALOG_OUTPUT
 
-  // setRN52("S|", "00"); // sets audio output to analog out
-  // setRN52("SS", "0x09"); // sets speaker gain to maximum
-  // #else // ifdef RN52_ANALOG_OUTPUT
+  setRN52("S|", "00");     // sets audio output to analog out
+  setRN52("SS", "0x09");   // sets speaker gain to maximum
+  #else // ifdef RN52_ANALOG_OUTPUT
 
-  // setRN52("S|", "0102");
+  setRN52("S|", "0102");
   #endif // ifdef RN52_ANALOG_OUTPUT
 
   // }
 #ifdef DEBUG
 
-  // printRN52("D"); // prints status
-  // printRN52("V"); // prints version number
-
-  // pinMode(RN52_GPI02_PIN, INPUT);
-  // attachInterrupt(digitalPinToInterrupt(RN52_GPI02_PIN), readRN52Event,
-  // CHANGE);
+  printRN52("D"); // prints status
+  printRN52("V"); // prints version number
 
   static unsigned long totalTime = millis() - startTime;
   Serial << "RN52 Initialized:\t" << totalTime << "ms" << "\n\n";
 #endif // ifdef DEBUG
 }
+
+void initBM64() {}
 
 void initWS2812B() {
 #ifdef DEBUG
@@ -151,7 +158,7 @@ void initSGTL5000() {
 
   AudioMemory(20);
 
-  // SGTL5000.enable(); // only if audio out (audio out just comes from RN52 --
+  SGTL5000.enable(); // only if audio out (audio out just comes from RN52 --
   // audio in would require SGTL5000)
 
 #ifdef RN52_ANALOG_OUTPUT
@@ -159,12 +166,12 @@ void initSGTL5000() {
   // WARNING: DO NOT uncomment if using AudioInputI2Sslave -- two inputs (one
   // from the line below) will stress pin 13
 
-  // SGTL5000.inputSelect(AUDIO_IN);
-  // SGTL5000.lineInLevel(15);
+  SGTL5000.inputSelect(AUDIO_INPUT_LINEIN);
+  SGTL5000.lineInLevel(15);
 
 #endif // ifdef RN52_ANALOG_OUTPUT
 
-  // SGTL5000.volume(0.5);
+  SGTL5000.volume(0.5);
 
 #ifdef DEBUG
   # ifdef PLAY_TONE_SWEEP_ON_STARTUP

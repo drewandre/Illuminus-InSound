@@ -6,20 +6,22 @@
 uint8_t currentAnimation;
 
 void animationManagerTask() {
-#ifdef FIXED_LED_EFFECT
+#ifdef FIXED_ANIMATION_INDEX
   currentAnimation = FIXED_ANIMATION_INDEX;
 #endif // ifdef FIXED_LED_EFFECT
 
 #ifdef DEMO_CYCLE
-  EVERY_N_SECONDS(10) {
+  EVERY_N_SECONDS(SECONDS_PER_DEMO_ANIMATION) {
+    Serial << currentAnimation;
     currentAnimation++;
 
-    if (effect > NUM_MODES) currentAnimation = 0;
+    if (currentAnimation > NUM_ANIMATIONS) currentAnimation = 0;
   }
 #endif // ifdef DEMO_CYCLE
 
   switch (currentAnimation) {
   case 0:
+    readFFTTest();
 
     // readBM64();
 
