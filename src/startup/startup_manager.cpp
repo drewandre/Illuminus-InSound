@@ -48,7 +48,6 @@ void startup() {
 void initSerial() {
 #ifdef DEBUG
   Serial.begin(SWSERIAL_BAUD);
-  Serial4.begin(115200);
   Serial << '\n';
 
   while (!Serial) ;
