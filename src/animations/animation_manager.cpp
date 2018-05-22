@@ -1,9 +1,12 @@
 #include "./animation_generator.h"
-#include "../bluetooth/bluetooth_manager.h"
 
-#include <env.h>
+#include <macros.h>
 
+/*======================*/
+/*  external variables  */
 uint8_t currentAnimation;
+
+/*======================*/
 
 void animationManagerTask() {
 #ifdef FIXED_ANIMATION_INDEX
@@ -12,7 +15,6 @@ void animationManagerTask() {
 
 #ifdef DEMO_CYCLE
   EVERY_N_SECONDS(SECONDS_PER_DEMO_ANIMATION) {
-    Serial << currentAnimation;
     currentAnimation++;
 
     if (currentAnimation > NUM_ANIMATIONS) currentAnimation = 0;

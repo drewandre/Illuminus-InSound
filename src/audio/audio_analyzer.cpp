@@ -1,7 +1,11 @@
 #include "./audio_analyzer.h"
 
+/*======================*/
+/*  external variables  */
 struct AudioAnalyzeFFT1024 fftL;
 struct AudioAnalyzeFFT1024 fftR;
+
+/*======================*/
 
 bool readFFT(float smoothing,
              bool  stereo,

@@ -1,30 +1,28 @@
 #include <Audio.h>
+#include <BM64.h>
 
 #include "../leds/led_manager.h"
-#include "../bluetooth/bluetooth_manager.h"
 #include "./startup_manager.h"
 
-#include <env.h>
+#include <macros.h>
 
-// #include "../audio/audio_manager.h"
-// #include "../audio/audio_analyzer.h"
-
+/*======================*/
+/*  external variables  */
 struct AudioControlSGTL5000 SGTL5000;
-
 uint16_t fftBins[NUM_BANDS];
+
+/*======================*/
 
 void startup() {
 #ifdef DEBUG
   static unsigned long startTime = millis();
 
   initSerial();
-  Serial << "\n---------------------- INITIALIZING // ----------------------\n";
+  Serial << "\n---------------------- INITIALIZING ----------------------\n";
 #endif // ifdef DEBUG
 
 
   // initEEPROM();
-
-  initInterrupts();
 
 #ifdef BT_USE_RN52
   initRN52();
@@ -33,12 +31,9 @@ void startup() {
 #endif // ifdef BT_USE_RN52
 
   initSGTL5000();
-
   initWS2812B();
 
   // initNoise();
-
-  BM64_SERIAL.begin(BM64_SERIAL_BAUD);
 
 #ifdef DEBUG
   static unsigned long totalTime = millis() - startTime;
@@ -53,19 +48,11 @@ void startup() {
 void initSerial() {
 #ifdef DEBUG
   Serial.begin(SWSERIAL_BAUD);
+  Serial4.begin(115200);
   Serial << '\n';
 
   while (!Serial) ;
 #endif // ifdef DEBUG
-}
-
-void initInterrupts() {
-  // pinMode(RN52_GPI02_PIN, INPUT);
-  //   attachInterrupt(digitalPinToInterrupt(RN52_GPI02_PIN),   readRN52Event,
-  //                   CHANGE);
-  //
-  //   attachInterrupt(digitalPinToInterrupt(BM64_UART_TX_IND), BM64RxInterrupt,
-  //                   CHANGE);
 }
 
 void initEEPROM() {
@@ -95,32 +82,36 @@ void initRN52() {
   Serial << "Configuring RN52...";
 #endif // ifdef DEBUG
 
-  setRN52("SN", DEVICE_NAME); // sets device name
+  // setRN52("SN", DEVICE_NAME); // sets device name
   // http://bluetooth-pentest.narod.ru/software/bluetooth_class_of_device-service_generator.html
-  setRN52("SC", "20043C"); // COD -- Audio, Audio/Video, Video Display and
+  // setRN52("SC", "20043C"); // COD -- Audio, Audio/Video, Video Display and
   // Loudspeaker
-  setRN52("ST", "00");     // mutes disable tones
+  // setRN52("ST", "00");   // mutes disable tones
   #ifdef RN52_ANALOG_OUTPUT
 
-  setRN52("S|", "00");     // sets audio output to analog out
-  setRN52("SS", "0x09");   // sets speaker gain to maximum
+  // setRN52("S|", "00");   // sets audio output to analog out
+  // setRN52("SS", "0x09"); // sets speaker gain to maximum
   #else // ifdef RN52_ANALOG_OUTPUT
 
-  setRN52("S|", "0102");
+  // setRN52("S|", "0102");
   #endif // ifdef RN52_ANALOG_OUTPUT
 
   // }
 #ifdef DEBUG
 
-  printRN52("D"); // prints status
-  printRN52("V"); // prints version number
+  // printRN52("D"); // prints status
+  // printRN52("V"); // prints version number
 
   static unsigned long totalTime = millis() - startTime;
   Serial << "RN52 Initialized:\t" << totalTime << "ms" << "\n\n";
 #endif // ifdef DEBUG
 }
 
-void initBM64() {}
+void initBM64() {
+  BM64 BM64(BM64_UART_TX_IND, BM64_SERIAL);
+
+  BM64.enable();
+}
 
 void initWS2812B() {
 #ifdef DEBUG

@@ -1,6 +1,6 @@
 #include "./color_palette_list.h"
 
-#include <env.h>
+#include <macros.h>
 
 void changePalette(void);
 void mapPalette(void);

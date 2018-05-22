@@ -14,16 +14,15 @@
 
   # define SWSERIAL_BAUD 115200
 
-  # define BT_USE_RN52 // else use BM64
+// # define BT_USE_RN52 // if uncommented, BM64 used
   # define RN52_ANALOG_OUTPUT
 
   # define PRINT_RN52
 
-
   # define DEMO_CYCLE
   # define FIXED_ANIMATION_INDEX 0
 
-  # define PRINT_FFT
+// # define PRINT_FFT
 
 // # define PRINT_MAPPED_FFT
 // # define PLAY_TONE_SWEEP_ON_STARTUP
@@ -36,10 +35,12 @@
 #define PALETTE_AMPERAGE 2000
 
 // ---------------------- BM64 config ---------------------- //
-#define BM64_SERIAL Serial4 // RX4 (31) + TX4 (32)
-#define BM64_SERIAL_BAUD 115200
-#define BM64_UART_TX_IND -1
-#define BLUETOOTH_SERIAL_BUFFER_LENGTH 80
+#ifndef BT_USE_RN52          // if uncommented, BM64 used
+# define BM64_SERIAL Serial4 // RX4 (31) + TX4 (32)
+# define BM64_UART_TX_IND 21 // BM64 to interrupt MCU on input
+# define BM64_SERIAL_BAUD 115200
+# define BLUETOOTH_SERIAL_BUFFER_LENGTH 80
+#endif // ifndef BT_USE_RN52
 
 // ---------------------- RN52 config ---------------------- //
 #define RN52_ANALOG_OUTPUT
