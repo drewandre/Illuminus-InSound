@@ -6,6 +6,7 @@
 
 // ------------------- Environment config ------------------- //
 #define DEBUG
+#define BM54 true
 
 // ---------------------- Debug config ---------------------- //
 #ifdef DEBUG

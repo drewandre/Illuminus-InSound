@@ -1,0 +1,9 @@
+A helpful list of BM64 manual definitions.
+
+"DPSK": Differential phase shift keying ->
+        the phase of the modulated signal is shifted relative to the previous signal element
+
+"ACK":
+
+
+"Dual Mode SPK": 
