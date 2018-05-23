@@ -25,8 +25,6 @@ void animationManagerTask() {
   case 0:
     readFFTTest();
 
-    // readBM64();
-
     // ambient_twelve();
     // fill_solid(leds, NUM_LEDS, CRGB::Black);
     // print_fft();

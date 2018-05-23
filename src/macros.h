@@ -10,55 +10,43 @@
 // ---------------------- Debug config ---------------------- //
 #ifdef DEBUG
 
-// # define PRINT_MCU_PERFORMANCE
-
+  # define PRINT_MCU_PERFORMANCE false
   # define SWSERIAL_BAUD 115200
-
-// # define BT_USE_RN52 // if uncommented, BM64 used
-  # define RN52_ANALOG_OUTPUT
-
-  # define PRINT_RN52
-
-  # define DEMO_CYCLE
+  # define PRINT_RN52 true
+  # define DEMO_CYCLE false
   # define FIXED_ANIMATION_INDEX 0
-
-// # define PRINT_FFT
-
-// # define PRINT_MAPPED_FFT
-// # define PLAY_TONE_SWEEP_ON_STARTUP
+  # define PRINT_FFT false
+  # define PRINT_MAPPED_FFT false
 
 #endif // ifdef DEBUG
 
 // -------------------- Palette config -------------------- //
-#define PALETTE_VERSION 0x0001
+#define PALETTE_VERSION 0x01
 #define PALETTE_VOLTAGE 5
 #define PALETTE_AMPERAGE 2000
-
-// ---------------------- BM64 config ---------------------- //
-#ifndef BT_USE_RN52          // if uncommented, BM64 used
-# define BM64_SERIAL Serial4 // RX4 (31) + TX4 (32)
-# define BM64_UART_TX_IND 21 // BM64 to interrupt MCU on input
-# define BM64_SERIAL_BAUD 115200
-# define BLUETOOTH_SERIAL_BUFFER_LENGTH 80
-#endif // ifndef BT_USE_RN52
+#define DEVICE_NAME "PALETTE"
+#define BT_DEVICE_TYPE "20043C" // sets device type to loudspeaker?
 
 // ---------------------- RN52 config ---------------------- //
-#define RN52_ANALOG_OUTPUT
+#define RN52_SERIAL Serial1
+#define RN52_SERIAL_BAUD 115200
+#define BLUETOOTH_SERIAL_BUFFER_LENGTH 80
 
-#define RN52_GPI02_PIN 8     // RN52 GPIO2 event notifier pin (default HIGH,
+#define RN52_GPI02_PIN 8 // RN52 GPIO2 event notifier pin (default HIGH,
 // HIGH -> LOW for 100ms on connected device event)
-// #define CHECK_RN52_FACTORY_SETTINGS
-#define HWSERIAL Serial1     // RX1 + TX1
-#define HWSERIAL_BAUD 115200 // RN52 must be at either 115200 or 9600 (if 9600
-// GPIO7 should be pulled low)
-#define RN52_CMD_PIN 2       // In order to enter command mode,
-// GPIO9/RN52_CMD_PIN must be pulled LOW
-#define DEVICE_NAME "PALETTE"
+
+#define RN52_CMD_PIN 2   // GPIO9 LOW for command mode
+#define BT_CHECK_IF_FACTORY_SETTINGS false
 
 // ---------------------- WS2812b config ---------------------- //
 #define STRIP_TYPE WS2812B
 #define DATA_PIN 3
 #define NUM_LEDS 144
+
+#define LED_CONST_FRAMERATE false
+#ifdef LED_CONST_FRAMERATE
+# define LED_FRAMERATE 69
+#endif // ifdef LED_CONST_FRAMERATE
 
 // #define NUM_LEDS_16 NUM_LEDS * 255; // delete multiplication in #define
 // int c = NUM_LEDS * 0.5;
@@ -86,6 +74,7 @@
 // ---------------------- FFT config ---------------------- //
 #define NUM_BANDS 32
 #define MAX_BIN 511
+#define WAIT_FOR_FFT_AVAILABILITY true
 
 // ------------------ color palette config ------------------ //
 #define COLOR_PALETTE_SPEED 45 // speed for switching between palettes
