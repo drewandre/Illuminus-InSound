@@ -39,6 +39,12 @@
 #define RN52_CMD_PIN 2   // GPIO9 LOW for command mode
 #define BT_CHECK_IF_FACTORY_SETTINGS false
 
+// ---------------------- BM64 config ---------------------- //
+#if BM54 == true
+# define BM64_SERIAL Serial4 // RX4 (31) + TX4 (32)
+# define BM64_UART_TX_IND 21 // BM64 to interrupt MCU on input
+#endif // if BM54 == true
+
 // ---------------------- WS2812b config ---------------------- //
 #define STRIP_TYPE WS2812B
 #define DATA_PIN 3

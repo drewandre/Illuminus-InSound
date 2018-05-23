@@ -1,5 +1,10 @@
 #include <Audio.h>
-#include <RN52.h>
+
+#if BM64 == true
+# include <BM64.h>
+#else // if BM64 == true
+# include <RN52.h>
+#endif // if BM64 == true
 
 #include "../leds/led_manager.h"
 #include "./startup_manager.h"
@@ -23,7 +28,11 @@ void startup() {
 
   // initEEPROM();
 
+#if BM64 == true
+  initBM64();
+#else // if BM64 == true
   initRN52();
+#endif // if BM64 == true
   initSGTL5000();
   initWS2812B();
 
@@ -92,6 +101,15 @@ void initRN52() {
   Serial << "RN52 Initialized:\t" << totalTime << "ms" << "\n\n";
 #endif // ifdef DEBUG
 }
+
+#if BM64 == true
+void initBM64() {
+  BM64 BM64(BM64_UART_TX_IND, BM64_SERIAL);
+
+  BM64.enable();
+}
+
+#endif // if BM64 == true
 
 void initWS2812B() {
 #ifdef DEBUG
