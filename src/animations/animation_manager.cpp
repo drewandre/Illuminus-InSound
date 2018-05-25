@@ -1,4 +1,7 @@
 #include "./animation_generator.h"
+#if (DEBUG == true)
+# include "../helpers/debug_functions.h"
+#endif
 
 #include <macros.h>
 
@@ -9,56 +12,46 @@ uint8_t currentAnimation;
 /*======================*/
 
 void animationManagerTask() {
-#ifdef FIXED_ANIMATION_INDEX
+#if FIXED_ANIMATION_INDEX == true
   currentAnimation = FIXED_ANIMATION_INDEX;
-#endif // ifdef FIXED_LED_EFFECT
+#endif
 
-#ifdef DEMO_CYCLE
+#if CYCLE_THROUGH_ANIMATIONS == true
   EVERY_N_SECONDS(SECONDS_PER_DEMO_ANIMATION) {
     currentAnimation++;
 
     if (currentAnimation > NUM_ANIMATIONS) currentAnimation = 0;
   }
-#endif // ifdef DEMO_CYCLE
+#endif
 
+#if (DEBUG == true) || (DEBUG_ANIMATIONS_ONLY == false)
+
+  // debugging modes for bluetooth communication testing, audio sensitivity
+  // adjustments, etc
   switch (currentAnimation) {
   case 0:
-    readFFTTest();
 
-    // ambient_twelve();
-    // fill_solid(leds, NUM_LEDS, CRGB::Black);
-    // print_fft();
-    break;
-
-  case 1:
-
-    // ambient_twelve();
-    // fill_solid(leds, NUM_LEDS, CRGB::Black);
-    // print_fft();
-    break;
-
-  case 2:
-
-    // raw_audio_fftLeft();
-    break;
-
-  case 3:
-    mapFFTLeft();
-    break;
-
-  case 4:
-
-    // flex_fftLeft();
-    break;
-
-  case 5:
-
-    // radiate_left();
+    // EVERY_N_SECONDS(5) {
+    //   attemptToSendCommandToBM64();
+    // }
     break;
 
   default:
-
-    // effect = 0;
+    currentAnimation = 0;
     break;
   }
+
+#else
+
+  // LIVE or DEMO mode
+  switch (currentAnimation) {
+  case 0:
+    mapFFTLeft();
+    break;
+
+  default:
+    currentAnimation = 0;
+    break;
+  }
+#endif
 }

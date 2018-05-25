@@ -17,10 +17,10 @@ bool readFFT(float smoothing,
                leftFactor, rightFactor;
 
   if (stereo) {
-  #ifdef WAIT_FOR_FFT_AVAILABILITY
+  #if WAIT_FOR_FFT_AVAILABILITY == true
 
     if (fftL.available() && fftR.available()) {
-  #endif // ifdef WAIT_FOR_FFT_AVAILABILITY
+  #endif
     leftVolume = 0.00;
 
     if (stereo) rightVolume = 0.00;
@@ -59,13 +59,13 @@ bool readFFT(float smoothing,
         leftVolume  += levelsL[band];
         rightVolume += levelsR[band];
       }
-      #ifdef PRINT_FFT
+      #if PRINT_FFT == true
       Serial << levelsL[band] << endl << "\t";
-      #endif // ifdef PRINT_FFT
+      #endif
     }
-    #ifdef PRINT_FFT
+    #if PRINT_FFT == true
     Serial << endl;
-    #endif // ifdef PRINT_FFT
+    #endif
 
     if (calculateScaledFFT) {
       leftFactor  = CENTER_LED_POS / leftVolume;
@@ -79,28 +79,28 @@ bool readFFT(float smoothing,
         mappedRightAmp      = levelsR[band] * rightFactor;
         scaledLevelsL[band] = mappedLeftAmp;
         scaledLevelsR[band] = mappedRightAmp;
-        #ifdef PRINT_MAPPED_FFT
+        #if PRINT_MAPPED_FFT == true
         Serial << scaledLevelsL[band] << "\t";
-        #endif // ifdef PRINT_MAPPED_FFT
+        #endif
       }
-      #ifdef PRINT_MAPPED_FFT
+      #if PRINT_MAPPED_FFT == true
       Serial << endl;
-      #endif // ifdef PRINT_MAPPED_FFT
+      #endif
     }
     return true;
 
-#ifdef WAIT_FOR_FFT_AVAILABILITY
+#if WAIT_FOR_FFT_AVAILABILITY == true
   } else {
     return false;
   }
-#endif // ifdef WAIT_FOR_FFT_AVAILABILITY
+#endif
   }
 
   else { // if only reading left channel
-#ifdef WAIT_FOR_FFT_AVAILABILITY
+#if WAIT_FOR_FFT_AVAILABILITY == true
 
     if (fftL.available()) {
-#endif // ifdef WAIT_FOR_FFT_AVAILABILITY
+#endif
 
     for (band = 0; band < NUM_BANDS; band++) {
       currentBin = fftBins[band];
@@ -120,13 +120,13 @@ bool readFFT(float smoothing,
       levelsL[band]  = map(currentLeftAmp, 1, 255, 0, 255);
 
       leftVolume += levelsL[band];
-      #ifdef PRINT_FFT
+      #if PRINT_FFT == true
       Serial << levelsL[band] << "\t";
-      #endif // ifdef PRINT_FFT
+      #endif
     }
-    #ifdef PRINT_FFT
+    #if PRINT_FFT == true
     Serial << endl;
-    #endif // ifdef PRINT_FFT
+    #endif
 
     if (calculateScaledFFT) {
       leftFactor = CENTER_LED_POS / leftVolume;
@@ -137,21 +137,21 @@ bool readFFT(float smoothing,
       for (band = 0; band < NUM_BANDS; band++) {
         mappedLeftAmp       = levelsL[band] * leftFactor;
         scaledLevelsL[band] = mappedLeftAmp;
-        #ifdef PRINT_MAPPED_FFT
+        #if PRINT_MAPPED_FFT == true
         Serial << scaledLevelsL[band] << "\t";
-        #endif // ifdef PRINT_MAPPED_FFT
+        #endif
       }
-      #ifdef PRINT_MAPPED_FFT
+      #if PRINT_MAPPED_FFT == true
       Serial << endl;
-      #endif // ifdef PRINT_MAPPED_FFT
+      #endif
     }
     return true;
 
-#ifdef WAIT_FOR_FFT_AVAILABILITY
+#if WAIT_FOR_FFT_AVAILABILITY == true
   } else {
     return false;
   }
-#endif // ifdef WAIT_FOR_FFT_AVAILABILITY
+#endif
   }
 }
 

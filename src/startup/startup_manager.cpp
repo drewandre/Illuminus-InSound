@@ -1,132 +1,118 @@
-#include <Audio.h>
-
-#if BM64 == true
-# include <BM64.h>
-#else // if BM64 == true
-# include <RN52.h>
-#endif // if BM64 == true
-
-#include "../leds/led_manager.h"
 #include "./startup_manager.h"
-
 #include <macros.h>
 
-/*======================*/
-/*  external variables  */
-struct AudioControlSGTL5000 SGTL5000;
-uint16_t fftBins[NUM_BANDS];
-
-/*======================*/
-
-void startup() {
-#ifdef DEBUG
-  static unsigned long startTime = millis();
-
-  initSerial();
-  Serial << "\n---------------------- INITIALIZING ----------------------\n";
-#endif // ifdef DEBUG
-
-  // initEEPROM();
-
-#if BM64 == true
-  initBM64();
-#else // if BM64 == true
-  initRN52();
-#endif // if BM64 == true
-  initSGTL5000();
-  initWS2812B();
-
-  // initNoise();
-
-#ifdef DEBUG
-  static unsigned long totalTime = millis() - startTime;
-
-  Serial << "\n" << DEVICE_NAME << " configured!\n\n" <<
-    "Dev startup time:\t" <<
-    totalTime << "ms\n" << "\n---------------------- " << DEVICE_NAME <<
-    " MAIN APPLICATION LOOP ----------------------\n";
-#endif // ifdef DEBUG
-}
-
 void initSerial() {
-#ifdef DEBUG
+#if DEBUG == true
   Serial.begin(SWSERIAL_BAUD);
-  Serial << '\n';
 
   while (!Serial) ;
-#endif // ifdef DEBUG
+#endif
 }
 
-void initEEPROM() {
-#ifdef DEBUG
+void restoreSettingsFromEEPROM() {
+#if DEBUG == true
   static unsigned long startTime = millis();
-#endif // ifdef DEBUG
+  Serial <<
+    "\n================ RESTORING SETTINGS FROM EEPROM =================\n";
+#endif
 
-#ifdef DEBUG
+#if DEBUG == true
   static unsigned long totalTime = millis() - startTime;
 
-  Serial << "Settings restored:\t" << totalTime << "ms" << "\n\n";
-#endif // ifdef DEBUG
+  Serial << "EEPROM restored:\t" << totalTime << "ms" << "\n";
+  Serial << "-----------------------------------------------------------------\n";
+#endif
+}
+
+void initBM64() {
+  struct BM64 BM64;
+
+#if DEBUG == true
+  static unsigned long startTime = millis();
+  Serial <<
+    "\n======================= INITIALIZING BM64 =======================\n";
+#endif
+
+  BM64.enable();
+
+
+  // while (1) {
+  //   // Serial4.begin(115200);
+  //   EVERY_N_SECONDS(2) {
+  //     Serial4.write(0x0E);
+  //   }
+  //   EVERY_N_SECONDS(5) {
+  //     Serial4.write(0x03);
+  //   }
+  //
+  //   BM64.readSerial();
+  //   delay(5);
+  // }
+
+#if DEBUG == true
+  static unsigned long totalTime = millis() - startTime;
+  Serial << "BM64 Initialized:\t" << totalTime << "ms" << "\n\n";
+  Serial << "-----------------------------------------------------------------\n";
+#endif
 }
 
 void initRN52() {
-#ifdef DEBUG
+  struct RN52 RN52; // external object
+
+#if DEBUG == true
   static unsigned long startTime = millis();
-#endif // ifdef DEBUG
-  RN52 RN52(RN52_CMD_PIN, &Serial1);
+  Serial <<
+    "\n======================= INITIALIZING RN52 =======================\n";
+#endif
 
   RN52.enable();
 
-#ifdef DEBUG
+#if DEBUG == true
   RN52.printVersion();
   RN52.printStatus();
-#endif // ifdef DEBUG
+#endif
 
-#ifdef BT_CHECK_IF_FACTORY_SETTINGS
+#if BT_CHECK_IF_FACTORY_SETTINGS == true
 
   if (RN52.factorySettings(DEVICE_NAME)) { // checks device name
-#endif // ifdef BT_CHECK_IF_FACTORY_SETTINGS
+#endif
   RN52.setDeviceName(DEVICE_NAME);
   RN52.setDeviceType(BT_DEVICE_TYPE);      // sets device name loudspeaker?
   RN52.muteTones();
   RN52.setAnalogAudioOutput();
   RN52.setMaxSpeakerGain();
-#ifdef BT_CHECK_IF_FACTORY_SETTINGS
+#if BT_CHECK_IF_FACTORY_SETTINGS == true
 }
 
-#endif // ifdef BT_CHECK_IF_FACTORY_SETTINGS
+#endif
 
-#ifdef DEBUG
+#if DEBUG == true
   static unsigned long totalTime = millis() - startTime;
-  Serial << "RN52 Initialized:\t" << totalTime << "ms" << "\n\n";
-#endif // ifdef DEBUG
+  Serial << "RN52 Initialized:\t" << totalTime << "ms" << "\n";
+  Serial << "-----------------------------------------------------------------\n";
+#endif
 }
-
-#if BM64 == true
-void initBM64() {
-  BM64 BM64(BM64_UART_TX_IND, BM64_SERIAL);
-
-  BM64.enable();
-}
-
-#endif // if BM64 == true
 
 void initWS2812B() {
-#ifdef DEBUG
+  struct CRGB leds[NUM_LEDS];
+
+#if DEBUG == true
   static unsigned long startTime = millis();
-#endif // ifdef DEBUG
+  Serial <<
+    "\n======================= INITIALIZING LEDS =======================\n";
+#endif
 
   FastLED.addLeds<STRIP_TYPE, DATA_PIN, COLOR_ORDER>(leds, NUM_LEDS);
 
-#ifdef LED_COLOR_CORRECTION
+#if LED_COLOR_CORRECTION == true
   FastLED.setCorrection(LED_COLOR_CORRECTION);
 
-#endif // ifdef LED_COLOR_CORRECTION
+#endif
 
-#if LED_CONST_FRAMERATE
+#if LED_CONST_FRAMERATE == true
   Serial << STRIP_TYPE << " framerate set to " << LED_FRAMERATE;
   FastLED.setMaxRefreshRate(LED_FRAMERATE);
-#endif // ifdef LED_COLOR_CORRECTION
+#endif
   FastLED.setBrightness(255);
   FastLED.setMaxPowerInVoltsAndMilliamps(PALETTE_VOLTAGE, PALETTE_AMPERAGE);
 
@@ -134,16 +120,21 @@ void initWS2812B() {
   FastLED.show();
   delay(10);
 
-#ifdef DEBUG
+#if DEBUG == true
   static unsigned long totalTime = millis() - startTime;
   Serial << "Leds Initialized:\t" << totalTime << "ms" << endl;
-#endif // ifdef DEBUG
+  Serial << "-----------------------------------------------------------------\n";
+#endif
 }
 
 void initSGTL5000() {
-#ifdef DEBUG
+  struct AudioControlSGTL5000 SGTL5000; // external object
+
+#if DEBUG == true
   static unsigned long startTime = millis();
-#endif // ifdef DEBUG
+  Serial <<
+    "\n===================== INITIALIZING SGTL5000 =====================\n";
+#endif
 
   float e = getFFTBins();
 
@@ -154,16 +145,18 @@ void initSGTL5000() {
   SGTL5000.lineInLevel(15);
   SGTL5000.volume(0.5);
 
-#ifdef DEBUG
+#if DEBUG == true
   static unsigned long totalTime = millis() - startTime;
 
   Serial << "Audio Initialized:\t" << totalTime << "ms" << endl;
-  Serial << "FFT NUM_BANDS:\t\t" << NUM_BANDS << endl;
-  Serial << "FFT MAX_BIN:\t\t" << MAX_BIN << "hz" << endl;
-  Serial << "FFT E calculation:\t" << e << endl;
-#endif // ifdef DEBUG
+  Serial << "  - FFT NUM_BANDS:\t" << NUM_BANDS << endl;
+  Serial << "  - FFT MAX_BIN:\t" << MAX_BIN << "hz" << endl;
+  Serial << "  - FFT E calculation:\t" << e << endl;
+  Serial << "-----------------------------------------------------------------\n";
+#endif
 }
 
+uint16_t fftBins[NUM_BANDS]; // external variable
 float getFFTBins() {
   float e, n;
   uint16_t b, bands, bins, count = 0, d;
@@ -181,11 +174,11 @@ float getFFTBins() {
       ++count;
     }
   }
-#ifdef DEBUG
+#if DEBUG == true
   else {
     Serial << "Error calculating FFT bins\n"; // Error, something happened
   }
-#endif // ifdef DEBUG
+#endif
 
   return e;
 }
@@ -221,18 +214,26 @@ float FindE(uint8_t bands, uint8_t bins) {
   return 0;                    // Return error 0
 }
 
-void initNoise() {
-#ifdef DEBUG
-  static unsigned long startTime = millis();
-#endif // ifdef DEBUG
+void printStartupInfo(uint8_t stage) {
+  switch (stage) {
+  case 0:
+    static unsigned long startTime = millis();
+    Serial << "\n===================== INITIALIZING " << DEVICE_NAME <<
+      " =====================\n";
+    Serial <<  "PALETTE " << PALETTE_VERSION << endl <<
+      PALETTE_SHORT_DESCRIPTION <<
+      endl;
+    Serial << "Designed by Drew André in Boston, MA - " << CURRENT_DATE << endl;
+    Serial << "www.drew-andre.com" << endl;
+    Serial <<
+      "-----------------------------------------------------------------\n";
+    break;
 
-  // x    = random16();
-  // y    = random16();
-  // z    = random16();
-  // dist = random16(12345);
-#ifdef DEBUG
-  static unsigned long totalTime = millis() - startTime;
-
-  Serial << "Noise values set:\t" << totalTime << "ms" << "\n";
-#endif // ifdef DEBUG
+  case 1:
+    static unsigned long totalTime = millis() - startTime;
+    Serial << "\n" << DEVICE_NAME << " configured in " << totalTime << "ms\n" <<
+      "\n================= " << DEVICE_NAME <<
+      " MAIN APPLICATION LOOP =================\n";
+    break;
+  }
 }

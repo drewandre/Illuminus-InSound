@@ -1,10 +1,9 @@
 #include "BM64.h"
 
-BM64::BM64(int rxInterruptPin, HardwareSerial *serial) {
-  rxInterruptEnabled = false;
-  rxInterruptPin     = 3;
+BM64::BM64(int rxInterruptPinIn, HardwareSerial *serial, bool echoBM64) {
+  echoSerial         = echoBM64;
+  rxInterruptPin     = rxInterruptPinIn;
   uart               = serial;
-  uartBaud           = 115200;
   bufferWritingIndex = 0;
   bufferReadingIndex = 0;
 }
@@ -18,7 +17,8 @@ void BM64::enable() {
 
 void BM64::sendCommand(String command) {
   uart->println(command);
-  echo(command);
+
+  if (echoSerial) echo(command);
 }
 
 void BM64::echo(String command) {
@@ -48,8 +48,8 @@ void BM64::echo(String command) {
     }
   }
   wait_for_BM64 = true;
-  Serial.print("BM64> "); Serial.print(command); Serial.print(": ");
-  Serial.println(); Serial.print(buffer); Serial.println();
+  Serial.print("BM64 > "); Serial.print(command); Serial.print(":\t");
+  Serial.println(buffer);
 }
 
 void BM64::readSerial() {
@@ -60,10 +60,9 @@ void BM64::readSerial() {
       bufferWritingIndex = 0;
     }
   }
-#ifdef DEBUG
 
-  Serial.print("BM64> "); Serial.print(rxBuffer); Serial.println();
-#endif // ifdef DEBUG
+  if (echoSerial) Serial.print("BM64 >\t"); Serial.print(rxBuffer);
+  Serial.println();
 }
 
 bool BM64::getInterruptStatus() const {

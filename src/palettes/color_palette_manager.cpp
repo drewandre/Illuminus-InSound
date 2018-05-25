@@ -23,8 +23,8 @@ CRGBPalette16 gTargetPalette(
 
 
 void changePalette() {
-#ifdef change_palette_periodically
-  EVERY_N_SECONDS(10) {
+#if CHANGE_PALATTE_PERIODICALLY == true
+  EVERY_N_SECONDS(CHANGE_PALETTE_EVERY_N_SECONDS) {
     gCurrentPaletteNumber = addmod8(gCurrentPaletteNumber,
                                     1,
                                     gGradientPaletteCount);
@@ -32,7 +32,7 @@ void changePalette() {
   }
 #endif // ifdef change_palette_periodically
 
-  EVERY_N_MILLISECONDS(10) {
+  EVERY_N_MILLISECONDS(COLOR_PALETTE_BLEND_UPDATE_SPEED_MILLISECONDS) {
     nblendPaletteTowardPalette(gCurrentPalette,
                                gTargetPalette,
                                COLOR_PALETTE_SPEED);

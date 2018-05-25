@@ -675,7 +675,7 @@ void mapFFTLeft() {
    //  FastLED.show();
    //}
 
-   //#ifdef stereo_analysis
+   //#if STEREO_ANALYSIS == true
    //void flex_stereo() {
    //
    //  //changePalette();

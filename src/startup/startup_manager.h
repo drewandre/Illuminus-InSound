@@ -7,12 +7,11 @@ float FindE(uint8_t bands,
 void  startup(void);
 void  initSerial(void);
 void  initInterrupts(void);
-void  initEEPROM(void);
-#if BM64 == true
+void  restoreSettingsFromEEPROM(void);
 void  initBM64(void);
-#else // if BM64 == true
 void  initRN52(void);
-#endif // if BM64 == true
 void  initWS2812B(void);
 void  initNoise(void);
 void  initSGTL5000(void);
+
+void  printStartupInfo(uint8_t stage);

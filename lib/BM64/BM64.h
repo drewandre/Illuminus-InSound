@@ -3,14 +3,17 @@
 
 #include <Arduino.h>
 
-#define DEBUG
 #define BLUETOOTH_SERIAL_BUFFER_LENGTH 80
 
 class BM64 {
 public:
 
+  BM64() {}
+
   BM64(int             rxInterruptPin,
-       HardwareSerial *uart);
+       HardwareSerial *uart,
+       bool            echoSerial);
+
   ~BM64();
 
   void enable();
@@ -25,11 +28,12 @@ public:
 
 private:
 
-  HardwareSerial *uart;
-  int uartBaud;
+  HardwareSerial *uart = &Serial1;
+  int uartBaud         = 115200;
 
-  bool rxInterruptEnabled;
-  int rxInterruptPin;
+  bool echoSerial         = true;
+  bool rxInterruptEnabled = true;
+  int rxInterruptPin      = 3;
   char rxBuffer[BLUETOOTH_SERIAL_BUFFER_LENGTH];
   unsigned int bufferWritingIndex;
   unsigned int bufferReadingIndex;

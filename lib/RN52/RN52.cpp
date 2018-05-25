@@ -1,9 +1,9 @@
 #include "RN52.h"
 
-RN52::RN52(int commandPinIn, HardwareSerial *serial) {
+RN52::RN52(int commandPinIn, HardwareSerial *serial, bool echoRN52) {
+  echoSerial         = echoRN52;
   commandPin         = commandPinIn;
   uart               = serial;
-  uartBaud           = 115200;
   bufferWritingIndex = 0;
   bufferReadingIndex = 0;
 }
@@ -49,7 +49,10 @@ void RN52::sendCommand(String cmd) {
   enterCommandMode();
   uart->println(cmd);
 
-  echo(cmd);
+  if (echoSerial) {
+    echo(cmd);
+  }
+
   endCommandMode();
 }
 
@@ -61,10 +64,10 @@ void RN52::readSerial() {
       bufferWritingIndex = 0;
     }
   }
-#ifdef DEBUG_BT
 
-  Serial.print("RN52> "); Serial.print(rxBuffer); Serial.println();
-#endif // ifdef DEBUG_BT
+  if (echoSerial) {
+    Serial.print("RN52> "); Serial.print(rxBuffer); Serial.println();
+  }
 }
 
 void RN52::echo(String command) {
@@ -94,8 +97,15 @@ void RN52::echo(String command) {
     }
   }
   wait_for_RN52 = true;
-  Serial.print("RN52> "); Serial.print(command); Serial.print(": ");
-  Serial.println(); Serial.print(buffer); Serial.println();
+
+  if ((command != "D") && (command != "V")) {
+    Serial.print("RN52 >\t");
+    Serial.print(command);
+    Serial.print("\t");
+    Serial.print(buffer);
+  } else {
+    Serial.print(buffer);
+  }
 }
 
 // byte 0

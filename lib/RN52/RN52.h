@@ -3,14 +3,16 @@
 
 #include <Arduino.h>
 
-#define DEBUG_BT true
 #define BLUETOOTH_SERIAL_BUFFER_LENGTH 80
 
 class RN52 {
 public:
 
+  RN52() {}
+
   RN52(int             commandPin,
-       HardwareSerial *uart);
+       HardwareSerial *uart,
+       bool            echoSerial);
   ~RN52();
 
   void enable();
@@ -41,10 +43,11 @@ public:
 
 private:
 
-  HardwareSerial *uart;
+  HardwareSerial *uart = &Serial1;
+  int uartBaud         = 115200;
 
-  int commandPin;
-  int uartBaud;
+  bool echoSerial = true;
+  int commandPin  = 3;
   char rxBuffer[BLUETOOTH_SERIAL_BUFFER_LENGTH];
   unsigned int bufferWritingIndex;
   unsigned int bufferReadingIndex;

@@ -1,11 +1,11 @@
 #include "../../audio/audio_manager.h"
 
-void printMCUPerformance() {
+void printSystemPerformanceEveryNSeconds(int seconds) {
   static long loops = 0;
 
   loops++;
 
-  EVERY_N_SECONDS(1) {
+  EVERY_N_SECONDS(seconds) {
     Serial << endl;
 
     // print MCU speed

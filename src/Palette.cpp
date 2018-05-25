@@ -9,21 +9,35 @@
 
 #include "./animations/animation_manager.h"
 #include "./leds/led_manager.h"
+#include "./bluetooth/bluetooth_manager.h"
 #include "./startup/startup_manager.h"
 #include "./helpers/performance_monitor/performance_monitor.h"
 
 #include <macros.h>
 
 void setup() {
-  startup();
+#if DEBUG == true
+  initSerial();
+  printStartupInfo(0);
+#endif
+  restoreSettingsFromEEPROM();
+#if PALETTE_USING_BM64 == true
+  initBM64();
+#else
+  initRN52();
+  #endif
+  initSGTL5000();
+  initWS2812B();
+#if DEBUG == true
+  printStartupInfo(1);
+#endif
 }
 
 void loop() {
-#ifdef PRINT_MCU_PERFORMANCE
-  printMCUPerformance();
-#endif // ifdef PRINT_MCU_PERFORMANCE
+#if PRINT_MCU_PERFORMANCE == true
+  printSystemPerformanceEveryNSeconds(5);
+#endif
 
   animationManagerTask();
-
-  // ledDisplayTask();
+  ledDisplayTask();
 }

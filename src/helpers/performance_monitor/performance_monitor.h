@@ -1,1 +1,1 @@
-void printMCUPerformance(void);
+void printSystemPerformanceEveryNSeconds(int seconds);
