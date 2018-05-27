@@ -1,4 +1,10 @@
 #include <macros.h>
 
-extern const RN52 RN52(RN52_CMD_PIN, &RN52_SERIAL, ECHO_BT_MODULE);
-extern const BM64 BM64(BM64_UART_TX_IND, &BM64_SERIAL, ECHO_BT_MODULE);
+extern RN52 rn52;
+extern BM64 bm64;
+
+namespace BluetoothManager {
+void initialize(void);
+void printConfig(void);
+void testVar(int var);
+}

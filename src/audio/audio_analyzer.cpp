@@ -2,10 +2,92 @@
 
 /*======================*/
 /*  external variables  */
-struct AudioAnalyzeFFT1024 fftL;
-struct AudioAnalyzeFFT1024 fftR;
+AudioAnalyzeFFT1024 fftL;
+AudioAnalyzeFFT1024 fftR;
+
+uint16_t fftBins[NUM_BANDS];
+uint8_t  levelsL[NUM_BANDS];
+uint8_t  levelsR[NUM_BANDS];
+uint8_t  scaledLevelsL[NUM_BANDS];
+uint8_t  scaledLevelsR[NUM_BANDS];
 
 /*======================*/
+
+namespace AudioAnalyzer {
+float FindE(int bands, int bins) {
+  float increment = 0.1, eTest, n;
+  int   b, count, d;
+
+  for (eTest = 1; eTest < bins; eTest += increment) { // Find E through brute
+                                                      // force calculations
+    count = 0;
+
+    for (b = 0; b < bands; b++) {                     // Calculate full log
+                                                      // values
+      n      = pow(eTest, b);
+      d      = int(n + 0.5);
+      count += d;
+    }
+
+    if (count > bins) {        // We calculated over our last bin
+      eTest     -= increment;  // Revert back to previous calculation increment
+      increment /= 10.0;       // Get a finer detailed calculation & increment a
+                               // decimal point lower
+    }
+    else if (count == bins)    // We found the correct E
+      return eTest;            // Return calculated E
+
+    if (increment < 0.0000001) // Ran out of calculations. Return previous E.
+                               // Last bin will be lower than (bins-1)
+      return eTest - increment;
+  }
+  return 0;                    // Return error 0
+}
+
+float getFFTBins() {
+  static float e, n;
+  static uint16_t b, bands, bins, count = 0, d;
+
+  bands = NUM_BANDS;              // Frequency bands; (Adjust to desiredvalue)
+  bins  = MAX_BIN;
+  e     = FindE(bands, bins);     // Find calculated E value
+
+  if (e) {                        // If a value was returned continue
+    for (b = 0; b < bands; b++) { // Test and print the bins from the calculated
+      n          = pow(e, b);
+      d          = int(n + 0.5);
+      fftBins[b] = count;
+      count     += d - 1;
+      ++count;
+    }
+  }
+#if DEBUG == true
+  else {
+    Serial << "Error calculating FFT bins\n"; // Error, something happened
+  }
+#endif
+
+  return e;
+}
+
+void initialize() {
+  #if DEBUG == true
+  static unsigned long startTime = millis();
+
+  Serial <<
+    "\n===================== INITIALIZING AUDIO ANALYZER =====================\n";
+  #endif
+  float e = getFFTBins();
+  #if DEBUG == true
+  static unsigned long totalTime = millis() - startTime;
+
+  Serial << "Audio Initialized:\t" << totalTime << "ms" << endl;
+  Serial << "  - FFT NUM_BANDS:\t" << NUM_BANDS << endl;
+  Serial << "  - FFT MAX_BIN:\t" << MAX_BIN << "hz" << endl;
+  Serial << "  - FFT E calculation:\t" << e << endl;
+  Serial << "-----------------------------------------------------------------\n";
+  #endif
+}
 
 bool readFFT(float smoothing,
              bool  stereo,
@@ -170,4 +252,5 @@ uint8_t averageFFTPortion(uint8_t *array,
     sum += array[i];
   }
   return sum / portion;
+}
 }

@@ -61,8 +61,7 @@ void BM64::readSerial() {
     }
   }
 
-  if (echoSerial) Serial.print("BM64 >\t"); Serial.print(rxBuffer);
-  Serial.println();
+  if (echoSerial) Serial.print("BM64 >\t"); Serial.println(rxBuffer);
 }
 
 bool BM64::getInterruptStatus() const {

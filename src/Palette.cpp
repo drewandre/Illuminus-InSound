@@ -6,38 +6,39 @@
    Designed by Drew André: www.drew-andre.com, www.linkedin.com/in/drewandre,
       www.instagram.com/_drewandre
  */
+ #include <macros.h>
 
+#include "./helpers/debug_manager/debug_manager.h"
 #include "./animations/animation_manager.h"
 #include "./leds/led_manager.h"
+#include "./audio/audio_manager.h"
+#include "./audio/audio_analyzer.h"
 #include "./bluetooth/bluetooth_manager.h"
-#include "./startup/startup_manager.h"
-#include "./helpers/performance_monitor/performance_monitor.h"
 
-#include <macros.h>
 
 void setup() {
 #if DEBUG == true
-  initSerial();
-  printStartupInfo(0);
+  Serial.begin(SWSERIAL_BAUD);
+
+  while (!Serial) ;
+  DebugManager::printStartupInfo(0);
 #endif
-  restoreSettingsFromEEPROM();
-#if PALETTE_USING_BM64 == true
-  initBM64();
-#else
-  initRN52();
-  #endif
-  initSGTL5000();
-  initWS2812B();
+
+  LEDManager::initialize();
+  BluetoothManager::initialize();
+  AudioManager::initialize();
+  AudioAnalyzer::initialize();
+
 #if DEBUG == true
-  printStartupInfo(1);
+  DebugManager::printStartupInfo(1);
 #endif
 }
 
 void loop() {
 #if PRINT_MCU_PERFORMANCE == true
-  printSystemPerformanceEveryNSeconds(5);
+  DebugManager::printSystemPerformanceEveryNSeconds(5);
 #endif
 
-  animationManagerTask();
-  ledDisplayTask();
+  AnimationManager::runTask();
+  LEDManager::show();
 }

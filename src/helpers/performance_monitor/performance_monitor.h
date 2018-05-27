@@ -1,1 +1,0 @@
-void printSystemPerformanceEveryNSeconds(int seconds);

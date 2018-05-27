@@ -1,6 +1,8 @@
 #include <macros.h>
 
-void animationManagerTask(void);
-
 extern bool calculateScaledFFT;
 extern uint8_t currentAnimation;
+
+namespace AnimationManager {
+void runTask(void);
+}

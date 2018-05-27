@@ -1,6 +1,8 @@
+#include "../bluetooth/bluetooth_manager.h"
+
 #include "./animation_generator.h"
 #if (DEBUG == true)
-# include "../helpers/debug_functions.h"
+# include "../helpers/debug_manager/debug_manager.h"
 #endif
 
 #include <macros.h>
@@ -11,7 +13,10 @@ uint8_t currentAnimation;
 
 /*======================*/
 
-void animationManagerTask() {
+namespace AnimationManager {
+void runTask() {
+  static int x = 1;
+
 #if FIXED_ANIMATION_INDEX == true
   currentAnimation = FIXED_ANIMATION_INDEX;
 #endif
@@ -28,12 +33,13 @@ void animationManagerTask() {
 
   // debugging modes for bluetooth communication testing, audio sensitivity
   // adjustments, etc
+
   switch (currentAnimation) {
   case 0:
-
-    // EVERY_N_SECONDS(5) {
-    //   attemptToSendCommandToBM64();
-    // }
+    EVERY_N_SECONDS(5) {
+      x = x + 1;
+      BluetoothManager::testVar(x);
+    }
     break;
 
   default:
@@ -54,4 +60,5 @@ void animationManagerTask() {
     break;
   }
 #endif
+}
 }

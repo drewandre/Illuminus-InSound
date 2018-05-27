@@ -41,6 +41,8 @@ public:
 
   bool factorySettings(String name);
 
+  void testVariable(int var);
+
 private:
 
   HardwareSerial *uart = &Serial1;
@@ -51,6 +53,8 @@ private:
   char rxBuffer[BLUETOOTH_SERIAL_BUFFER_LENGTH];
   unsigned int bufferWritingIndex;
   unsigned int bufferReadingIndex;
+
+  int testV;
 
   uint16_t status();
   void     enterCommandMode();

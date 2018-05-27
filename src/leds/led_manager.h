@@ -1,7 +1,10 @@
 #include <macros.h>
 
-extern struct CRGB leds[NUM_LEDS];
+extern CRGB leds[NUM_LEDS];
 
-void ledDisplayTask(void);
+namespace LEDManager {
+void initialize(void);
+void show(void);
 void setPartialPixel(uint16_t pos,
                      CRGB   & color);
+}

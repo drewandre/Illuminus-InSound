@@ -1,15 +1,7 @@
 #include "../leds/led_manager.h"
 #include "../audio/audio_analyzer.h"
 
-/*======================*/
-/*  external variables  */
-struct CRGB leds[NUM_LEDS];
-uint8_t     levelsL[NUM_BANDS];
-uint8_t     levelsR[NUM_BANDS];
-uint8_t     scaledLevelsL[NUM_BANDS];
-uint8_t     scaledLevelsR[NUM_BANDS];
-
-/*======================*/
+using namespace AudioAnalyzer;
 
 // ---------------------- noise variables ----------------------- //
 

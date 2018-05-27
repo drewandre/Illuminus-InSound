@@ -6,6 +6,7 @@ RN52::RN52(int commandPinIn, HardwareSerial *serial, bool echoRN52) {
   uart               = serial;
   bufferWritingIndex = 0;
   bufferReadingIndex = 0;
+  testV              = 68;
 }
 
 RN52::~RN52() {}
@@ -14,6 +15,14 @@ void RN52::enable() {
   pinMode(commandPin, OUTPUT);
   digitalWrite(commandPin, HIGH); // exit data mode
   uart->begin(uartBaud);
+}
+
+void RN52::testVariable(int var) {
+  Serial.print("testVariable before: "); Serial.print(testV);
+  Serial.println();
+  testV = var;
+  Serial.print("testVariable after: "); Serial.print(testV);
+  Serial.println();
 }
 
 void RN52::enterCommandMode() {
