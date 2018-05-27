@@ -6,21 +6,12 @@
    Designed by Drew André: www.drew-andre.com, www.linkedin.com/in/drewandre,
       www.instagram.com/_drewandre
  */
- #include <macros.h>
 
-#include "./helpers/debug_manager/debug_manager.h"
-#include "./animations/animation_manager.h"
-#include "./leds/led_manager.h"
-#include "./audio/audio_manager.h"
-#include "./audio/audio_analyzer.h"
-#include "./bluetooth/bluetooth_manager.h"
-
+#include <Palette.h>
 
 void setup() {
 #if DEBUG == true
-  Serial.begin(SWSERIAL_BAUD);
-
-  while (!Serial) ;
+  DebugManager::initializeSerial();
   DebugManager::printStartupInfo(0);
 #endif
 
@@ -38,7 +29,6 @@ void loop() {
 #if PRINT_MCU_PERFORMANCE == true
   DebugManager::printSystemPerformanceEveryNSeconds(5);
 #endif
-
   AnimationManager::runTask();
   LEDManager::show();
 }

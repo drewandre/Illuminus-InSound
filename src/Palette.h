@@ -1,8 +1,8 @@
-/*
-   PALETTE v1.2: 8-channel LED controller for use with
-                'Palette' NeoPixel controller and WS2812b leds
-                Version 1.4 - Boston, MA - Spring 2018
+#include <macros.h>
 
-   Designed by Drew André: www.drewandre.net, www.linkedin.com/in/drewandre,
-      www.instagram.com/_drewandre
- */
+#include "./helpers/debug_manager/debug_manager.h"
+#include "./animations/animation_manager.h"
+#include "./leds/led_manager.h"
+#include "./audio/audio_manager.h"
+#include "./audio/audio_analyzer.h"
+#include "./bluetooth/bluetooth_manager.h"

@@ -2,6 +2,12 @@
 #include "../../audio/audio_manager.h"
 
 namespace DebugManager {
+void initializeSerial() {
+  Serial.begin(SWSERIAL_BAUD);
+
+  while (!Serial) ;
+}
+
 void printStartupInfo(uint8_t stage) {
   switch (stage) {
   case 0:
