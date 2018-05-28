@@ -1,10 +1,8 @@
 #include "../leds/led_manager.h"
 #include "../audio/audio_analyzer.h"
 
-using namespace AudioAnalyzer;
 
 // ---------------------- noise variables ----------------------- //
-
 // uint32_t x, y, z, dist;
 // uint16_t scale = 12;
 // uint16_t speed = 2;
@@ -17,6 +15,7 @@ using namespace AudioAnalyzer;
 // uint8_t iHue, fHue;
 // uint8_t spectrumWidth = 36;
 
+namespace AudioAnalyzer {
 void readFFTTest() {
   readFFT(1, false, false);
 }
@@ -50,6 +49,7 @@ void mapFFTLeft() {
     }
     blur1d(leds, NUM_LEDS, 1);
   }
+}
 }
 
 // void mapFFTLeft() {

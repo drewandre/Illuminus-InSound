@@ -70,7 +70,7 @@ float getFFTBins() {
   return e;
 }
 
-void initialize() {
+void initializeFFT() {
   #if DEBUG == true
   static unsigned long startTime = millis();
 

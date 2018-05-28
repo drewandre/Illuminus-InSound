@@ -39,4 +39,8 @@ void initialize() {
   Serial << "-----------------------------------------------------------------\n";
 #endif
 }
+
+void initializeFFT() {
+  AudioAnalyzer::initializeFFT();
+}
 }

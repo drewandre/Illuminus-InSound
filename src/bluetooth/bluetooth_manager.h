@@ -1,3 +1,6 @@
+#ifndef BLUETOOTH_MANAGER_H
+#define BLUETOOTH_MANAGER_H
+
 #include <macros.h>
 
 extern RN52 rn52;
@@ -8,3 +11,5 @@ void initialize(void);
 void printConfig(void);
 void testVar(int var);
 }
+
+#endif

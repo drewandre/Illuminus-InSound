@@ -7,27 +7,37 @@
       www.instagram.com/_drewandre
  */
 
-#include <Palette.h>
+#include <macros.h>
+
+#if DEBUG == true
+# include "./helpers/debug_manager/debug_manager.h"
+using namespace DebugManager;
+#endif
+
+#include "./animations/animation_manager.h"
+#include "./leds/led_manager.h"
+#include "./audio/audio_manager.h"
+#include "./bluetooth/bluetooth_manager.h"
 
 void setup() {
 #if DEBUG == true
-  DebugManager::initializeSerial();
-  DebugManager::printStartupInfo(0);
+  initializeSerial();
+  printStartupInfo(0);
 #endif
 
   LEDManager::initialize();
   BluetoothManager::initialize();
   AudioManager::initialize();
-  AudioAnalyzer::initialize();
+  AudioManager::initializeFFT();
 
 #if DEBUG == true
-  DebugManager::printStartupInfo(1);
+  printStartupInfo(1);
 #endif
 }
 
 void loop() {
 #if PRINT_MCU_PERFORMANCE == true
-  DebugManager::printSystemPerformanceEveryNSeconds(5);
+  printSystemPerformanceEveryNSeconds(5);
 #endif
   AnimationManager::runTask();
   LEDManager::show();

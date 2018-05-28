@@ -1,6 +1,8 @@
 #include "./color_palette_list.h"
 #include "../leds/led_manager.h"
 
+/*======================*/
+/*  external variables  */
 const TProgmemRGBGradientPalettePtr gGradientPalettes[] = {
   bhw1_hello_gp,
   wr_gp,
@@ -21,7 +23,9 @@ CRGBPalette16 gCurrentPalette(
 CRGBPalette16 gTargetPalette(
   gGradientPalettes[gGradientPaletteCount + 1]);
 
+/*======================*/
 
+namespace ColorPaletteManager {
 void changePalette() {
 #if CHANGE_PALATTE_PERIODICALLY == true
   EVERY_N_SECONDS(CHANGE_PALETTE_EVERY_N_SECONDS) {
@@ -169,4 +173,5 @@ void FillLEDsFromPaletteColorsTwelve() {
                                  LINEARBLEND);
     colorIndexTwelve += PALETTE_INDEX_INCREMENT_TWELVE;
   }
+}
 }

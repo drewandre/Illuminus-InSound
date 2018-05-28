@@ -1,3 +1,6 @@
+#ifndef MACROS_H
+#define MACROS_H
+
 #include <Arduino.h>
 #include <FastLED.h>
 #include <Audio.h>
@@ -6,6 +9,7 @@
 
 // -------------------- Palette config -------------------- //
 #define DEBUG true
+
 #define DEBUG_ANIMATIONS_ONLY false
 #define CYCLE_THROUGH_ANIMATIONS false
 #define PALETTE_USING_BM64 false
@@ -14,7 +18,6 @@
 #define PALETTE_AMPERAGE 2000
 #define DEVICE_NAME "PALETTE"
 #define BT_DEVICE_TYPE "20043C" // sets device type to loudspeaker?
-// "palette is a _____"
 #define PALETTE_SHORT_DESCRIPTION \
   "Smartphone controlled LED bar with audio reactive animations."
 
@@ -94,3 +97,5 @@
 
 // -------------------------- misc -------------------------- //
 #define CURRENT_DATE "Spring 2018"
+
+#endif

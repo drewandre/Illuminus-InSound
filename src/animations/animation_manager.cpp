@@ -10,6 +10,7 @@
 /*======================*/
 /*  external variables  */
 uint8_t currentAnimation;
+bool    calculateScaledFFT;
 
 /*======================*/
 

@@ -1,3 +1,8 @@
+#ifndef AUDIO_MANAGER_H
+#define AUDIO_MANAGER_H
+
+#include "./audio/audio_analyzer.h"
+
 #include <macros.h>
 
 #if RN52_ANALOG_OUTPUT == true // analog audio input from SGTL5000
@@ -19,4 +24,7 @@ extern AudioControlSGTL5000 SGTL5000;
 
 namespace AudioManager {
 void initialize(void);
+void initializeFFT(void);
 }
+
+#endif
