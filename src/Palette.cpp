@@ -36,9 +36,17 @@ void setup() {
 }
 
 void loop() {
+  // BluetoothManager::SPPTask();
 #if PRINT_MCU_PERFORMANCE == true
   printSystemPerformanceEveryNSeconds(5);
 #endif
-  AnimationManager::runTask();
-  LEDManager::show();
+
+  EVERY_N_SECONDS(5) {
+    BluetoothManager::getVolume();
+  }
+
+  BluetoothManager::echo();
+
+  // AnimationManager::runTask();
+  // LEDManager::show();
 }

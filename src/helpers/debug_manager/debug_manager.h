@@ -1,8 +1,6 @@
 #ifndef DEBUG_MANAGER_H
 #define DEBUG_MANAGER_H
 
-#include "../Streaming.h"
-
 #include <macros.h>
 
 namespace DebugManager {

@@ -1,8 +1,7 @@
-#include "../leds/led_manager.h"
-#include "../audio/audio_analyzer.h"
-
+#include "./animation_generator.h"
 
 // ---------------------- noise variables ----------------------- //
+
 // uint32_t x, y, z, dist;
 // uint16_t scale = 12;
 // uint16_t speed = 2;
@@ -15,11 +14,7 @@
 // uint8_t iHue, fHue;
 // uint8_t spectrumWidth = 36;
 
-namespace AudioAnalyzer {
-void readFFTTest() {
-  readFFT(1, false, false);
-}
-
+namespace AnimationGenerator {
 void mapFFTLeft() {
   static int   band, currentBrightness;
   static int   i, pos, point;
@@ -27,7 +22,7 @@ void mapFFTLeft() {
 
   // nscale8(leds, NUM_LEDS, 220);
   // fadeToBlackBy(leds,NUM_LEDS,9);
-  if (readFFT(1, false, false)) {
+  if (readFFT(0.2, false, false)) {
     pos   = 0;
     point = 0;
     fHue  = 0;

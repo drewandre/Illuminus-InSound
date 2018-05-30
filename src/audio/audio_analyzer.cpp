@@ -48,20 +48,32 @@ float getFFTBins() {
   static float e, n;
   static uint16_t b, bands, bins, count = 0, d;
 
-  bands = NUM_BANDS;              // Frequency bands; (Adjust to desiredvalue)
-  bins  = MAX_BIN;
-  e     = FindE(bands, bins);     // Find calculated E value
+  bands = NUM_BANDS;                    // Frequency bands; (Adjust to
+                                        // desiredvalue)
+  bins = MAX_BIN;
+  e    = FindE(bands, bins);            // Find calculated E value
 
-  if (e) {                        // If a value was returned continue
-    for (b = 0; b < bands; b++) { // Test and print the bins from the calculated
-      n          = pow(e, b);
-      d          = int(n + 0.5);
+#if PRINT_FFT_SETTINGS == true
+  Serial.printf("FFT > E: %4.4f\n", e); // Print calculated E value
+#endif
+
+  if (e) {                              // If a value was returned continue
+    for (b = 0; b < bands; b++) {       // Test and print the bins from the
+                                        // calculated
+      n = pow(e, b);
+      d = int(n + 0.5);
+    #if PRINT_FFT_SETTINGS == true
+      Serial.printf("%4d ", count); // Print low bin
+    #endif
       fftBins[b] = count;
       count     += d - 1;
+    #if PRINT_FFT_SETTINGS == true
+      Serial.printf("%4d\n", count); // Print high bin
+    #endif
       ++count;
     }
   }
-#if DEBUG == true
+#if PRINT_FFT_SETTINGS == true
   else {
     Serial << "Error calculating FFT bins\n"; // Error, something happened
   }
@@ -77,14 +89,16 @@ void initializeFFT() {
   Serial <<
     "\n===================== INITIALIZING AUDIO ANALYZER =====================\n";
   #endif
-  float e = getFFTBins();
-  #if DEBUG == true
+#if PRINT_FFT_SETTINGS == true
+  Serial << "FFT > NUM_BANDS:\t" << NUM_BANDS << endl;
+  Serial << "FFT > MAX_BIN:\t\t" << MAX_BIN << "hz" << endl;
+#endif
+  getFFTBins();
+
+#if DEBUG == true
   static unsigned long totalTime = millis() - startTime;
 
   Serial << "Audio Initialized:\t" << totalTime << "ms" << endl;
-  Serial << "  - FFT NUM_BANDS:\t" << NUM_BANDS << endl;
-  Serial << "  - FFT MAX_BIN:\t" << MAX_BIN << "hz" << endl;
-  Serial << "  - FFT E calculation:\t" << e << endl;
   Serial << "-----------------------------------------------------------------\n";
   #endif
 }

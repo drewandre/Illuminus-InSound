@@ -13,35 +13,37 @@ public:
   RN52(int             commandPin,
        HardwareSerial *uart,
        bool            echoSerial);
+
   ~RN52();
 
-  void enable();
-  void readSerial();
-  void sendCommand(String cmd);
-  void echo(String command);
+  void     enable();
+  char   * readSerial();
+  String   sendCommand(String cmd);
+  String   echo(String command);
 
-  void play(void);
-  void nextTrack(void);
-  void prevTrack(void);
-  void volUp(void);
-  void volDown(void);
-  void answer(void);
-  void hangup(void);
+  void     printConfig();
+  void     printVersion();
+  void     printGPIOConfig();
+  void     printConnectionStatus();
+  String   getVolume();
+  uint16_t status();
 
-  void setDeviceName(String name);
-  void setDeviceType(String type);
+  void     play(void);
+  void     nextTrack(void);
+  void     prevTrack(void);
+  void     volUp(void);
+  void     volDown(void);
+  void     answer(void);
+  void     hangup(void);
 
-  void muteTones();
+  void     setDeviceName(String name);
+  void     setDeviceType(String type);
 
-  void printStatus();
-  void printVersion();
+  void     muteTones();
+  void     setAnalogAudioOutput();
+  void     setMaxSpeakerGain();
 
-  void setAnalogAudioOutput();
-  void setMaxSpeakerGain();
-
-  bool factorySettings(String name);
-
-  void testVariable(int var);
+  bool     factorySettings(String name);
 
 private:
 
@@ -54,10 +56,7 @@ private:
   unsigned int bufferWritingIndex;
   unsigned int bufferReadingIndex;
 
-  int testV;
-
-  uint16_t status();
-  void     enterCommandMode();
-  void     endCommandMode();
+  void enterCommandMode();
+  void endCommandMode();
 };
 #endif // ifndef RN52_H

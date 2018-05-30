@@ -6,7 +6,6 @@ RN52::RN52(int commandPinIn, HardwareSerial *serial, bool echoRN52) {
   uart               = serial;
   bufferWritingIndex = 0;
   bufferReadingIndex = 0;
-  testV              = 68;
 }
 
 RN52::~RN52() {}
@@ -15,14 +14,6 @@ void RN52::enable() {
   pinMode(commandPin, OUTPUT);
   digitalWrite(commandPin, HIGH); // exit data mode
   uart->begin(uartBaud);
-}
-
-void RN52::testVariable(int var) {
-  Serial.print("testVariable before: "); Serial.print(testV);
-  Serial.println();
-  testV = var;
-  Serial.print("testVariable after: "); Serial.print(testV);
-  Serial.println();
 }
 
 void RN52::enterCommandMode() {
@@ -54,33 +45,36 @@ void RN52::muteTones() {
   sendCommand("ST,00");
 }
 
-void RN52::sendCommand(String cmd) {
+String RN52::sendCommand(String cmd) {
   enterCommandMode();
   uart->println(cmd);
 
-  if (echoSerial) {
-    echo(cmd);
-  }
+  String response = echo(cmd);
 
   endCommandMode();
+
+  return response;
 }
 
-void RN52::readSerial() {
+char * RN52::readSerial() {
   if (uart->available()) {
     rxBuffer[bufferWritingIndex++] = uart->read();
 
     if (bufferWritingIndex >= BLUETOOTH_SERIAL_BUFFER_LENGTH) {
       bufferWritingIndex = 0;
     }
-  }
 
-  if (echoSerial) {
-    Serial.print("RN52> "); Serial.print(rxBuffer); Serial.println();
+    if (echoSerial) {
+      Serial.print("RN52 > "); Serial.print(rxBuffer); Serial.println();
+    }
+    return rxBuffer;
   }
+  return 0;
 }
 
-void RN52::echo(String command) {
-  String buffer               = "";
+String RN52::echo(String command) {
+  String buffer = "";
+
   static bool   wait_for_RN52 = true;
   unsigned long startTime;
   unsigned long end_time;
@@ -115,6 +109,7 @@ void RN52::echo(String command) {
   } else {
     Serial.print(buffer);
   }
+  return buffer;
 }
 
 // byte 0
@@ -133,6 +128,7 @@ const uint16_t STATUS_A2DP = bit(2);
 
 uint16_t RN52::status() {
   char buf[32];
+
   uint16_t stat;
   byte     bytes;
 
@@ -178,7 +174,7 @@ void RN52::hangup() {
   sendCommand("E");
 }
 
-void RN52::printStatus() {
+void RN52::printConfig() {
   sendCommand("D");
 }
 
@@ -192,6 +188,18 @@ void RN52::setAnalogAudioOutput() {
 
 void RN52::setMaxSpeakerGain() {
   sendCommand("SS,0x09");
+}
+
+void RN52::printGPIOConfig() {
+  sendCommand("I@");
+}
+
+void RN52::printConnectionStatus() {
+  sendCommand("Q");
+}
+
+String RN52::getVolume() {
+  return sendCommand("Y,0");
 }
 
 bool RN52::factorySettings(String name) {

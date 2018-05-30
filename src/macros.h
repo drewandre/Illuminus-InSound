@@ -10,15 +10,14 @@
 // -------------------- Palette config -------------------- //
 #define DEBUG true
 
-#define DEBUG_ANIMATIONS_ONLY false
 #define CYCLE_THROUGH_ANIMATIONS false
 #define PALETTE_USING_BM64 false
-#define PALETTE_VERSION 1.4
+#define PRODUCT_VERSION 1.4
 #define PALETTE_VOLTAGE 5
 #define PALETTE_AMPERAGE 2000
-#define DEVICE_NAME "PALETTE"
+#define PRODUCT_NAME "PALETTE"
 #define BT_DEVICE_TYPE "20043C" // sets device type to loudspeaker?
-#define PALETTE_SHORT_DESCRIPTION \
+#define PRODUCT_SHORT_DESCRIPTION \
   "Smartphone controlled LED bar with audio reactive animations."
 
 // ---------------------- Debug config ---------------------- //
@@ -28,6 +27,7 @@
   # define SWSERIAL_BAUD 115200
   # define PRINT_FFT false
   # define PRINT_MAPPED_FFT false
+  # define PRINT_FFT_SETTINGS true
 #endif
 
 // ---------------------- BM64 config ---------------------- //
