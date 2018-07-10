@@ -4,14 +4,12 @@
 #include <Arduino.h>
 #include <FastLED.h>
 #include <Audio.h>
-#include <RN52.h>
-#include <BM64.h>
+#include <BC127.h>
 
 // -------------------- Palette config -------------------- //
 #define DEBUG true
 
 #define CYCLE_THROUGH_ANIMATIONS false
-#define PALETTE_USING_BM64 false
 #define PRODUCT_VERSION 1.4
 #define PALETTE_VOLTAGE 5
 #define PALETTE_AMPERAGE 2000
@@ -30,22 +28,14 @@
   # define PRINT_FFT_SETTINGS true
 #endif
 
-// ---------------------- BM64 config ---------------------- //
-#define BM64_SERIAL Serial4 // RX4 (31) + TX4 (32)
-#define BM64_UART_TX_IND 21 // BM64 to interrupt MCU on input
-
-// ---------------------- RN52 config ---------------------- //
-#define RN52_SERIAL Serial1
-#define RN52_SERIAL_BAUD 115200
-
-#define RN52_GPI02_PIN 8 // RN52 GPIO2 event notifier pin (default HIGH,
-// HIGH -> LOW for 100ms on connected device event)
-
-#define RN52_CMD_PIN 2   // GPIO9 LOW for command mode
+// ---------------------- BC127 config ---------------------- //
+#define BC127_SERIAL Serial1
+#define BC127_SERIAL_BAUD 9600
+#define BC127_CMD_PIN 2
+#define BC127_GPIO_0_PIN 35
+#define BC127_GPIO_4_PIN 36
 #define BT_CHECK_IF_FACTORY_SETTINGS false
-
-#define RN52_ANALOG_OUTPUT true
-
+#define BC127_ANALOG_OUTPUT true
 #define ECHO_BT_MODULE true
 
 // ---------------------- WS2812b config ---------------------- //

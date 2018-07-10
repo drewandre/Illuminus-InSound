@@ -4,6 +4,7 @@
 #include "../leds/led_manager.h"
 
 #include "../audio/audio_analyzer.h"
+
 using namespace AudioAnalyzer;
 
 namespace AnimationGenerator {

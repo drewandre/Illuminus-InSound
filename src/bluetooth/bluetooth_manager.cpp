@@ -2,72 +2,75 @@
 
 /*======================*/
 /*  external variables  */
-RN52 rn52(RN52_CMD_PIN, &RN52_SERIAL, ECHO_BT_MODULE);
-BM64 bm64(BM64_UART_TX_IND, &BM64_SERIAL, ECHO_BT_MODULE);
+BC127 bc127(BC127_CMD_PIN, BC127_GPIO_0_PIN, &BC127_SERIAL, ECHO_BT_MODULE);
 
 /*======================*/
 
+String SPPBuffer = "";
+
 namespace BluetoothManager {
 void initialize() {
+  pinMode(BC127_GPIO_0_PIN, INPUT);
+  pinMode(BC127_GPIO_4_PIN, INPUT);
+  attachInterrupt(digitalPinToInterrupt(
+                    BC127_GPIO_0_PIN), handleBC127ConnectionEvent,
+                  CHANGE);
+
+  attachInterrupt(digitalPinToInterrupt(
+                    BC127_GPIO_4_PIN), handleBC127Event,
+                  CHANGE);
+
 #if DEBUG == true
   static unsigned long startTime = millis();
   Serial.print(
-    "\n======================= INITIALIZING RN52 =======================\n");
+    "\n========================= INITIALIZING BC127 =========================\n");
 #endif
-  rn52.enable();
-  attachInterrupt(digitalPinToInterrupt(RN52_GPI02_PIN), handleRN52Event,
-                  FALLING);
+
+  bc127.enable();
 
 #if DEBUG == true
-  rn52.printVersion();
-  rn52.printConfig();
-#endif
-
-#if BT_CHECK_IF_FACTORY_SETTINGS == true
-
-  if (rn52.factorySettings(PRODUCT_NAME)) { // checks device name
-#endif
-  rn52.setDeviceName(PRODUCT_NAME);
-  rn52.setDeviceType(BT_DEVICE_TYPE);       // sets device name loudspeaker?
-  rn52.muteTones();
-  rn52.setAnalogAudioOutput();
-  rn52.setMaxSpeakerGain();
-#if BT_CHECK_IF_FACTORY_SETTINGS == true
-}
-
-#endif
-#if DEBUG == true
-  Serial.print("GPIO pin #"); Serial.print(RN52_GPI02_PIN); Serial.println(
-    " initialized as an RN52 event interrupt routine.");
-
   static unsigned long totalTime = millis() - startTime;
-  Serial << "RN52 Initialized:\t" << totalTime << "ms" << "\n";
+  Serial << "BC127 Initialized:\t" << totalTime << "ms" << "\n";
   Serial << "-----------------------------------------------------------------\n";
 #endif
 }
 
-void handleRN52Event() {
-  // rn52.printConnectionStatus();
-  Serial.println(rn52.status(), HEX);
+void enableBLEAdvertising() {
+#if DEBUG == true
+  Serial << "Enabling advertising..." << endl;
+#endif
+  bc127.stdSetParam("BLE_CONFIG", "0 ON 40 ON");
 }
 
-void printConfig() {
-  rn52.printConfig();
+void enterCommandMode() {
+  bc127.enterCommandMode();
 }
 
-String getVolume() {
-  return rn52.getVolume();
+void exitCommandMode() {
+  bc127.exitCommandMode();
 }
 
-void SPPTask() {
-  rn52.readSerial();
+void handleBC127ConnectionEvent() {
+  Serial.println("CONNECTION MADE");
+  bc127.stdCmd("STATUS");
 }
 
-void echo() {
-  char *response = rn52.readSerial();
+void handleBC127Event() {
+  Serial.println("Something really crazy happened");
+}
 
-  if (response) {
-    Serial.println(response);
+void listenAndHandleSPPData() {
+  if (BC127_SERIAL.available() > 0) {
+    SPPBuffer.concat(char(BC127_SERIAL.read()));
+
+    if (SPPBuffer.endsWith('\r')) {
+      SPPBuffer = SPPBuffer.remove(SPPBuffer.length() - 1);
+    #if DEBUG == true
+      Serial << SPPBuffer << endl;
+    #endif
+
+      SPPBuffer = "";
+    }
   }
 }
-}
+} // end namespace

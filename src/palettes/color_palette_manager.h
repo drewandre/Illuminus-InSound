@@ -3,7 +3,7 @@
 
 #include "./color_palette_list.h"
 
-#include <macros.h>
+#include "../macros.h"
 
 namespace ColorPaletteManager {
 void changePalette(void);

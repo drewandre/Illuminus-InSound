@@ -7,12 +7,13 @@
       www.instagram.com/_drewandre
  */
 
-#include <macros.h>
+#include "./macros.h"
 
 #if DEBUG == true
 # include "./helpers/debug_manager/debug_manager.h"
 using namespace DebugManager;
 #endif
+
 
 #include "./animations/animation_manager.h"
 #include "./leds/led_manager.h"
@@ -24,29 +25,35 @@ void setup() {
   initializeSerial();
   printStartupInfo(0);
 #endif
-
   LEDManager::initialize();
-  BluetoothManager::initialize();
   AudioManager::initialize();
   AudioManager::initializeFFT();
+  BluetoothManager::initialize();
 
 #if DEBUG == true
   printStartupInfo(1);
 #endif
 }
 
+String buffer = "";
+
+// unsigned long appStartupMillis = millis();
+bool startupFlag = true;
+
+// Serial.println("Entering data mode on channel 14...");
+// bc127.stdCmd("ENTER_DATA_MODE 14");
+
 void loop() {
-  // BluetoothManager::SPPTask();
-#if PRINT_MCU_PERFORMANCE == true
-  printSystemPerformanceEveryNSeconds(5);
-#endif
+  BluetoothManager::enableBLEAdvertising();
+  startupFlag = false;
 
-  EVERY_N_SECONDS(5) {
-    BluetoothManager::getVolume();
+  while (startupFlag == false) {
+  #if PRINT_MCU_PERFORMANCE == true
+    printSystemPerformanceEveryNSeconds(5);
+  #endif
+    BluetoothManager::listenAndHandleSPPData();
+
+    // AnimationManager::runTask();
+    // LEDManager::show();
   }
-
-  BluetoothManager::echo();
-
-  // AnimationManager::runTask();
-  // LEDManager::show();
 }
