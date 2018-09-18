@@ -19,31 +19,40 @@ void mapFFTLeft() {
   static int   band, currentBrightness;
   static int   i, pos, point;
   static float fHue;
-
+  static float FFT_FIXED_SEGMENT_LENGTH = float(NUM_LEDS) / float(NUM_BANDS);
+  
   // nscale8(leds, NUM_LEDS, 220);
   // fadeToBlackBy(leds,NUM_LEDS,9);
   if (readFFT(0.2, false, false)) {
     pos   = 0;
     point = 0;
-    fHue  = 0;
+    fHue  = 0.0;
 
-    for (band = 0; band < NUM_BANDS - 1; band++) {
+    for (band = 0; band < NUM_BANDS; band++) {
       point += FFT_FIXED_SEGMENT_LENGTH;
 
       if (band == NUM_BANDS - 1) {
-        point = NUM_LEDS - 1;
+        point = NUM_LEDS;
       }
 
       currentBrightness = levelsL[band];
 
       for (i = pos; i < point; i++) {
-        leds[i] += CHSV(fHue, 255, currentBrightness);
-        fHue     = i * 1.65;
+        leds[i] = CHSV(fHue, 255, currentBrightness);
+        fHue     = float(i * 1.7);
       }
       pos = point;
     }
-    blur1d(leds, NUM_LEDS, 1);
+    // blur1d(leds, NUM_LEDS, 1);
   }
+}
+
+void rainbow() {
+  static int i = 0;
+  EVERY_N_MILLISECONDS(100) {
+    i += 1;
+  }
+  fill_rainbow(leds, 144, 0, i);
 }
 }
 

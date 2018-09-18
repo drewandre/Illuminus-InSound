@@ -1,8 +1,9 @@
 #include "./bluetooth_manager.h"
+#include "../animations/animation_manager.h"
 
 /*======================*/
 /*  external variables  */
-BC127 bc127(BC127_CMD_PIN, BC127_GPIO_0_PIN, &BC127_SERIAL, ECHO_BT_MODULE);
+BC127 bc127(BC127_CMD_PIN, BC127_GPIO_0_PIN, &BC127_SERIAL, ECHO_BT_MODULE, DEVICE_NAME);
 
 /*======================*/
 
@@ -10,20 +11,10 @@ String SPPBuffer = "";
 
 namespace BluetoothManager {
 void initialize() {
-  pinMode(BC127_GPIO_0_PIN, INPUT);
-  pinMode(BC127_GPIO_4_PIN, INPUT);
-  attachInterrupt(digitalPinToInterrupt(
-                    BC127_GPIO_0_PIN), handleBC127ConnectionEvent,
-                  CHANGE);
-
-  attachInterrupt(digitalPinToInterrupt(
-                    BC127_GPIO_4_PIN), handleBC127Event,
-                  CHANGE);
-
 #if DEBUG == true
   static unsigned long startTime = millis();
   Serial.print(
-    "\n========================= INITIALIZING BC127 =========================\n");
+    "\n======================= INITIALIZING BC127 ======================\n");
 #endif
 
   bc127.enable();
@@ -36,10 +27,12 @@ void initialize() {
 }
 
 void enableBLEAdvertising() {
+  bc127.stdCmd("BT_STATE ON ON");
+  static int result = bc127.stdSetParam("BLE_CONFIG", "0 ON 40 ON");
+
 #if DEBUG == true
-  Serial << "Enabling advertising..." << endl;
+  Serial.println("Enabling advertising..." + bc127.commandResult(result));
 #endif
-  bc127.stdSetParam("BLE_CONFIG", "0 ON 40 ON");
 }
 
 void enterCommandMode() {
@@ -52,11 +45,43 @@ void exitCommandMode() {
 
 void handleBC127ConnectionEvent() {
   Serial.println("CONNECTION MADE");
-  bc127.stdCmd("STATUS");
+  // bc127.stdCmd("STATUS");
 }
 
 void handleBC127Event() {
   Serial.println("Something really crazy happened");
+}
+
+void handleSPPData(String SPPBuffer) {
+  enum params { EFFECT_NUMBER, NAME };
+
+  uint8_t index = SPPBuffer.indexOf(":");
+  if (index == -1) {
+    return;
+  }
+
+  uint8_t category = SPPBuffer.substring(0, index).toInt();
+  String param = SPPBuffer.substring(index + 1);
+
+  switch(category) {
+    case EFFECT_NUMBER:
+      static uint8_t animation = param.toInt();
+      AnimationManager::changeAnimation(animation);
+      printChange("Animation changed to " + param);
+      break;
+    case NAME:
+      bc127.setName(param, false);
+      bc127.setShortName(param, false);
+      printChange("Name changed to " + param);
+      break;
+  default: printChange("Unknown command: " + SPPBuffer);
+  }
+}
+
+void printChange(String str) {
+#if DEBUG == true
+  Serial.print(str + "\r");
+#endif
 }
 
 void listenAndHandleSPPData() {
@@ -65,10 +90,7 @@ void listenAndHandleSPPData() {
 
     if (SPPBuffer.endsWith('\r')) {
       SPPBuffer = SPPBuffer.remove(SPPBuffer.length() - 1);
-    #if DEBUG == true
-      Serial << SPPBuffer << endl;
-    #endif
-
+      handleSPPData(SPPBuffer);
       SPPBuffer = "";
     }
   }

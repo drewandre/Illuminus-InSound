@@ -12,8 +12,10 @@ void exitCommandMode(void);
 void disableGPIOControl(void);
 void handleBC127ConnectionEvent(void);
 void handleBC127Event(void);
-void listenAndHandleSPPData();
-void enableBLEAdvertising();
+void listenAndHandleSPPData(void);
+void handleSPPData(String SPPBuffer);
+void enableBLEAdvertising(void);
+void printChange(String str);
 }
 
 #endif

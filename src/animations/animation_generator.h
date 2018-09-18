@@ -9,6 +9,7 @@ using namespace AudioAnalyzer;
 
 namespace AnimationGenerator {
 void mapFFTLeft();
+void rainbow();
 }
 
 #endif

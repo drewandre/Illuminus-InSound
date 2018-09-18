@@ -13,7 +13,7 @@
 #define PRODUCT_VERSION 1.4
 #define PALETTE_VOLTAGE 5
 #define PALETTE_AMPERAGE 2000
-#define PRODUCT_NAME "PALETTE"
+#define DEVICE_NAME "PALETTE"
 #define BT_DEVICE_TYPE "20043C" // sets device type to loudspeaker?
 #define PRODUCT_SHORT_DESCRIPTION \
   "Smartphone controlled LED bar with audio reactive animations."
@@ -54,7 +54,6 @@
 // #define HALF_POS_16 NUM_LEDS_16 * 0.5; // delete multiplication in #define
 #define COLOR_ORDER GRB
 #define LED_COLOR_CORRECTION TypicalLEDStrip
-#define FFT_FIXED_SEGMENT_LENGTH NUM_LEDS / NUM_BANDS
 
 // #define HUE_LENGTH floor(255 / NUM_BANDS - 1);
 #define PALETTE_INDEX_INCREMENT 248.0 / NUM_LEDS;

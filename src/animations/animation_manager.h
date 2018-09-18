@@ -8,6 +8,7 @@ extern uint8_t currentAnimation;
 
 namespace AnimationManager {
 void runTask(void);
+void changeAnimation(uint8_t animationId);
 }
 
 #endif

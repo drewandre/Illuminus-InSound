@@ -35,12 +35,16 @@ void runTask() {
 
   case 1:
 
-    // AnimationGenerator::mapFFTLeft();
+    AnimationGenerator::rainbow();
     break;
 
   default:
     currentAnimation = 0;
     break;
   }
+}
+
+void changeAnimation(uint8_t animationId) {
+  currentAnimation = animationId;
 }
 }

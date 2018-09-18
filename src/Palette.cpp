@@ -20,6 +20,10 @@ using namespace DebugManager;
 #include "./audio/audio_manager.h"
 #include "./bluetooth/bluetooth_manager.h"
 
+void something() {
+  Serial.println("something");
+}
+
 void setup() {
 #if DEBUG == true
   initializeSerial();
@@ -29,16 +33,22 @@ void setup() {
   AudioManager::initialize();
   AudioManager::initializeFFT();
   BluetoothManager::initialize();
+  pinMode(BC127_GPIO_0_PIN, INPUT);
+  pinMode(BC127_GPIO_4_PIN, INPUT);
+  attachInterrupt(digitalPinToInterrupt(
+                    BC127_GPIO_0_PIN), BluetoothManager::handleBC127ConnectionEvent,
+                  CHANGE);
+  attachInterrupt(digitalPinToInterrupt(
+                    BC127_GPIO_4_PIN), BluetoothManager::handleBC127ConnectionEvent,
+                  CHANGE);
 
 #if DEBUG == true
   printStartupInfo(1);
 #endif
 }
 
-String buffer = "";
-
-// unsigned long appStartupMillis = millis();
-bool startupFlag = true;
+String buffer      = "";
+bool   startupFlag = true;
 
 // Serial.println("Entering data mode on channel 14...");
 // bc127.stdCmd("ENTER_DATA_MODE 14");
@@ -46,14 +56,14 @@ bool startupFlag = true;
 void loop() {
   BluetoothManager::enableBLEAdvertising();
   startupFlag = false;
-
+ 
   while (startupFlag == false) {
   #if PRINT_MCU_PERFORMANCE == true
     printSystemPerformanceEveryNSeconds(5);
   #endif
-    BluetoothManager::listenAndHandleSPPData();
+    BluetoothManager::listenAndHandleSPPData(); // TODO: make this an interrupt?
 
-    // AnimationManager::runTask();
-    // LEDManager::show();
+    AnimationManager::runTask();
+    LEDManager::show();
   }
 }

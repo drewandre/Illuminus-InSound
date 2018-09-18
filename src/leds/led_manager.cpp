@@ -17,7 +17,6 @@ void initialize() {
 
 #if LED_COLOR_CORRECTION == true
   FastLED.setCorrection(LED_COLOR_CORRECTION);
-
 #endif
 
 #if LED_CONST_FRAMERATE == true
@@ -27,7 +26,7 @@ void initialize() {
   FastLED.setBrightness(255);
   FastLED.setMaxPowerInVoltsAndMilliamps(PALETTE_VOLTAGE, PALETTE_AMPERAGE);
 
-  fill_solid(leds, NUM_LEDS, CRGB::Black);
+  fill_solid(leds, NUM_LEDS, CRGB::Blue);
   FastLED.show();
   delay(10);
 
