@@ -6,9 +6,12 @@
 #include "../audio/audio_analyzer.h"
 
 using namespace AudioAnalyzer;
+using namespace LedManager;
 
 namespace AnimationGenerator {
-void mapFFTLeft();
+void mapFFTMono();
+void flexFFTStereo();
+void radiateStereo();
 void rainbow();
 }
 

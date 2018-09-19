@@ -6,7 +6,7 @@ CRGB leds[NUM_LEDS];
 
 /*======================*/
 
-namespace LEDManager {
+namespace LedManager {
 void initialize() {
 #if DEBUG == true
   static unsigned long startTime = millis();
@@ -20,13 +20,15 @@ void initialize() {
 #endif
 
 #if LED_CONST_FRAMERATE == true
-  Serial << STRIP_TYPE << " framerate set to " << LED_FRAMERATE;
   FastLED.setMaxRefreshRate(LED_FRAMERATE);
+  Serial.print("WS2812b framerate set to ");
+  Serial.print(LED_FRAMERATE);
+  Serial.println();
 #endif
   FastLED.setBrightness(255);
-  FastLED.setMaxPowerInVoltsAndMilliamps(PALETTE_VOLTAGE, PALETTE_AMPERAGE);
+  // FastLED.setMaxPowerInVoltsAndMilliamps(PALETTE_VOLTAGE, PALETTE_AMPERAGE);
 
-  fill_solid(leds, NUM_LEDS, CRGB::Blue);
+  fill_solid(leds, NUM_LEDS, CRGB::Black);
   FastLED.show();
   delay(10);
 

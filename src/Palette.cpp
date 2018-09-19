@@ -29,18 +29,18 @@ void setup() {
   initializeSerial();
   printStartupInfo(0);
 #endif
-  LEDManager::initialize();
+  LedManager::initialize();
   AudioManager::initialize();
   AudioManager::initializeFFT();
-  BluetoothManager::initialize();
-  pinMode(BC127_GPIO_0_PIN, INPUT);
-  pinMode(BC127_GPIO_4_PIN, INPUT);
-  attachInterrupt(digitalPinToInterrupt(
-                    BC127_GPIO_0_PIN), BluetoothManager::handleBC127ConnectionEvent,
-                  CHANGE);
-  attachInterrupt(digitalPinToInterrupt(
-                    BC127_GPIO_4_PIN), BluetoothManager::handleBC127ConnectionEvent,
-                  CHANGE);
+  // BluetoothManager::initialize();
+  // pinMode(BC127_GPIO_0_PIN, INPUT);
+  // pinMode(BC127_GPIO_4_PIN, INPUT);
+  // attachInterrupt(digitalPinToInterrupt(
+  //                   BC127_GPIO_0_PIN), BluetoothManager::handleBC127ConnectionEvent,
+  //                 CHANGE);
+  // attachInterrupt(digitalPinToInterrupt(
+  //                   BC127_GPIO_4_PIN), BluetoothManager::handleBC127ConnectionEvent,
+  //                 CHANGE);
 
 #if DEBUG == true
   printStartupInfo(1);
@@ -54,16 +54,16 @@ bool   startupFlag = true;
 // bc127.stdCmd("ENTER_DATA_MODE 14");
 
 void loop() {
-  BluetoothManager::enableBLEAdvertising();
+  // BluetoothManager::enableBLEAdvertising();
   startupFlag = false;
  
   while (startupFlag == false) {
   #if PRINT_MCU_PERFORMANCE == true
     printSystemPerformanceEveryNSeconds(5);
   #endif
-    BluetoothManager::listenAndHandleSPPData(); // TODO: make this an interrupt?
+    // BluetoothManager::listenAndHandleSPPData(); // TODO: make this an interrupt?
 
     AnimationManager::runTask();
-    LEDManager::show();
+    LedManager::show();
   }
 }

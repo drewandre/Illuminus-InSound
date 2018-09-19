@@ -42,9 +42,10 @@
 #define STRIP_TYPE WS2812B
 #define DATA_PIN 3
 #define NUM_LEDS 144
-#define LED_CONST_FRAMERATE false
+#define HALF_POS 72
+#define LED_CONST_FRAMERATE true
 #if LED_CONST_FRAMERATE == true
-# define LED_FRAMERATE 69
+# define LED_FRAMERATE 100
 #endif // ifdef LED_CONST_FRAMERATE
 // #define NUM_LEDS_16 NUM_LEDS * 255; // delete multiplication in #define
 // int c = NUM_LEDS * 0.5;
@@ -62,17 +63,17 @@
 // -------------- Animation Controller config --------------- //
 #define NUM_ANIMATIONS 5
 #define SECONDS_PER_DEMO_ANIMATION 10
-#define FIXED_ANIMATION_INDEX false
-#if FIXED_ANIMATION_INDEX == true
-# define FIXED_ANIMATION_INDEX 0
+#define FIXED_ANIMATION true
+#if FIXED_ANIMATION == true
+# define FIXED_ANIMATION_INDEX 2
 #endif
 
 // -------------------- SGTL5000 config --------------------- //
 #define AUDIO_IN AUDIO_INPUT_LINEIN
 
 // ---------------------- FFT config ---------------------- //
-#define NUM_BANDS 32
-#define MAX_BIN 511
+#define NUM_BANDS 24
+#define MAX_BIN 500
 #define WAIT_FOR_FFT_AVAILABILITY true
 
 // ------------------ color palette config ------------------ //
