@@ -7,46 +7,63 @@
       www.instagram.com/_drewandre
  */
 
-#include <macros.h>
+#include "./macros.h"
 
 #if DEBUG == true
 # include "./helpers/debug_manager/debug_manager.h"
 using namespace DebugManager;
 #endif
 
+
 #include "./animations/animation_manager.h"
 #include "./leds/led_manager.h"
 #include "./audio/audio_manager.h"
 #include "./bluetooth/bluetooth_manager.h"
+
+void something() {
+  Serial.println("something");
+}
 
 void setup() {
 #if DEBUG == true
   initializeSerial();
   printStartupInfo(0);
 #endif
-
-  LEDManager::initialize();
-  BluetoothManager::initialize();
+  LedManager::initialize();
   AudioManager::initialize();
   AudioManager::initializeFFT();
+  // BluetoothManager::initialize();
+  // pinMode(BC127_GPIO_0_PIN, INPUT);
+  // pinMode(BC127_GPIO_4_PIN, INPUT);
+  // attachInterrupt(digitalPinToInterrupt(
+  //                   BC127_GPIO_0_PIN), BluetoothManager::handleBC127ConnectionEvent,
+  //                 CHANGE);
+  // attachInterrupt(digitalPinToInterrupt(
+  //                   BC127_GPIO_4_PIN), BluetoothManager::handleBC127ConnectionEvent,
+  //                 CHANGE);
 
 #if DEBUG == true
   printStartupInfo(1);
 #endif
 }
 
+String buffer      = "";
+bool   startupFlag = true;
+
+// Serial.println("Entering data mode on channel 14...");
+// bc127.stdCmd("ENTER_DATA_MODE 14");
+
 void loop() {
-  // BluetoothManager::SPPTask();
-#if PRINT_MCU_PERFORMANCE == true
-  printSystemPerformanceEveryNSeconds(5);
-#endif
+  // BluetoothManager::enableBLEAdvertising();
+  startupFlag = false;
+ 
+  while (startupFlag == false) {
+  #if PRINT_MCU_PERFORMANCE == true
+    printSystemPerformanceEveryNSeconds(5);
+  #endif
+    // BluetoothManager::listenAndHandleSPPData(); // TODO: make this an interrupt?
 
-  EVERY_N_SECONDS(5) {
-    BluetoothManager::getVolume();
+    AnimationManager::runTask();
+    LedManager::show();
   }
-
-  BluetoothManager::echo();
-
-  // AnimationManager::runTask();
-  // LEDManager::show();
 }

@@ -5,18 +5,18 @@
 # include "../helpers/debug_manager/debug_manager.h"
 #endif
 
-#include <macros.h>
+#include "../macros.h"
 
 /*======================*/
 /*  external variables  */
-uint8_t currentAnimation;
+uint8_t currentAnimation = 0;
 bool    calculateScaledFFT;
 
 /*======================*/
 
 namespace AnimationManager {
 void runTask() {
-#if FIXED_ANIMATION_INDEX == true
+#if FIXED_ANIMATION == true
   currentAnimation = FIXED_ANIMATION_INDEX;
 #endif
 
@@ -30,17 +30,28 @@ void runTask() {
 
   switch (currentAnimation) {
   case 0:
-    AnimationGenerator::mapFFTLeft();
+    AnimationGenerator::mapFFTMono();
     break;
 
   case 1:
+    AnimationGenerator::flexFFTStereo();
+    break;
 
-    // AnimationGenerator::mapFFTLeft();
+  case 2:
+    AnimationGenerator::radiateStereo();
+    break;
+
+  case 3:
+    AnimationGenerator::rainbow();
     break;
 
   default:
     currentAnimation = 0;
     break;
   }
+}
+
+void changeAnimation(uint8_t animationId) {
+  currentAnimation = animationId;
 }
 }

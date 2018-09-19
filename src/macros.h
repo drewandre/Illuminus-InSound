@@ -4,18 +4,16 @@
 #include <Arduino.h>
 #include <FastLED.h>
 #include <Audio.h>
-#include <RN52.h>
-#include <BM64.h>
+#include <BC127.h>
 
 // -------------------- Palette config -------------------- //
 #define DEBUG true
 
 #define CYCLE_THROUGH_ANIMATIONS false
-#define PALETTE_USING_BM64 false
 #define PRODUCT_VERSION 1.4
 #define PALETTE_VOLTAGE 5
 #define PALETTE_AMPERAGE 2000
-#define PRODUCT_NAME "PALETTE"
+#define DEVICE_NAME "PALETTE"
 #define BT_DEVICE_TYPE "20043C" // sets device type to loudspeaker?
 #define PRODUCT_SHORT_DESCRIPTION \
   "Smartphone controlled LED bar with audio reactive animations."
@@ -30,31 +28,24 @@
   # define PRINT_FFT_SETTINGS true
 #endif
 
-// ---------------------- BM64 config ---------------------- //
-#define BM64_SERIAL Serial4 // RX4 (31) + TX4 (32)
-#define BM64_UART_TX_IND 21 // BM64 to interrupt MCU on input
-
-// ---------------------- RN52 config ---------------------- //
-#define RN52_SERIAL Serial1
-#define RN52_SERIAL_BAUD 115200
-
-#define RN52_GPI02_PIN 8 // RN52 GPIO2 event notifier pin (default HIGH,
-// HIGH -> LOW for 100ms on connected device event)
-
-#define RN52_CMD_PIN 2   // GPIO9 LOW for command mode
+// ---------------------- BC127 config ---------------------- //
+#define BC127_SERIAL Serial1
+#define BC127_SERIAL_BAUD 9600
+#define BC127_CMD_PIN 2
+#define BC127_GPIO_0_PIN 35
+#define BC127_GPIO_4_PIN 36
 #define BT_CHECK_IF_FACTORY_SETTINGS false
-
-#define RN52_ANALOG_OUTPUT true
-
+#define BC127_ANALOG_OUTPUT true
 #define ECHO_BT_MODULE true
 
 // ---------------------- WS2812b config ---------------------- //
 #define STRIP_TYPE WS2812B
 #define DATA_PIN 3
 #define NUM_LEDS 144
-#define LED_CONST_FRAMERATE false
+#define HALF_POS 72
+#define LED_CONST_FRAMERATE true
 #if LED_CONST_FRAMERATE == true
-# define LED_FRAMERATE 69
+# define LED_FRAMERATE 100
 #endif // ifdef LED_CONST_FRAMERATE
 // #define NUM_LEDS_16 NUM_LEDS * 255; // delete multiplication in #define
 // int c = NUM_LEDS * 0.5;
@@ -64,7 +55,6 @@
 // #define HALF_POS_16 NUM_LEDS_16 * 0.5; // delete multiplication in #define
 #define COLOR_ORDER GRB
 #define LED_COLOR_CORRECTION TypicalLEDStrip
-#define FFT_FIXED_SEGMENT_LENGTH NUM_LEDS / NUM_BANDS
 
 // #define HUE_LENGTH floor(255 / NUM_BANDS - 1);
 #define PALETTE_INDEX_INCREMENT 248.0 / NUM_LEDS;
@@ -73,17 +63,17 @@
 // -------------- Animation Controller config --------------- //
 #define NUM_ANIMATIONS 5
 #define SECONDS_PER_DEMO_ANIMATION 10
-#define FIXED_ANIMATION_INDEX false
-#if FIXED_ANIMATION_INDEX == true
-# define FIXED_ANIMATION_INDEX 0
+#define FIXED_ANIMATION true
+#if FIXED_ANIMATION == true
+# define FIXED_ANIMATION_INDEX 2
 #endif
 
 // -------------------- SGTL5000 config --------------------- //
 #define AUDIO_IN AUDIO_INPUT_LINEIN
 
 // ---------------------- FFT config ---------------------- //
-#define NUM_BANDS 32
-#define MAX_BIN 511
+#define NUM_BANDS 24
+#define MAX_BIN 500
 #define WAIT_FOR_FFT_AVAILABILITY true
 
 // ------------------ color palette config ------------------ //

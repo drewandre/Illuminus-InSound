@@ -1,18 +1,21 @@
 #ifndef BLUETOOTH_MANAGER_H
 #define BLUETOOTH_MANAGER_H
 
-#include <macros.h>
+#include "../macros.h"
 
-extern RN52 rn52;
-extern BM64 bm64;
+extern BC127 bc127;
 
 namespace BluetoothManager {
-void   initialize(void);
-void   printConfig(void);
-void   handleRN52Event(void);
-String getVolume(void);
-void   SPPTask(void);
-void   echo();
+void initialize(void);
+void enterCommandMode(void);
+void exitCommandMode(void);
+void disableGPIOControl(void);
+void handleBC127ConnectionEvent(void);
+void handleBC127Event(void);
+void listenAndHandleSPPData(void);
+void handleSPPData(String SPPBuffer);
+void enableBLEAdvertising(void);
+void printChange(String str);
 }
 
 #endif

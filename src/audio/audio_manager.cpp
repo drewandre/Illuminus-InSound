@@ -2,15 +2,15 @@
 
 /*======================*/
 /*  external variables  */
-#if RN52_ANALOG_OUTPUT == true // analog audio input from SGTL5000
+#if BC127_ANALOG_OUTPUT == true // analog audio input from SGTL5000
 AudioInputI2S audioInput;
 
 // AudioOutputI2S       audioOutput; // SGTL5000 headphones & line-out
 // AudioConnection      patchCord1(audioInput, 0, audioOutput, 0);
 // AudioConnection      patchCord2(audioInput, 1, audioOutput, 1);
-#else // I2S audio input from RN52
+#else // I2S audio input from BC127
 AudioInputI2Sslave audioInput;
-#endif // ifdef RN52_ANALOG_OUTPUT
+#endif // ifdef BC127_ANALOG_OUTPUT
 
 AudioControlSGTL5000 SGTL5000;
 

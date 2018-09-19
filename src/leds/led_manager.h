@@ -1,11 +1,11 @@
 #ifndef LED_MANAGER_H
 #define LED_MANAGER_H
 
-#include <macros.h>
+#include "../macros.h"
 
 extern CRGB leds[NUM_LEDS];
 
-namespace LEDManager {
+namespace LedManager {
 void initialize(void);
 void show(void);
 void setPartialPixel(uint16_t pos,

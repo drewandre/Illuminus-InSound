@@ -87,7 +87,7 @@ void initializeFFT() {
   static unsigned long startTime = millis();
 
   Serial <<
-    "\n===================== INITIALIZING AUDIO ANALYZER =====================\n";
+    "\n================== INITIALIZING AUDIO ANALYZER ==================\n";
   #endif
 #if PRINT_FFT_SETTINGS == true
   Serial << "FFT > NUM_BANDS:\t" << NUM_BANDS << endl;
@@ -202,18 +202,27 @@ bool readFFT(float smoothing,
       currentBin = fftBins[band];
       nextBin    = fftBins[band + 1];
 
-      if (band == NUM_BANDS - 1) nextBin = currentBin;
-
       previousLeftAmp = levelsL[band];
-      currentLeftAmp  = fftL.read(currentBin, nextBin) * 255.0;
+
+      if (band < NUM_BANDS) {
+        currentLeftAmp  = fftL.read(currentBin, nextBin) * 255.0;
+      } else {
+        currentLeftAmp  = fftL.read(currentBin) * 255.0;
+      }
+
+      // currentLeftAmp  = fftL.read(currentBin, nextBin) * 255.0;
+      // levelsL[band]  = fftL.read(currentBin, nextBin) * 255.0;
 
       // currentLeftAmp = lerp8by8(previousLeftAmp, currentLeftAmp,
       // smoothing); // higher === smoother!
+
       currentLeftAmp = previousLeftAmp + (currentLeftAmp - previousLeftAmp)
                        *
                        smoothing;
-      currentLeftAmp = constrain(currentLeftAmp, 1, 255);
-      levelsL[band]  = map(currentLeftAmp, 1, 255, 0, 255);
+      // currentLeftAmp = constrain(currentLeftAmp, 0, 255);
+      // currentLeftAmp = map(currentLeftAmp, 0, 255, 0, 255);
+
+      levelsL[band]  = currentLeftAmp;
 
       leftVolume += levelsL[band];
       #if PRINT_FFT == true

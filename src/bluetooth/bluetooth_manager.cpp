@@ -1,73 +1,98 @@
 #include "./bluetooth_manager.h"
+#include "../animations/animation_manager.h"
 
 /*======================*/
 /*  external variables  */
-RN52 rn52(RN52_CMD_PIN, &RN52_SERIAL, ECHO_BT_MODULE);
-BM64 bm64(BM64_UART_TX_IND, &BM64_SERIAL, ECHO_BT_MODULE);
+BC127 bc127(BC127_CMD_PIN, BC127_GPIO_0_PIN, &BC127_SERIAL, ECHO_BT_MODULE, DEVICE_NAME);
 
 /*======================*/
+
+String SPPBuffer = "";
 
 namespace BluetoothManager {
 void initialize() {
 #if DEBUG == true
   static unsigned long startTime = millis();
   Serial.print(
-    "\n======================= INITIALIZING RN52 =======================\n");
+    "\n======================= INITIALIZING BC127 ======================\n");
 #endif
-  rn52.enable();
-  attachInterrupt(digitalPinToInterrupt(RN52_GPI02_PIN), handleRN52Event,
-                  FALLING);
+
+  bc127.enable();
 
 #if DEBUG == true
-  rn52.printVersion();
-  rn52.printConfig();
-#endif
-
-#if BT_CHECK_IF_FACTORY_SETTINGS == true
-
-  if (rn52.factorySettings(PRODUCT_NAME)) { // checks device name
-#endif
-  rn52.setDeviceName(PRODUCT_NAME);
-  rn52.setDeviceType(BT_DEVICE_TYPE);       // sets device name loudspeaker?
-  rn52.muteTones();
-  rn52.setAnalogAudioOutput();
-  rn52.setMaxSpeakerGain();
-#if BT_CHECK_IF_FACTORY_SETTINGS == true
-}
-
-#endif
-#if DEBUG == true
-  Serial.print("GPIO pin #"); Serial.print(RN52_GPI02_PIN); Serial.println(
-    " initialized as an RN52 event interrupt routine.");
-
   static unsigned long totalTime = millis() - startTime;
-  Serial << "RN52 Initialized:\t" << totalTime << "ms" << "\n";
+  Serial << "BC127 Initialized:\t" << totalTime << "ms" << "\n";
   Serial << "-----------------------------------------------------------------\n";
 #endif
 }
 
-void handleRN52Event() {
-  // rn52.printConnectionStatus();
-  Serial.println(rn52.status(), HEX);
+void enableBLEAdvertising() {
+  bc127.stdCmd("BT_STATE ON ON");
+  static int result = bc127.stdSetParam("BLE_CONFIG", "0 ON 40 ON");
+
+#if DEBUG == true
+  Serial.println("Enabling advertising..." + bc127.commandResult(result));
+#endif
 }
 
-void printConfig() {
-  rn52.printConfig();
+void enterCommandMode() {
+  bc127.enterCommandMode();
 }
 
-String getVolume() {
-  return rn52.getVolume();
+void exitCommandMode() {
+  bc127.exitCommandMode();
 }
 
-void SPPTask() {
-  rn52.readSerial();
+void handleBC127ConnectionEvent() {
+  Serial.println("CONNECTION MADE");
+  // bc127.stdCmd("STATUS");
 }
 
-void echo() {
-  char *response = rn52.readSerial();
+void handleBC127Event() {
+  Serial.println("Something really crazy happened");
+}
 
-  if (response) {
-    Serial.println(response);
+void handleSPPData(String SPPBuffer) {
+  enum params { EFFECT_NUMBER, NAME };
+
+  uint8_t index = SPPBuffer.indexOf(":");
+  if (index == -1) {
+    return;
+  }
+
+  uint8_t category = SPPBuffer.substring(0, index).toInt();
+  String param = SPPBuffer.substring(index + 1);
+
+  switch(category) {
+    case EFFECT_NUMBER:
+      static uint8_t animation = param.toInt();
+      AnimationManager::changeAnimation(animation);
+      printChange("Animation changed to " + param);
+      break;
+    case NAME:
+      bc127.setName(param, false);
+      bc127.setShortName(param, false);
+      printChange("Name changed to " + param);
+      break;
+  default: printChange("Unknown command: " + SPPBuffer);
   }
 }
+
+void printChange(String str) {
+#if DEBUG == true
+  Serial.print(str + "\r");
+#endif
 }
+
+void listenAndHandleSPPData() {
+  if (BC127_SERIAL.available() > 0) {
+    SPPBuffer.concat(char(BC127_SERIAL.read()));
+
+    if (SPPBuffer.endsWith('\r')) {
+      SPPBuffer = SPPBuffer.remove(SPPBuffer.length() - 1);
+      handleSPPData(SPPBuffer);
+      SPPBuffer = "";
+    }
+  }
+}
+} // end namespace

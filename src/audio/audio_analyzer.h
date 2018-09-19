@@ -1,7 +1,7 @@
 #ifndef AUDIO_ANALYZER_H
 #define AUDIO_ANALYZER_H
 
-#include <macros.h>
+#include "../macros.h"
 
 extern AudioAnalyzeFFT1024 fftL;
 extern AudioAnalyzeFFT1024 fftR;

@@ -5,14 +5,14 @@ namespace DebugManager {
 void initializeSerial() {
   Serial.begin(SWSERIAL_BAUD);
 
-  while (!Serial) ;
+  // while (!Serial) ;
 }
 
 void printStartupInfo(uint8_t stage) {
   switch (stage) {
   case 0:
     static unsigned long startTime = millis();
-    Serial << endl << PRODUCT_NAME << " " << PRODUCT_VERSION << endl <<
+    Serial << endl << DEVICE_NAME << " " << PRODUCT_VERSION << endl <<
       PRODUCT_SHORT_DESCRIPTION <<
       endl;
     Serial << "Designed by Drew André in Boston, MA - " << CURRENT_DATE << endl;
@@ -21,8 +21,8 @@ void printStartupInfo(uint8_t stage) {
 
   case 1:
     static unsigned long totalTime = millis() - startTime;
-    Serial << "\n" << PRODUCT_NAME << " configured in " << totalTime << "ms\n" <<
-      "\n================= " << PRODUCT_NAME <<
+    Serial << "\n" << DEVICE_NAME << " configured in " << totalTime << "ms\n" <<
+      "\n================= " << DEVICE_NAME <<
       " MAIN APPLICATION LOOP =================\n";
     break;
   }
