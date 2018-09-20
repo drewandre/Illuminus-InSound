@@ -65,7 +65,7 @@
 #define SECONDS_PER_DEMO_ANIMATION 10
 #define FIXED_ANIMATION true
 #if FIXED_ANIMATION == true
-# define FIXED_ANIMATION_INDEX 2
+# define FIXED_ANIMATION_INDEX 1
 #endif
 
 // -------------------- SGTL5000 config --------------------- //

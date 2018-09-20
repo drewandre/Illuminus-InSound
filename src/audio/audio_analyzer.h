@@ -7,10 +7,10 @@ extern AudioAnalyzeFFT1024 fftL;
 extern AudioAnalyzeFFT1024 fftR;
 
 extern uint16_t fftBins[NUM_BANDS];
-extern uint8_t  levelsL[NUM_BANDS];
-extern uint8_t  levelsR[NUM_BANDS];
-extern uint8_t  scaledLevelsL[NUM_BANDS];
-extern uint8_t  scaledLevelsR[NUM_BANDS];
+extern float  levelsL[NUM_BANDS];
+extern float  levelsR[NUM_BANDS];
+extern float  scaledLevelsL[NUM_BANDS];
+extern float  scaledLevelsR[NUM_BANDS];
 
 namespace AudioAnalyzer {
 void    initializeFFT(void);

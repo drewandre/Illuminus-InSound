@@ -32,15 +32,15 @@ void mapFFTMono() {
 }
 
 void flexFFTStereo() {
-  static uint16_t currentLeftAmp;
-  static uint16_t currentRightAmp;
-  static uint16_t leftPos;
-  static uint16_t leftPoint;
-  static uint16_t rightPos;
-  static uint16_t rightPoint;
+  static float currentLeftAmp;
+  static float currentRightAmp;
+  static float leftPos;
+  static float leftPoint;
+  static float rightPos;
+  static float rightPoint;
   static uint16_t i;
   static uint8_t band;
-  static uint8_t currentHue;
+  static float currentHue;
 
   leftPos    = HALF_POS;
   leftPoint  = HALF_POS;
@@ -52,25 +52,25 @@ void flexFFTStereo() {
     nscale8(leds, NUM_LEDS, 230);
 
     for (band = 0; band < NUM_BANDS; band++) {
+      currentLeftAmp = levelsL[band];
+      currentRightAmp = levelsR[band];
 
-    currentLeftAmp = levelsL[band];
-    currentRightAmp = levelsR[band];
+      leftPoint -= scaledLevelsL[band];
+      rightPoint += scaledLevelsR[band];
+      if (leftPoint < 0) leftPoint = 0;
+      if (rightPoint > NUM_LEDS - 1) rightPoint = 0;
 
-    leftPoint -= scaledLevelsL[band];
-    rightPoint += scaledLevelsR[band];
+      currentHue = band * 10.5;
 
-    currentHue += 4;
+      for (i = leftPos; i > leftPoint; i--) {
+        leds[i] += CHSV(currentHue, 255, currentLeftAmp);
+      }
+      for (i = rightPos; i < rightPoint; i++) {
+        leds[i] += CHSV(currentHue, 255, currentRightAmp);
+      }
 
-    for (i = leftPos; i > leftPoint; i--) {
-      leds[i] += CHSV(currentHue, 255, currentLeftAmp);
-    }
-    for (i = rightPos; i < rightPoint; i++) {
-      leds[i] += CHSV(currentHue, 255, currentRightAmp);
-    }
-
-    leftPos = leftPoint;
-    rightPos = rightPoint;
-
+      leftPos = leftPoint;
+      rightPos = rightPoint;
     }
     blur1d(leds, NUM_LEDS, 10);
   };

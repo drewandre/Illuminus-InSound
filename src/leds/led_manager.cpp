@@ -25,8 +25,8 @@ void initialize() {
   Serial.print(LED_FRAMERATE);
   Serial.println();
 #endif
-  FastLED.setBrightness(255);
-  // FastLED.setMaxPowerInVoltsAndMilliamps(PALETTE_VOLTAGE, PALETTE_AMPERAGE);
+  FastLED.setBrightness(100);
+  FastLED.setMaxPowerInVoltsAndMilliamps(PALETTE_VOLTAGE, PALETTE_AMPERAGE);
 
   fill_solid(leds, NUM_LEDS, CRGB::Black);
   FastLED.show();
