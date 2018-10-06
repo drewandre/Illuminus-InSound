@@ -45,7 +45,7 @@
 #define HALF_POS 72
 #define LED_CONST_FRAMERATE true
 #if LED_CONST_FRAMERATE == true
-# define LED_FRAMERATE 100
+# define LED_FRAMERATE 10
 #endif // ifdef LED_CONST_FRAMERATE
 // #define NUM_LEDS_16 NUM_LEDS * 255; // delete multiplication in #define
 // int c = NUM_LEDS * 0.5;
@@ -65,7 +65,7 @@
 #define SECONDS_PER_DEMO_ANIMATION 10
 #define FIXED_ANIMATION true
 #if FIXED_ANIMATION == true
-# define FIXED_ANIMATION_INDEX 2
+# define FIXED_ANIMATION_INDEX 1
 #endif
 
 // -------------------- SGTL5000 config --------------------- //

@@ -6,10 +6,10 @@ AudioAnalyzeFFT1024 fftL;
 AudioAnalyzeFFT1024 fftR;
 
 uint16_t fftBins[NUM_BANDS];
-uint8_t  levelsL[NUM_BANDS];
-uint8_t  levelsR[NUM_BANDS];
-uint8_t  scaledLevelsL[NUM_BANDS];
-uint8_t  scaledLevelsR[NUM_BANDS];
+float  levelsL[NUM_BANDS];
+float  levelsR[NUM_BANDS];
+float  scaledLevelsL[NUM_BANDS];
+float  scaledLevelsR[NUM_BANDS];
 
 /*======================*/
 
@@ -107,7 +107,8 @@ bool readFFT(float smoothing,
              bool  stereo,
              bool  calculateScaledFFT) {
   static uint16_t currentBin, nextBin;
-  static uint8_t  band, previousLeftAmp, previousRightAmp, mappedLeftAmp,
+  static uint8_t  band;
+  static float previousLeftAmp, previousRightAmp, mappedLeftAmp,
                   mappedRightAmp;
   static float leftVolume, rightVolume, currentLeftAmp, currentRightAmp,
                leftFactor, rightFactor;
@@ -125,36 +126,33 @@ bool readFFT(float smoothing,
       currentBin = fftBins[band];
       nextBin    = fftBins[band + 1];
 
-      if (band == NUM_BANDS - 1) {
-        nextBin = currentBin;
-      }
-
       previousLeftAmp  = levelsL[band];
       previousRightAmp = levelsR[band];
-      currentLeftAmp   = fftL.read(currentBin, nextBin) * 255.0;
-      currentRightAmp  = fftR.read(currentBin, nextBin) * 255.0;
 
-      // currentLeftAmp = lerp8by8(previousLeftAmp, currentLeftAmp,
-      //                           smoothing);
-      currentLeftAmp = previousLeftAmp + (currentLeftAmp - previousLeftAmp)
-                       *
-                       smoothing;
-      currentLeftAmp = constrain(currentLeftAmp, 1, 255.0);
-      levelsL[band]  = map(currentLeftAmp, 1, 255, 0, 255.0);
+      if (band < NUM_BANDS) {
+        // currentLeftAmp = lerp8by8(previousLeftAmp, currentLeftAmp, smoothing);
+        currentLeftAmp  = fftL.read(currentBin, nextBin) * 255;
+        currentLeftAmp = previousLeftAmp + (currentLeftAmp - previousLeftAmp) * smoothing;
+        // currentLeftAmp = constrain(currentLeftAmp, 1, 255.0);
+        // currentLeftAmp = map(currentLeftAmp, 1, 255, 0, 255.0);
 
-      // higher === smoother!
-      // currentRightAmp = lerp8by8(previousRightAmp, currentRightAmp,
-      //                            smoothing);
-
-      currentRightAmp = previousRightAmp +
-                        (currentRightAmp - previousRightAmp) * smoothing;
-      currentRightAmp = constrain(currentRightAmp, 1, 255.0);
-      levelsR[band]   = map(currentRightAmp, 1, 255.0, 0, 255.0);
+        currentRightAmp  = fftR.read(currentBin, nextBin) * 255;
+        currentRightAmp = previousRightAmp + (currentRightAmp - previousRightAmp) * smoothing;
+        // currentRightAmp = constrain(currentRightAmp, 1, 255.0);
+        // currentRightAmp = map(currentRightAmp, 1, 255.0, 0, 255.0);
+      } else {
+        currentLeftAmp  = fftL.read(currentBin) * 255;
+        currentRightAmp  = fftR.read(currentBin) * 255;
+      }
 
       if (calculateScaledFFT) {
-        leftVolume  += levelsL[band];
-        rightVolume += levelsR[band];
+        leftVolume  += currentLeftAmp;
+        rightVolume += currentRightAmp;
       }
+
+      levelsL[band] = currentLeftAmp;
+      levelsR[band] = currentRightAmp;
+
       #if PRINT_FFT == true
       Serial << levelsL[band] << endl << "\t";
       #endif
@@ -166,9 +164,6 @@ bool readFFT(float smoothing,
     if (calculateScaledFFT) {
       leftFactor  = CENTER_LED_POS / leftVolume;
       rightFactor = CENTER_LED_POS / rightVolume;
-
-      // uint16_t leftFactor_16 = 18000 / leftVolume; // was
-      // CENTER_LED_POS_16
 
       for (band = 0; band < NUM_BANDS; band++) {
         mappedLeftAmp       = levelsL[band] * leftFactor;

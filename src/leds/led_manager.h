@@ -4,6 +4,7 @@
 #include "../macros.h"
 
 extern CRGB leds[NUM_LEDS];
+extern CRGB tempLeds[NUM_LEDS];
 
 namespace LedManager {
 void initialize(void);

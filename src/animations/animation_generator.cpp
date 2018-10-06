@@ -9,7 +9,7 @@ void mapFFTMono() {
   
   // nscale8(leds, NUM_LEDS, 220);
   // fadeToBlackBy(leds,NUM_LEDS,9);
-  if (readFFT(0.2, false, false)) {
+  if (readFFT(0.3, false, false)) {
     fill_solid(leds, NUM_LEDS, CRGB::Black);
 
     pos   = 0;
@@ -27,20 +27,119 @@ void mapFFTMono() {
       }
       pos = point;
     }
-    blur1d(leds, NUM_LEDS, 100);
+    // blur1d(leds, NUM_LEDS, 10);
   }
 }
 
 void flexFFTStereo() {
-  static uint16_t currentLeftAmp;
-  static uint16_t currentRightAmp;
-  static uint16_t leftPos;
-  static uint16_t leftPoint;
-  static uint16_t rightPos;
-  static uint16_t rightPoint;
+  static float currentLeftAmp;
+  static float currentRightAmp;
+  static float leftPos;
+  static float leftPoint;
+  static float rightPos;
+  static float rightPoint;
   static uint16_t i;
   static uint8_t band;
-  static uint8_t currentHue;
+  static float currentHue;
+
+  leftPos    = HALF_POS;
+  leftPoint  = HALF_POS;
+  rightPos   = HALF_POS;
+  rightPoint = HALF_POS;
+  currentHue = 0;
+
+  if (readFFT(0.08, true, true)) {
+    nscale8(leds, NUM_LEDS, 230);
+
+    for (band = 0; band < NUM_BANDS; band++) {
+      currentLeftAmp = levelsL[band];
+      currentRightAmp = levelsR[band];
+
+      leftPoint -= scaledLevelsL[band];
+      rightPoint += scaledLevelsR[band];
+      if (leftPoint < 0) leftPoint = 0;
+      if (rightPoint > NUM_LEDS - 1) rightPoint = 0;
+
+      currentHue = band * 10.5;
+
+      for (i = leftPos; i > leftPoint; i--) {
+        leds[i] += CHSV(currentHue, 255, currentLeftAmp);
+      }
+      for (i = rightPos; i < rightPoint; i++) {
+        leds[i] += CHSV(currentHue, 255, currentRightAmp);
+      }
+
+      leftPos = leftPoint;
+      rightPos = rightPoint;
+    }
+    blur1d(leds, NUM_LEDS, 10);
+  };
+}
+
+void drawFractionalBar( int pos16, int width, uint8_t hue) {
+  static int i;
+  static uint8_t frac, firstpixelbrightness, lastpixelbrightness, bright;
+
+  i = pos16 / 16; // convert from pos to raw pixel number
+  frac = pos16 & 0x0F; // extract the 'factional' part of the position
+ 
+  // brightness of the first pixel in the bar is 1.0 - (fractional part of position)
+  // e.g., if the light bar starts drawing at pixel "57.9", then
+  // pixel #57 should only be lit at 10% brightness, because only 1/10th of it
+  // is "in" the light bar:
+  //
+  //                       57.9 . . . . . . . . . . . . . . . . . 61.9
+  //                        v                                      v
+  //  ---+---56----+---57----+---58----+---59----+---60----+---61----+---62---->
+  //     |         |        X|XXXXXXXXX|XXXXXXXXX|XXXXXXXXX|XXXXXXXX |  
+  //  ---+---------+---------+---------+---------+---------+---------+--------->
+  //                   10%       100%      100%      100%      90%        
+  //
+  // the fraction we get is in 16ths and needs to be converted to 256ths,
+  // so we multiply by 16.  We subtract from 255 because we want a high
+  // fraction (e.g. 0.9) to turn into a low brightness (e.g. 0.1)
+  firstpixelbrightness = 255 - (frac * 16);
+ 
+  // if the bar is of integer length, the last pixel's brightness is the
+  // reverse of the first pixel's; see illustration above.
+  lastpixelbrightness  = 255 - firstpixelbrightness;
+ 
+  // For a bar of width "N", the code has to consider "N+1" pixel positions,
+  // which is why the "<= width" below instead of "< width".
+ 
+  bright;
+  for( int n = 0; n <= width; n++) {
+    if( n == 0) {
+      // first pixel in the bar
+      bright = firstpixelbrightness;
+    } else if( n == width ) {
+      // last pixel in the bar
+      bright = lastpixelbrightness;
+    } else {
+      // middle pixels
+      bright = 255;
+    }
+   
+    leds[i] += CHSV( hue, 255, bright);
+    i++;
+    if( i == NUM_LEDS) i = 0; // wrap around
+  }
+}
+
+
+void fractionalFlexFFTStereo() {
+  static float currentLeftAmp;
+  static float currentRightAmp;
+  static float nextLeftAmp;
+  static float nextRightAmp;
+  static float leftPos;
+  static float leftPoint;
+  static float rightPos;
+  static float rightPoint;
+  static float currentHue;
+  static float nextHue;
+  static uint16_t i;
+  static uint8_t band;
 
   leftPos    = HALF_POS;
   leftPoint  = HALF_POS;
@@ -49,39 +148,70 @@ void flexFFTStereo() {
   currentHue = 0;
 
   if (readFFT(0.2, true, true)) {
-    nscale8(leds, NUM_LEDS, 230);
+    nscale8(leds, NUM_LEDS, 180); // lower = faster decay
 
     for (band = 0; band < NUM_BANDS; band++) {
+      currentLeftAmp = levelsL[band];
+      currentRightAmp = levelsR[band];
+      currentHue = band * 10.5;
 
-    currentLeftAmp = levelsL[band];
-    currentRightAmp = levelsR[band];
+      if (band < NUM_BANDS - 1) {
+        nextLeftAmp = levelsL[band + 1];
+        nextRightAmp = levelsR[band + 1];
+        nextHue = (band + 1) * 10.5;
+      } else {
+        nextLeftAmp = currentLeftAmp;
+        nextRightAmp = currentRightAmp;
+        nextHue = currentHue;
+      }
 
-    leftPoint -= scaledLevelsL[band];
-    rightPoint += scaledLevelsR[band];
+      leftPoint -= scaledLevelsL[band];
+      rightPoint += scaledLevelsR[band];
+      if (leftPoint < 0) leftPoint = 0;
+      if (rightPoint > NUM_LEDS - 1) rightPoint = NUM_LEDS;
 
-    currentHue += 4;
+      fill_gradient(
+        tempLeds,
+        leftPos,
+        CHSV(currentHue, 255, currentLeftAmp),
+        leftPoint,
+        CHSV(nextHue, 255, nextLeftAmp)
+      );
 
-    for (i = leftPos; i > leftPoint; i--) {
-      leds[i] += CHSV(currentHue, 255, currentLeftAmp);
-    }
-    for (i = rightPos; i < rightPoint; i++) {
-      leds[i] += CHSV(currentHue, 255, currentRightAmp);
-    }
+      fill_gradient(
+        tempLeds,
+        rightPos,
+        CHSV(currentHue, 255, currentRightAmp),
+        rightPoint,
+        CHSV(nextHue, 255, nextRightAmp)
+      );
 
-    leftPos = leftPoint;
-    rightPos = rightPoint;
+      for (i = 0; i < NUM_LEDS; i++) {
+        leds[i] += tempLeds[i];
+      }
 
+      // for (i = leftPos; i > leftPoint; i--) {
+      //   leds[i] = CHSV(currentHue, 255, currentLeftAmp);
+      // }
+      // for (i = rightPos; i < rightPoint; i++) {
+      //   leds[i] = CHSV(currentHue, 255, currentRightAmp);
+      // }
+
+      leftPos = leftPoint;
+      rightPos = rightPoint;
     }
     blur1d(leds, NUM_LEDS, 10);
   };
 }
 
+
 void rainbow() {
-  static int i = 0;
-  EVERY_N_MILLISECONDS(100) {
-    i += 1;
-  }
-  fill_rainbow(leds, 144, 0, i);
+  // static int i = 0;
+  // EVERY_N_MILLISECONDS(100) {
+  //   i += 1;
+  // }
+  // fill_rainbow(leds, 144, 0, i);
+  fill_solid(leds, NUM_LEDS, CRGB::Blue);
 }
 
 void radiateStereo() {
