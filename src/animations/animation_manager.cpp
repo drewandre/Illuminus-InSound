@@ -38,10 +38,14 @@ void runTask() {
     break;
 
   case 2:
-    AnimationGenerator::radiateStereo();
+    AnimationGenerator::fractionalFlexFFTStereo();
     break;
 
   case 3:
+    AnimationGenerator::radiateStereo();
+    break;
+
+  case 4:
     AnimationGenerator::rainbow();
     break;
 

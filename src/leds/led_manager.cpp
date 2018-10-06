@@ -3,6 +3,7 @@
 /*======================*/
 /*  external variables  */
 CRGB leds[NUM_LEDS];
+CRGB tempLeds[NUM_LEDS];
 
 /*======================*/
 
@@ -13,6 +14,8 @@ void initialize() {
   Serial <<
     "\n======================= INITIALIZING LEDS =======================\n";
 #endif
+#define WS2801 true
+  // FastLED.addLeds<WS2801, 3, 30, COLOR_ORDER>(leds, NUM_LEDS);
   FastLED.addLeds<STRIP_TYPE, DATA_PIN, COLOR_ORDER>(leds, NUM_LEDS);
 
 #if LED_COLOR_CORRECTION == true
@@ -20,17 +23,28 @@ void initialize() {
 #endif
 
 #if LED_CONST_FRAMERATE == true
-  FastLED.setMaxRefreshRate(LED_FRAMERATE);
+  // #if WS2801 == true
+  //   FastLED.setMaxRefreshRate(10);
+  // #else
+    FastLED.setMaxRefreshRate(255);
+  // #endif
   Serial.print("WS2812b framerate set to ");
   Serial.print(LED_FRAMERATE);
   Serial.println();
 #endif
-  FastLED.setBrightness(100);
-  FastLED.setMaxPowerInVoltsAndMilliamps(PALETTE_VOLTAGE, PALETTE_AMPERAGE);
+  FastLED.setBrightness(255);
+  // #if WS2801 != true
+  //   FastLED.setMaxPowerInVoltsAndMilliamps(PALETTE_VOLTAGE, PALETTE_AMPERAGE);
+  // #endif
 
-  fill_solid(leds, NUM_LEDS, CRGB::Black);
+  // #if WS2801 == true
+  //   fill_solid(leds, NUM_LEDS, CRGB::Red);
+  // #else
+    fill_solid(leds, NUM_LEDS, CRGB::Black);
+  // #endif
   FastLED.show();
   delay(10);
+  // while(1);
 
 #if DEBUG == true
   static unsigned long totalTime = millis() - startTime;

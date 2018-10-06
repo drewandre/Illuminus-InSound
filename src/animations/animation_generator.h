@@ -11,6 +11,7 @@ using namespace LedManager;
 namespace AnimationGenerator {
 void mapFFTMono();
 void flexFFTStereo();
+void fractionalFlexFFTStereo();
 void radiateStereo();
 void rainbow();
 }
