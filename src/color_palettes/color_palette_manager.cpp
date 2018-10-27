@@ -5,6 +5,7 @@
 /*======================*/
 /*  external variables  */
 const TProgmemRGBGradientPalettePtr gGradientPalettes[] = {
+    GMT_rainbow_gp,
     bhw1_hello_gp,
     wr_gp,
     rgi_13_gp,
