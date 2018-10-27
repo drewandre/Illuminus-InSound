@@ -3,7 +3,7 @@
 
 #include "./color_palette_list.h"
 
-#include "../config.h"
+#include "../config/config.h"
 
 namespace ColorPaletteManager
 {

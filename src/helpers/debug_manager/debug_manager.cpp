@@ -6,7 +6,11 @@ namespace DebugManager
 void initializeSerial()
 {
   Serial.begin(SWSERIAL_BAUD);
-  // while (!Serial) ;
+  if (WAIT_FOR_SERIAL == true)
+  {
+    while (!Serial)
+      ;
+  }
 }
 
 void printStartupInfo(uint8_t stage)

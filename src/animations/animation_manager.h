@@ -1,7 +1,7 @@
 #ifndef ANIMATION_MANAGER_H
 #define ANIMATION_MANAGER_H
 
-#include "../config.h"
+#include "../config/config.h"
 
 extern bool calculateScaledFFT;
 extern uint8_t currentAnimation;

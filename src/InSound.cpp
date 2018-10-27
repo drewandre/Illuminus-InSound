@@ -7,7 +7,7 @@
       www.instagram.com/_drewandre
  */
 
-#include "./config.h"
+#include "./config/config.h"
 
 #if DEBUG == true
 #include "./helpers/debug_manager/debug_manager.h"
@@ -34,10 +34,19 @@ void setup()
 
 void loop()
 {
+  static int i = 0;
 #if PRINT_MCU_PERFORMANCE == true
   printSystemPerformanceEveryNSeconds(5);
 #endif
 
   // AnimationManager::runTask();
-  DMXManager::show();
+  EVERY_N_MILLISECONDS(10)
+  {
+    i++;
+    if (i > 255)
+    {
+      i = 0;
+    }
+  }
+  DMXManager::testCRGB(CHSV(i, 255, 255));
 }

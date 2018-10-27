@@ -1,4 +1,15 @@
+#include <vector>
+using std::vector;
+
 #include "./dmx_manager.h"
+
+/*======================*/
+/*  external variables  */
+CRGB leftChannelFixtures[NUM_FIXTURES_PER_CHANNEL];
+CRGB rightChannelFixtures[NUM_FIXTURES_PER_CHANNEL];
+vector<Sixbar> sixbar;
+
+/*======================*/
 
 namespace DMXManager
 {
@@ -22,6 +33,8 @@ void initialize()
   ** highest channel you DmxSimple.write() to. */
   DmxSimple.maxChannel(DMX_MAX_CHANNELS);
 
+  initializeFixtures();
+
 #if DEBUG == true
   static unsigned long totalTime = millis() - startTime;
   Serial.print("Leds Initialized:\t");
@@ -31,5 +44,27 @@ void initialize()
   Serial.print("-----------------------------------------------------------------\n");
 #endif
 }
-void show() {}
+
+void initializeFixtures()
+{
+  sixbar.reserve(NUM_CHANNELS); // optional, but speeds things up a bit
+
+  for (static uint8_t i = 1; i <= NUM_CHANNELS; i++)
+  {
+    static uint16_t startingDMXAddress = i * 6;
+
+    sixbar.push_back(Sixbar(startingDMXAddress));
+  }
+  // Sixbar *fixtures = new Sixbar[NUM_CHANNELS];
+}
+
+void blackOut()
+{
+  sixbar[0].draw(CRGB::Black);
+}
+
+void testCRGB(const CRGB &rgb)
+{
+  sixbar[0].draw(rgb);
+}
 } // namespace DMXManager

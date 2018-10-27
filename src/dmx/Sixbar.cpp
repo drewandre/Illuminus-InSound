@@ -1,12 +1,15 @@
 #include "Sixbar.h"
 
-Sixbar::Sixbar(int startingAddressConfig)
+Sixbar::Sixbar(uint16_t startingDMXAddressConfig)
 {
-  startingAddress = startingAddressConfig;
+  startingDMXAddress = startingDMXAddressConfig;
 }
 
 Sixbar::~Sixbar() {}
 
-void Sixbar::draw()
+void Sixbar::draw(const CRGB &rgb)
 {
+  DmxSimple.write(redChannel, rgb.r);
+  DmxSimple.write(greenChannel, rgb.g);
+  DmxSimple.write(blueChannel, rgb.b);
 }

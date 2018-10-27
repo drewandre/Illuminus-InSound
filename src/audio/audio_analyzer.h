@@ -1,7 +1,7 @@
 #ifndef AUDIO_ANALYZER_H
 #define AUDIO_ANALYZER_H
 
-#include "../config.h"
+#include "../config/config.h"
 
 extern float levelsL[NUM_BANDS];
 extern float levelsR[NUM_BANDS];

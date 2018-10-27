@@ -1,10 +1,10 @@
 #include "./animation_generator.h"
 
-#if (DEBUG == true)
+#if DEBUG == true
 #include "../helpers/debug_manager/debug_manager.h"
 #endif
 
-#include "../config.h"
+#include "../config/config.h"
 
 /*======================*/
 /*  external variables  */
