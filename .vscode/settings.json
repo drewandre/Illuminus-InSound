@@ -1,6 +1,0 @@
-{
-    "terminal.integrated.env.osx": {
-        "PATH": "/Users/drewandre/.platformio/penv/bin:/Users/drewandre/.platformio/penv:/Users/drewandre/.rvm/gems/ruby-2.6.0-preview2/bin:/Users/drewandre/.rvm/gems/ruby-2.6.0-preview2@global/bin:/Users/drewandre/.rvm/rubies/ruby-2.6.0-preview2/bin:/Users/drewandre/.nvm/versions/node/v8.11.3/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/drewandre/.rvm/bin",
-        "PLATFORMIO_CALLER": "vscode"
-    }
-}
