@@ -1,36 +1,29 @@
 #include "./animation_generator.h"
 
+/*======================*/
+/*  external variables  */
+CRGB colors[NUM_FIXTURES];
+
+/*======================*/
+
 namespace AnimationGenerator
 {
-void mapFFTMono()
+void mapFFTStereo(void)
 {
-  static int band, currentBrightness;
-  static int i, pos, point;
-  static float fHue;
-  static int FFT_FIXED_SEGMENT_LENGTH = 20 / NUM_BANDS;
+  static float currentLeftBrightness, currentRightBrightness, currentHue;
+  static float HUE_MULTIPLIER = 255 / NUM_FIXTURES_PER_CHANNEL;
 
-  // nscale8(leds, NUM_LEDS, 220);
-  // fadeToBlackBy(leds,NUM_LEDS,9);
-  if (readFFT(0.3, false, PRINT_FFT))
+  fadeToBlackBy(colors, NUM_FIXTURES, 2);
+
+  for (uint8_t band = 0; band < NUM_FIXTURES_PER_CHANNEL; band++)
   {
-    pos = 0;
-    point = 0;
-    fHue = 0.0;
+    currentLeftBrightness = levelsL[band];
+    currentRightBrightness = levelsR[band];
+    currentHue = band * HUE_MULTIPLIER;
 
-    for (band = 0; band < NUM_BANDS; band++)
-    {
-      point += FFT_FIXED_SEGMENT_LENGTH;
-      currentBrightness = levelsL[band];
-
-      for (i = pos; i < point; i++)
-      {
-        // setPartialPixel(4.5, CRGB::Green, leds);
-        // leds[i] += CHSV(fHue, 255, currentBrightness);
-        fHue = float(i * 1.6);
-      }
-      pos = point;
-    }
-    // blur1d(leds, NUM_LEDS, 10);
+    colors[NUM_FIXTURES_PER_CHANNEL_MINUS_ONE - band] += CHSV(currentHue, 255, currentLeftBrightness);
+    colors[band + NUM_FIXTURES_PER_CHANNEL] += CHSV(currentHue, 255, currentRightBrightness);
   }
+  // blur1d(colors, NUM_FIXTURES, 100);
 }
 } // namespace AnimationGenerator

@@ -14,10 +14,8 @@ namespace AudioAnalyzer
 
 void initialize()
 {
-#if DEBUG == true
   static unsigned long startTime = millis();
   Serial.print("\n================== INITIALIZING MSGEQ7 ==================\n");
-#endif
 
   analogReference(DEFAULT);
   pinMode(MSGEQ7_RESET_PIN, OUTPUT);
@@ -26,6 +24,7 @@ void initialize()
   pinMode(AUDIO_RIGHT_PIN, INPUT);
   digitalWrite(MSGEQ7_RESET_PIN, LOW);
   digitalWrite(MSGEQ7_STROBE_PIN, LOW);
+
   // Reset MSGEQ7
   digitalWrite(MSGEQ7_RESET_PIN, HIGH);
   delay(1);
@@ -33,7 +32,6 @@ void initialize()
   digitalWrite(MSGEQ7_STROBE_PIN, HIGH);
   delay(1);
 
-#if DEBUG == true
   static unsigned long totalTime = millis() - startTime;
 
   Serial.print("Audio Initialized:\t");
@@ -42,17 +40,18 @@ void initialize()
   Serial.println();
   Serial.print("-----------------------------------------------------------------\n");
   Serial.println();
-#endif
 }
 
 void readFFTStereo(float smoothing,
                    bool calculateScaledFFT,
                    bool print)
 {
-  static float previousLeftAmp, previousRightAmp, mappedLeftAmp,
-      mappedRightAmp;
-  static float leftVolume, rightVolume, currentLeftAmp, currentRightAmp,
-      leftFactor, rightFactor;
+  static float currentLeftAmp, currentRightAmp;
+  static float previousLeftAmp, previousRightAmp;
+
+  // static float mappedLeftAmp, mappedRightAmp;
+  // static float leftFactor, rightFactor;
+  // static float leftVolume, rightVolume;
 
   digitalWrite(MSGEQ7_RESET_PIN, HIGH);
   digitalWrite(MSGEQ7_RESET_PIN, LOW);
@@ -68,8 +67,11 @@ void readFFTStereo(float smoothing,
     currentLeftAmp = constrain(currentLeftAmp, FILTER_MIN, FILTER_MAX);
     currentLeftAmp = map(currentLeftAmp, FILTER_MIN, FILTER_MAX, 0, 255);
     levelsL[band] = previousLeftAmp + (currentLeftAmp - previousLeftAmp) * SMOOTHING;
-    Serial.print(currentLeftAmp);
-    Serial.print("\t");
+    if (print)
+    {
+      Serial.print(levelsL[band]);
+      Serial.print("\t");
+    }
 
     previousRightAmp = levelsR[band];
     currentRightAmp = analogRead(AUDIO_RIGHT_PIN);
@@ -80,23 +82,9 @@ void readFFTStereo(float smoothing,
     digitalWrite(MSGEQ7_STROBE_PIN, HIGH);
     delayMicroseconds(1);
   }
-  Serial.println();
-}
-
-uint8_t averageFFTPortion(uint8_t *array,
-                          uint16_t len,
-                          uint16_t startIndex,
-                          uint16_t endIndex)
-{
-  static uint16_t sum, portion;
-
-  sum = 0;
-  portion = endIndex - startIndex;
-
-  for (uint16_t i = startIndex; i < endIndex; i++)
+  if (print)
   {
-    sum += array[i];
+    Serial.println();
   }
-  return sum / portion;
 }
 } // namespace AudioAnalyzer

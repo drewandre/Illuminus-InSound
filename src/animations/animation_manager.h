@@ -3,7 +3,6 @@
 
 #include "../config/config.h"
 
-extern bool calculateScaledFFT;
 extern uint8_t currentAnimation;
 
 namespace AnimationManager

@@ -4,16 +4,14 @@
 #include "../config/config.h"
 #include "Sixbar.h"
 
-extern CRGB leftChannelFixtures[NUM_FIXTURES_PER_CHANNEL];
-extern CRGB rightChannelFixtures[NUM_FIXTURES_PER_CHANNEL];
+#include "../animations/animation_generator.h"
 
 namespace DMXManager
 {
 void initialize(void);
 void initializeFixtures(void);
-void blackOut(void);
-void testCRGB(const CRGB &rgb);
-void show(void);
+void blackout(void);
+void displayAnimation(void);
 } // namespace DMXManager
 
 #endif

@@ -1,15 +1,13 @@
 #ifndef ANIMATION_GENERATOR_H
 #define ANIMATION_GENERATOR_H
 
-#include "../dmx/dmx_manager.h"
-
 #include "../audio/audio_analyzer.h"
 
-using namespace AudioAnalyzer;
-using namespace DMXManager;
+extern CRGB colors[NUM_FIXTURES];
 
-namespace AnimationGenerator {
-void mapFFTMono();
+namespace AnimationGenerator
+{
+void mapFFTStereo(void);
 }
 
 #endif

@@ -13,10 +13,12 @@
 #include "MSGEQ7.h"
 #include "color_palettes.h"
 
-#define DEBUG true
+#define SWSERIAL_BAUD 9600
 #define WAIT_FOR_SERIAL false
 #define PRODUCT_VERSION 1.0
+
 #define PRODUCT_SHORT_DESCRIPTION "DMX controller."
 #define CURRENT_DATE "Fall 2018"
+#define DEVICE_NAME "InSound"
 
 #endif

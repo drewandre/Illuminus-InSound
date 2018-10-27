@@ -1,21 +1,17 @@
 #include "./animation_generator.h"
 
-#if DEBUG == true
 #include "../helpers/debug_manager/debug_manager.h"
-#endif
-
 #include "../config/config.h"
 
 /*======================*/
 /*  external variables  */
 uint8_t currentAnimation = 0;
-bool calculateScaledFFT;
 
 /*======================*/
 
 namespace AnimationManager
 {
-void runTask()
+void runTask(void)
 {
 #if FIXED_ANIMATION == true
   currentAnimation = FIXED_ANIMATION_INDEX;
@@ -24,7 +20,7 @@ void runTask()
   switch (currentAnimation)
   {
   case 0:
-    AnimationGenerator::mapFFTMono();
+    AnimationGenerator::mapFFTStereo();
     break;
   default:
     currentAnimation = 0;
