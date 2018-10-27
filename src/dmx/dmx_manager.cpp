@@ -47,8 +47,6 @@ void displayAnimation()
   {
     sixbar[i].draw(colors[i]);
   }
-  // sixbar[0].draw(colors[0]);
-  // sixbar[0].draw(colors[6]);
 }
 
 void blackout()

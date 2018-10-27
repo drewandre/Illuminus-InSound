@@ -1,4 +1,5 @@
 #include "./animation_generator.h"
+#include "../color_palettes/color_palette_manager.h"
 
 /*======================*/
 /*  external variables  */
@@ -10,20 +11,30 @@ namespace AnimationGenerator
 {
 void mapFFTStereo(void)
 {
-  static float currentLeftBrightness, currentRightBrightness, currentHue;
+  static float currentLeftBrightness, currentRightBrightness, hueIndex;
   static float HUE_MULTIPLIER = 255 / NUM_FIXTURES_PER_CHANNEL;
+  static CRGB currentLeftColor, currentRightColor;
 
-  fadeToBlackBy(colors, NUM_FIXTURES, 2);
+  fadeToBlackBy(colors, NUM_FIXTURES, FADE_TO_BLACK_PER_CYCLE_VALUE);
 
   for (uint8_t band = 0; band < NUM_FIXTURES_PER_CHANNEL; band++)
   {
     currentLeftBrightness = levelsL[band];
     currentRightBrightness = levelsR[band];
-    currentHue = band * HUE_MULTIPLIER;
+    hueIndex = band * HUE_MULTIPLIER;
 
-    colors[NUM_FIXTURES_PER_CHANNEL_MINUS_ONE - band] += CHSV(currentHue, 255, currentLeftBrightness);
-    colors[band + NUM_FIXTURES_PER_CHANNEL] += CHSV(currentHue, 255, currentRightBrightness);
+#if USE_COLOR_PALETTES
+    currentLeftColor = ColorFromPalette(gCurrentPalette, hueIndex, currentLeftBrightness, LINEARBLEND);
+    currentRightColor = ColorFromPalette(gCurrentPalette, hueIndex, currentRightBrightness, LINEARBLEND);
+    colors[NUM_FIXTURES_PER_CHANNEL_MINUS_ONE - band] += currentLeftColor;
+    colors[band + NUM_FIXTURES_PER_CHANNEL] += currentRightColor;
+#else
+    colors[NUM_FIXTURES_PER_CHANNEL_MINUS_ONE - band] += CHSV(hueIndex, 255, currentLeftBrightness);
+    colors[band + NUM_FIXTURES_PER_CHANNEL] += CHSV(hueIndex, 255, currentRightBrightness);
+#endif
   }
-  // blur1d(colors, NUM_FIXTURES, 100);
+#if BLUR_ANIMATION == true
+  blur1d(colors, NUM_FIXTURES, BLUR_VALUE);
+#endif
 }
 } // namespace AnimationGenerator

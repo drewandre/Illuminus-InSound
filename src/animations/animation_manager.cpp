@@ -22,6 +22,9 @@ void runTask(void)
   case 0:
     AnimationGenerator::mapFFTStereo();
     break;
+  case 1:
+    AnimationGenerator::flexFFTStereo();
+    break;
   default:
     currentAnimation = 0;
     break;

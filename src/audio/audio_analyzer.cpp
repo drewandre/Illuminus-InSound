@@ -9,6 +9,8 @@ float scaledLevelsR[NUM_BANDS];
 
 /*======================*/
 
+float smoothing[NUM_FIXTURES_PER_CHANNEL] = {SMOOTHING_ARR};
+
 namespace AudioAnalyzer
 {
 
@@ -42,8 +44,7 @@ void initialize()
   Serial.println();
 }
 
-void readFFTStereo(float smoothing,
-                   bool calculateScaledFFT,
+void readFFTStereo(bool calculateScaledFFT,
                    bool print)
 {
   static float currentLeftAmp, currentRightAmp;
@@ -66,7 +67,7 @@ void readFFTStereo(float smoothing,
     currentLeftAmp = analogRead(AUDIO_LEFT_PIN);
     currentLeftAmp = constrain(currentLeftAmp, FILTER_MIN, FILTER_MAX);
     currentLeftAmp = map(currentLeftAmp, FILTER_MIN, FILTER_MAX, 0, 255);
-    levelsL[band] = previousLeftAmp + (currentLeftAmp - previousLeftAmp) * SMOOTHING;
+    levelsL[band] = previousLeftAmp + (currentLeftAmp - previousLeftAmp) * smoothing[band];
     if (print)
     {
       Serial.print(levelsL[band]);
@@ -77,7 +78,7 @@ void readFFTStereo(float smoothing,
     currentRightAmp = analogRead(AUDIO_RIGHT_PIN);
     currentRightAmp = constrain(currentRightAmp, FILTER_MIN, FILTER_MAX);
     currentRightAmp = map(currentRightAmp, FILTER_MIN, FILTER_MAX, 0, 255);
-    levelsR[band] = previousRightAmp + (currentRightAmp - previousRightAmp) * SMOOTHING;
+    levelsR[band] = previousRightAmp + (currentRightAmp - previousRightAmp) * smoothing[band];
 
     digitalWrite(MSGEQ7_STROBE_PIN, HIGH);
     delayMicroseconds(1);

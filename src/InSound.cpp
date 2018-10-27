@@ -24,6 +24,7 @@
 #include "./config/config.h"
 #include "./helpers/debug_manager/debug_manager.h"
 #include "./animations/animation_manager.h"
+#include "./color_palettes/color_palette_manager.h"
 #include "./dmx/dmx_manager.h"
 #include "./audio/audio_analyzer.h"
 
@@ -38,7 +39,10 @@ void setup()
 
 void loop()
 {
-  AudioAnalyzer::readFFTStereo(0.3, false, PRINT_FFT);
+  AudioAnalyzer::readFFTStereo(false, PRINT_FFT);
+#if USE_COLOR_PALETTES
+  ColorPaletteManager::runTask();
+#endif
   AnimationManager::runTask();
   DMXManager::displayAnimation();
 }
