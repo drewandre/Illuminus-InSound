@@ -22,7 +22,7 @@
  */
 
 #include "./config/config.h"
-#include "./helpers/debug_manager/debug_manager.h"
+#include "./debug/debug_manager.h"
 #include "./animations/animation_manager.h"
 #include "./color_palettes/color_palette_manager.h"
 #include "./dmx/dmx_manager.h"

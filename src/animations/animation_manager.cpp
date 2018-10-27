@@ -1,6 +1,6 @@
 #include "./animation_generator.h"
 
-#include "../helpers/debug_manager/debug_manager.h"
+#include "../debug/debug_manager.h"
 #include "../config/config.h"
 
 /*======================*/
