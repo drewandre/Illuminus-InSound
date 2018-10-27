@@ -3,13 +3,11 @@
 
 #include "./color_palette_list.h"
 
-#include "../macros.h"
+#include "../config.h"
 
-namespace ColorPaletteManager {
+namespace ColorPaletteManager
+{
 void changePalette(void);
-void mapPalette(void);
-void FillLEDsFromPaletteColors(void);
-void FillLEDsFromPaletteColorsTwelve(void);
 }
 
 #endif

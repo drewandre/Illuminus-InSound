@@ -2,20 +2,5 @@
     "terminal.integrated.env.osx": {
         "PATH": "/Users/drewandre/.platformio/penv/bin:/Users/drewandre/.platformio/penv:/Users/drewandre/.rvm/gems/ruby-2.6.0-preview2/bin:/Users/drewandre/.rvm/gems/ruby-2.6.0-preview2@global/bin:/Users/drewandre/.rvm/rubies/ruby-2.6.0-preview2/bin:/Users/drewandre/.nvm/versions/node/v8.11.3/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/drewandre/.rvm/bin",
         "PLATFORMIO_CALLER": "vscode"
-    },
-    "files.associations": {
-        "array": "cpp",
-        "deque": "cpp",
-        "unordered_map": "cpp",
-        "vector": "cpp",
-        "initializer_list": "cpp",
-        "functional": "cpp",
-        "typeinfo": "cpp",
-        "sstream": "cpp",
-        "system_error": "cpp",
-        "ostream": "cpp",
-        "istream": "cpp",
-        "tuple": "cpp",
-        "utility": "cpp"
     }
 }

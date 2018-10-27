@@ -1,5 +1,5 @@
 #include "./color_palette_list.h"
-#include "../leds/led_manager.h"
+#include "../dmx/dmx_manager.h"
 
 /*======================*/
 /*  external variables  */
@@ -27,20 +27,20 @@ CRGBPalette16 gTargetPalette(
 
 namespace ColorPaletteManager {
 void changePalette() {
-#if CHANGE_PALATTE_PERIODICALLY == true
-  EVERY_N_SECONDS(CHANGE_PALETTE_EVERY_N_SECONDS) {
-    gCurrentPaletteNumber = addmod8(gCurrentPaletteNumber,
-                                    1,
-                                    gGradientPaletteCount);
-    gTargetPalette = gGradientPalettes[gCurrentPaletteNumber];
-  }
-#endif // ifdef change_palette_periodically
+// #if CHANGE_PALATTE_PERIODICALLY == true
+//   EVERY_N_SECONDS(CHANGE_PALETTE_EVERY_N_SECONDS) {
+//     gCurrentPaletteNumber = addmod8(gCurrentPaletteNumber,
+//                                     1,
+//                                     gGradientPaletteCount);
+//     gTargetPalette = gGradientPalettes[gCurrentPaletteNumber];
+//   }
+// #endif // ifdef change_palette_periodically
 
-  EVERY_N_MILLISECONDS(COLOR_PALETTE_BLEND_UPDATE_SPEED_MILLISECONDS) {
-    nblendPaletteTowardPalette(gCurrentPalette,
-                               gTargetPalette,
-                               COLOR_PALETTE_SPEED);
-  }
+// EVERY_N_MILLISECONDS(COLOR_PALETTE_BLEND_UPDATE_SPEED_MILLISECONDS) {
+//   nblendPaletteTowardPalette(gCurrentPalette,
+//                              gTargetPalette,
+//                              COLOR_PALETTE_SPEED);
+// }
 }
 
 CRGB ColorFromPalette12(CRGBPalette16 pal, uint16_t index, uint8_t
@@ -139,39 +139,5 @@ CRGB ColorFromPalette12(CRGBPalette16 pal, uint16_t index, uint8_t
   }
 
   return CRGB(red1, green1, blue1);
-}
-
-// Alternate rendering function scrolls current palette (for testing)
-void mapPalette(const CRGBPalette16& gCurrentPalette) {
-  static uint8_t startindex = 0;
-
-  // startindex--;
-  fill_palette(leds, NUM_LEDS, startindex, 256 / NUM_LEDS, gCurrentPalette,
-               255, LINEARBLEND);
-}
-
-void FillLEDsFromPaletteColors()
-{
-  uint8_t  brightness = 255;
-  uint16_t colorIndex = 0;
-
-  for (int i = 0; i < NUM_LEDS; i++) {
-    // used to be ColorFromPalette12... should be kept as 12-bit
-    leds[i] = ColorFromPalette(gCurrentPalette, colorIndex, brightness,
-                               LINEARBLEND);
-    colorIndex += PALETTE_INDEX_INCREMENT;
-  }
-}
-
-void FillLEDsFromPaletteColorsTwelve() {
-  static uint8_t  brightness       = 255;
-  static uint16_t colorIndexTwelve = 0;
-
-  for (int i = 0; i < NUM_LEDS; i++) {
-    leds[i] = ColorFromPalette12(gCurrentPalette, colorIndexTwelve,
-                                 brightness,
-                                 LINEARBLEND);
-    colorIndexTwelve += PALETTE_INDEX_INCREMENT_TWELVE;
-  }
 }
 }

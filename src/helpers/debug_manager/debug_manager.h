@@ -1,12 +1,13 @@
 #ifndef DEBUG_MANAGER_H
 #define DEBUG_MANAGER_H
 
-#include "../../macros.h"
+#include "../../config.h"
 
-namespace DebugManager {
+namespace DebugManager
+{
 void printStartupInfo(uint8_t stage);
 void printSystemPerformanceEveryNSeconds(int seconds);
 void initializeSerial();
-}
+} // namespace DebugManager
 
 #endif

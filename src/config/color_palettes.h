@@ -1,0 +1,3 @@
+#define CHANGE_PALATTE_PERIODICALLY true
+#define COLOR_PALETTE_SPEED 45 // speed for switching between palettes
+#define COLOR_PALETTE_BLEND_UPDATE_SPEED_MILLISECONDS 10

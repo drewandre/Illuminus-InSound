@@ -4,20 +4,17 @@
 ///@file FastLED.h
 /// central include file for FastLED, defines the CFastLED class/object
 
-#define xstr(s) str(s)
-#define str(s) #s
-
 #if (__GNUC__ > 4) || (__GNUC__ == 4 && __GNUC_MINOR__ >= 4)
 #define FASTLED_HAS_PRAGMA_MESSAGE
 #endif
 
-#define FASTLED_VERSION 3001008
+#define FASTLED_VERSION 3002001
 #ifndef FASTLED_INTERNAL
-// #  ifdef FASTLED_HAS_PRAGMA_MESSAGE
-// #    pragma message "FastLED version 3.001.008"
-// #  else
-// #    warning FastLED version 3.001.008  (Not really a warning, just telling you here.)
-// #  endif
+#  ifdef FASTLED_HAS_PRAGMA_MESSAGE
+#    pragma message "FastLED version 3.002.001"
+#  else
+#    warning FastLED version 3.002.001  (Not really a warning, just telling you here.)
+#  endif
 #endif
 
 #ifndef __PROG_TYPES_COMPAT__
@@ -25,15 +22,15 @@
 #endif
 
 #ifdef SmartMatrix_h
-#include<SmartMatrix.h>
+#include <SmartMatrix.h>
 #endif
 
 #ifdef DmxSimple_h
-#include<DmxSimple.h>
+#include <DmxSimple.h>
 #endif
 
 #ifdef DmxSerial_h
-#include<DMXSerial.h>
+#include <DMXSerial.h>
 #endif
 
 #include <stdint.h>
@@ -50,7 +47,7 @@
 #include "controller.h"
 #include "fastpin.h"
 #include "fastspi_types.h"
-#include "./dmx.h"
+#include "dmx.h"
 
 #include "platforms.h"
 #include "fastled_progmem.h"

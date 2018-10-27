@@ -1,62 +1,65 @@
 #include "./debug_manager.h"
-#include "../../audio/audio_manager.h"
+#include "../../audio/audio_analyzer.h"
 
-namespace DebugManager {
-void initializeSerial() {
+namespace DebugManager
+{
+void initializeSerial()
+{
   Serial.begin(SWSERIAL_BAUD);
-
   // while (!Serial) ;
 }
 
-void printStartupInfo(uint8_t stage) {
-  switch (stage) {
+void printStartupInfo(uint8_t stage)
+{
+  switch (stage)
+  {
   case 0:
     static unsigned long startTime = millis();
-    Serial << endl << DEVICE_NAME << " " << PRODUCT_VERSION << endl <<
-      PRODUCT_SHORT_DESCRIPTION <<
-      endl;
-    Serial << "Designed by Drew André in Boston, MA - " << CURRENT_DATE << endl;
-    Serial << "www.drew-andre.com" << endl;
+    Serial.println();
+    Serial.print(DEVICE_NAME);
+    Serial.print(" ");
+    Serial.print(PRODUCT_VERSION);
+    Serial.println();
+
+    Serial.print(PRODUCT_SHORT_DESCRIPTION);
+    Serial.println();
+
+    Serial.print("Designed by Drew André in Boston, MA - ");
+    Serial.print(CURRENT_DATE);
+    Serial.println();
+
+    Serial.print("www.drew-andre.com");
+    Serial.println();
+
     break;
 
   case 1:
     static unsigned long totalTime = millis() - startTime;
-    Serial << "\n" << DEVICE_NAME << " configured in " << totalTime << "ms\n" <<
-      "\n================= " << DEVICE_NAME <<
-      " MAIN APPLICATION LOOP =================\n";
+    Serial.println();
+    Serial.print(DEVICE_NAME);
+    Serial.print(" configured in ");
+    Serial.print(totalTime);
+    Serial.print("ms\n");
+    Serial.print("\n================= ");
+    Serial.print(DEVICE_NAME);
+    Serial.print(" MAIN APPLICATION LOOP =================\n");
     break;
   }
 }
 
-void printSystemPerformanceEveryNSeconds(int seconds) {
+void printSystemPerformanceEveryNSeconds(int seconds)
+{
   static long loops = 0;
 
   loops++;
 
-  EVERY_N_SECONDS(seconds) {
-    Serial << endl;
+  Serial.println();
 
-    // print MCU speed
-    Serial << "CPU speed (approx):\t\t" << loops << "/second" << endl;
-    loops = 0;
-
-    // print LED framework
-    Serial << "LED FPS:\t\t\t" << LEDS.getFPS() << endl;
-
-    // print Stereo FFT memory usage
-    Serial << "Stereo FFT memory usage:\tcurrent: " << fftL.processorUsage()
-      +
-      fftR.processorUsage() << "\tmax: " << fftL.processorUsageMax() +
-      fftR.processorUsageMax() << endl;
-
-    // print SGTL5000 Total audio processor usage
-    Serial << "Total audio processor usage:\tcurrent: " <<
-      AudioProcessorUsage() <<
-      "\tmax: " << AudioProcessorUsageMax() << endl;
-
-    // print SGTL5000 Total audio memory usage
-    Serial << "Total audio memory usage:\tcurrent: " << AudioMemoryUsage() <<
-      "\tmax: " << AudioMemoryUsageMax() << endl;
-  }
+  // print MCU speed
+  Serial.print("CPU speed (approx):\t\t");
+  Serial.print(loops);
+  Serial.print("/second");
+  Serial.println();
+  loops = 0;
 }
-}
+} // namespace DebugManager

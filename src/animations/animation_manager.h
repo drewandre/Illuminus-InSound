@@ -1,14 +1,15 @@
 #ifndef ANIMATION_MANAGER_H
 #define ANIMATION_MANAGER_H
 
-#include "../macros.h"
+#include "../config.h"
 
 extern bool calculateScaledFFT;
 extern uint8_t currentAnimation;
 
-namespace AnimationManager {
+namespace AnimationManager
+{
 void runTask(void);
 void changeAnimation(uint8_t animationId);
-}
+} // namespace AnimationManager
 
 #endif

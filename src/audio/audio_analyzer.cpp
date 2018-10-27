@@ -2,273 +2,101 @@
 
 /*======================*/
 /*  external variables  */
-AudioAnalyzeFFT1024 fftL;
-AudioAnalyzeFFT1024 fftR;
-
-uint16_t fftBins[NUM_BANDS];
-float  levelsL[NUM_BANDS];
-float  levelsR[NUM_BANDS];
-float  scaledLevelsL[NUM_BANDS];
-float  scaledLevelsR[NUM_BANDS];
+float levelsL[NUM_BANDS];
+float levelsR[NUM_BANDS];
+float scaledLevelsL[NUM_BANDS];
+float scaledLevelsR[NUM_BANDS];
 
 /*======================*/
 
-namespace AudioAnalyzer {
-float FindE(int bands, int bins) {
-  float increment = 0.1, eTest, n;
-  int   b, count, d;
+namespace AudioAnalyzer
+{
 
-  for (eTest = 1; eTest < bins; eTest += increment) { // Find E through brute
-                                                      // force calculations
-    count = 0;
-
-    for (b = 0; b < bands; b++) {                     // Calculate full log
-                                                      // values
-      n      = pow(eTest, b);
-      d      = int(n + 0.5);
-      count += d;
-    }
-
-    if (count > bins) {        // We calculated over our last bin
-      eTest     -= increment;  // Revert back to previous calculation increment
-      increment /= 10.0;       // Get a finer detailed calculation & increment a
-                               // decimal point lower
-    }
-    else if (count == bins)    // We found the correct E
-      return eTest;            // Return calculated E
-
-    if (increment < 0.0000001) // Ran out of calculations. Return previous E.
-                               // Last bin will be lower than (bins-1)
-      return eTest - increment;
-  }
-  return 0;                    // Return error 0
-}
-
-float getFFTBins() {
-  static float e, n;
-  static uint16_t b, bands, bins, count = 0, d;
-
-  bands = NUM_BANDS;                    // Frequency bands; (Adjust to
-                                        // desiredvalue)
-  bins = MAX_BIN;
-  e    = FindE(bands, bins);            // Find calculated E value
-
-#if PRINT_FFT_SETTINGS == true
-  Serial.printf("FFT > E: %4.4f\n", e); // Print calculated E value
-#endif
-
-  if (e) {                              // If a value was returned continue
-    for (b = 0; b < bands; b++) {       // Test and print the bins from the
-                                        // calculated
-      n = pow(e, b);
-      d = int(n + 0.5);
-    #if PRINT_FFT_SETTINGS == true
-      Serial.printf("%4d ", count); // Print low bin
-    #endif
-      fftBins[b] = count;
-      count     += d - 1;
-    #if PRINT_FFT_SETTINGS == true
-      Serial.printf("%4d\n", count); // Print high bin
-    #endif
-      ++count;
-    }
-  }
-#if PRINT_FFT_SETTINGS == true
-  else {
-    Serial << "Error calculating FFT bins\n"; // Error, something happened
-  }
-#endif
-
-  return e;
-}
-
-void initializeFFT() {
-  #if DEBUG == true
+void initialize()
+{
+#if DEBUG == true
   static unsigned long startTime = millis();
-
-  Serial <<
-    "\n================== INITIALIZING AUDIO ANALYZER ==================\n";
-  #endif
-#if PRINT_FFT_SETTINGS == true
-  Serial << "FFT > NUM_BANDS:\t" << NUM_BANDS << endl;
-  Serial << "FFT > MAX_BIN:\t\t" << MAX_BIN << "hz" << endl;
+  Serial.print("\n================== INITIALIZING MSGEQ7 ==================\n");
 #endif
-  getFFTBins();
+
+  analogReference(DEFAULT);
+  pinMode(MSGEQ7_RESET_PIN, OUTPUT);
+  pinMode(MSGEQ7_STROBE_PIN, OUTPUT);
+  pinMode(AUDIO_LEFT_PIN, INPUT);
+  pinMode(AUDIO_RIGHT_PIN, INPUT);
+  digitalWrite(MSGEQ7_RESET_PIN, LOW);
+  digitalWrite(MSGEQ7_STROBE_PIN, LOW);
+  // Reset MSGEQ7
+  digitalWrite(MSGEQ7_RESET_PIN, HIGH);
+  delay(1);
+  digitalWrite(MSGEQ7_RESET_PIN, LOW);
+  digitalWrite(MSGEQ7_STROBE_PIN, HIGH);
+  delay(1);
 
 #if DEBUG == true
   static unsigned long totalTime = millis() - startTime;
 
-  Serial << "Audio Initialized:\t" << totalTime << "ms" << endl;
-  Serial << "-----------------------------------------------------------------\n";
-  #endif
+  Serial.print("Audio Initialized:\t");
+  Serial.print(totalTime);
+  Serial.print("ms");
+  Serial.println();
+  Serial.print("-----------------------------------------------------------------\n");
+  Serial.println();
+#endif
 }
 
-bool readFFT(float smoothing,
-             bool  stereo,
-             bool  calculateScaledFFT) {
-  static uint16_t currentBin, nextBin;
-  static uint8_t  band;
+void readFFTStereo(float smoothing,
+                   bool calculateScaledFFT,
+                   bool print)
+{
   static float previousLeftAmp, previousRightAmp, mappedLeftAmp,
-                  mappedRightAmp;
+      mappedRightAmp;
   static float leftVolume, rightVolume, currentLeftAmp, currentRightAmp,
-               leftFactor, rightFactor;
+      leftFactor, rightFactor;
 
-  if (stereo) {
-  #if WAIT_FOR_FFT_AVAILABILITY == true
+  digitalWrite(MSGEQ7_RESET_PIN, HIGH);
+  digitalWrite(MSGEQ7_RESET_PIN, LOW);
+  delayMicroseconds(1);
 
-    if (fftL.available() && fftR.available()) {
-  #endif
-    leftVolume = 0.00;
+  for (uint8_t band = 0; band < NUM_BANDS; band++)
+  {
+    digitalWrite(MSGEQ7_STROBE_PIN, LOW);
+    delayMicroseconds(36);
 
-    if (stereo) rightVolume = 0.00;
+    previousLeftAmp = levelsL[band];
+    currentLeftAmp = analogRead(AUDIO_LEFT_PIN);
+    currentLeftAmp = constrain(currentLeftAmp, FILTER_MIN, FILTER_MAX);
+    currentLeftAmp = map(currentLeftAmp, FILTER_MIN, FILTER_MAX, 0, 255);
+    levelsL[band] = previousLeftAmp + (currentLeftAmp - previousLeftAmp) * SMOOTHING;
+    Serial.print(currentLeftAmp);
+    Serial.print("\t");
 
-    for (band = 0; band < NUM_BANDS; band++) {
-      currentBin = fftBins[band];
-      nextBin    = fftBins[band + 1];
+    previousRightAmp = levelsR[band];
+    currentRightAmp = analogRead(AUDIO_RIGHT_PIN);
+    currentRightAmp = constrain(currentRightAmp, FILTER_MIN, FILTER_MAX);
+    currentRightAmp = map(currentRightAmp, FILTER_MIN, FILTER_MAX, 0, 255);
+    levelsR[band] = previousRightAmp + (currentRightAmp - previousRightAmp) * SMOOTHING;
 
-      previousLeftAmp  = levelsL[band];
-      previousRightAmp = levelsR[band];
-
-      if (band < NUM_BANDS) {
-        // currentLeftAmp = lerp8by8(previousLeftAmp, currentLeftAmp, smoothing);
-        currentLeftAmp  = fftL.read(currentBin, nextBin) * 255;
-        currentLeftAmp = previousLeftAmp + (currentLeftAmp - previousLeftAmp) * smoothing;
-        // currentLeftAmp = constrain(currentLeftAmp, 1, 255.0);
-        // currentLeftAmp = map(currentLeftAmp, 1, 255, 0, 255.0);
-
-        currentRightAmp  = fftR.read(currentBin, nextBin) * 255;
-        currentRightAmp = previousRightAmp + (currentRightAmp - previousRightAmp) * smoothing;
-        // currentRightAmp = constrain(currentRightAmp, 1, 255.0);
-        // currentRightAmp = map(currentRightAmp, 1, 255.0, 0, 255.0);
-      } else {
-        currentLeftAmp  = fftL.read(currentBin) * 255;
-        currentRightAmp  = fftR.read(currentBin) * 255;
-      }
-
-      if (calculateScaledFFT) {
-        leftVolume  += currentLeftAmp;
-        rightVolume += currentRightAmp;
-      }
-
-      levelsL[band] = currentLeftAmp;
-      levelsR[band] = currentRightAmp;
-
-      #if PRINT_FFT == true
-      Serial << levelsL[band] << endl << "\t";
-      #endif
-    }
-    #if PRINT_FFT == true
-    Serial << endl;
-    #endif
-
-    if (calculateScaledFFT) {
-      leftFactor  = CENTER_LED_POS / leftVolume;
-      rightFactor = CENTER_LED_POS / rightVolume;
-
-      for (band = 0; band < NUM_BANDS; band++) {
-        mappedLeftAmp       = levelsL[band] * leftFactor;
-        mappedRightAmp      = levelsR[band] * rightFactor;
-        scaledLevelsL[band] = mappedLeftAmp;
-        scaledLevelsR[band] = mappedRightAmp;
-        #if PRINT_MAPPED_FFT == true
-        Serial << scaledLevelsL[band] << "\t";
-        #endif
-      }
-      #if PRINT_MAPPED_FFT == true
-      Serial << endl;
-      #endif
-    }
-    return true;
-
-#if WAIT_FOR_FFT_AVAILABILITY == true
-  } else {
-    return false;
+    digitalWrite(MSGEQ7_STROBE_PIN, HIGH);
+    delayMicroseconds(1);
   }
-#endif
-  }
-
-  else { // if only reading left channel
-#if WAIT_FOR_FFT_AVAILABILITY == true
-
-    if (fftL.available()) {
-#endif
-
-    for (band = 0; band < NUM_BANDS; band++) {
-      currentBin = fftBins[band];
-      nextBin    = fftBins[band + 1];
-
-      previousLeftAmp = levelsL[band];
-
-      if (band < NUM_BANDS) {
-        currentLeftAmp  = fftL.read(currentBin, nextBin) * 255.0;
-      } else {
-        currentLeftAmp  = fftL.read(currentBin) * 255.0;
-      }
-
-      // currentLeftAmp  = fftL.read(currentBin, nextBin) * 255.0;
-      // levelsL[band]  = fftL.read(currentBin, nextBin) * 255.0;
-
-      // currentLeftAmp = lerp8by8(previousLeftAmp, currentLeftAmp,
-      // smoothing); // higher === smoother!
-
-      currentLeftAmp = previousLeftAmp + (currentLeftAmp - previousLeftAmp)
-                       *
-                       smoothing;
-      // currentLeftAmp = constrain(currentLeftAmp, 0, 255);
-      // currentLeftAmp = map(currentLeftAmp, 0, 255, 0, 255);
-
-      levelsL[band]  = currentLeftAmp;
-
-      leftVolume += levelsL[band];
-      #if PRINT_FFT == true
-      Serial << levelsL[band] << "\t";
-      #endif
-    }
-    #if PRINT_FFT == true
-    Serial << endl;
-    #endif
-
-    if (calculateScaledFFT) {
-      leftFactor = CENTER_LED_POS / leftVolume;
-
-      // uint16_t leftFactor_16 = 18000 / leftVolume; // was
-      // CENTER_LED_POS_16
-
-      for (band = 0; band < NUM_BANDS; band++) {
-        mappedLeftAmp       = levelsL[band] * leftFactor;
-        scaledLevelsL[band] = mappedLeftAmp;
-        #if PRINT_MAPPED_FFT == true
-        Serial << scaledLevelsL[band] << "\t";
-        #endif
-      }
-      #if PRINT_MAPPED_FFT == true
-      Serial << endl;
-      #endif
-    }
-    return true;
-
-#if WAIT_FOR_FFT_AVAILABILITY == true
-  } else {
-    return false;
-  }
-#endif
-  }
+  Serial.println();
 }
 
 uint8_t averageFFTPortion(uint8_t *array,
                           uint16_t len,
                           uint16_t startIndex,
-                          uint16_t endIndex) {
-  // ex: uint8_t bass_l = averageFFTPortion(levelsL, NUM_BANDS, 0, 3); // 0
-  // = > 2
+                          uint16_t endIndex)
+{
   static uint16_t sum, portion;
 
-  sum     = 0;
+  sum = 0;
   portion = endIndex - startIndex;
 
-  for (uint16_t i = startIndex; i < endIndex; i++) {
+  for (uint16_t i = startIndex; i < endIndex; i++)
+  {
     sum += array[i];
   }
   return sum / portion;
 }
-}
+} // namespace AudioAnalyzer
