@@ -8,7 +8,6 @@ extern CRGB colors[NUM_FIXTURES];
 namespace AnimationGenerator
 {
 void mapFFTStereo(void);
-void flexFFTStereo(void);
 } // namespace AnimationGenerator
 
 #endif
