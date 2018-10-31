@@ -20,7 +20,23 @@ void runTask(void)
   switch (currentAnimation)
   {
   case 0:
+    EVERY_N_MILLISECONDS(AUDIO_FRAMES_PER_SECOND)
+    {
+      AudioAnalyzer::readFFTStereo();
+    }
     AnimationGenerator::mapFFTStereo();
+    AnimationGenerator::fadeFixturesToBlack();
+    break;
+  case 1:
+    EVERY_N_MILLISECONDS(AUDIO_FRAMES_PER_SECOND)
+    {
+      AudioAnalyzer::readFFTMono();
+    }
+    AnimationGenerator::mapFFTMono();
+    AnimationGenerator::fadeFixturesToBlack();
+    break;
+  case 2:
+    AnimationGenerator::colorFade();
     break;
   default:
     currentAnimation = 0;

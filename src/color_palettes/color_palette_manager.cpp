@@ -5,18 +5,19 @@
 /*======================*/
 /*  external variables  */
 const TProgmemRGBGradientPalettePtr gGradientPalettes[] = {
+    red,
     GMT_rainbow_gp,
     bhw1_hello_gp,
     wr_gp,
     rgi_13_gp,
     Yellow_Orange_gp,
     winter_gp,
-};
+    GMT_rainbow_gp};
 
 const uint8_t gGradientPaletteCount = sizeof(gGradientPalettes) /
                                       sizeof(TProgmemRGBGradientPalettePtr);
 
-uint8_t gCurrentPaletteNumber;
+uint8_t gCurrentPaletteNumber = 0;
 
 CRGBPalette16 gCurrentPalette(
     gGradientPalettes[gGradientPaletteCount]);

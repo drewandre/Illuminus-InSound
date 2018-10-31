@@ -19,6 +19,7 @@
   Setup notes:
     DMX channel 1 = bin 6 (highest frequency bin) of LEFT channel,
     so data direction should flow RIGHT if looking at InSound.
+    See channel_mapping.txt for more information.
  */
 
 #include "./config/config.h"
@@ -39,7 +40,6 @@ void setup()
 
 void loop()
 {
-  AudioAnalyzer::readFFTStereo(false, PRINT_FFT);
 #if USE_COLOR_PALETTES
   ColorPaletteManager::runTask();
 #endif

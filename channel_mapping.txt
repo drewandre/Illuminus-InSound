@@ -1,0 +1,126 @@
+Fixture #1
+left[6]
+	R           1
+	G           2
+	B           3
+	W           4
+	A           5
+	UV          6
+
+Fixture #2
+left[5]
+	R           7
+	G           8
+	B           9
+	W           10
+	A           11
+	UV          12
+
+Fixture #3
+left[4]
+	R           13
+	G           14
+	B           15
+	W           16
+	A           17
+	UV          18
+
+Fixture #4
+left[3]
+	R           19
+	G           20
+	B           21
+	W           22
+	A           23
+	UV          24
+
+Fixture #5
+left[2]
+	R           25
+	G           26
+	B           27
+	W           28
+	A           29
+	UV          30
+
+Fixture #6
+left[1]
+	R           31
+	G           32
+	B           33
+	W           34
+	A           35
+	UV          36
+
+Fixture #7
+left[0] / right[0]
+	R           37
+	G           38
+	B           39
+	W           40
+	A           41
+	UV          42
+
+Fixture #8
+left[0] / right[0]
+	R           43
+	G           44
+	B           45
+	W           46
+	A           47
+	UV          48
+
+Fixture #9
+right[1]
+	R           49
+	G           50
+	B           51
+	W           52
+	A           53
+	UV          54
+
+Fixture #10
+right[2]
+	R           55
+	G           56
+	B           57
+	W           58
+	A           59
+	UV          60
+
+Fixture #11
+right[3]
+	R           61
+	G           62
+	B           63
+	W           64
+	A           65
+	UV          66
+
+Fixture #12
+right[4]
+	R           67
+	G           68
+	B           69
+	W           70
+	A           71
+	UV          72
+
+Fixture #13
+right[5]
+	R           73
+	G           74
+	B           75
+	W           76
+	A           77
+	UV          78
+
+Fixture #14
+right[6]
+	R           79
+	G           80
+	B           81
+	W           82
+	A           83
+	UV          84
+    

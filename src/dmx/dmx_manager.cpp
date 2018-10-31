@@ -41,7 +41,7 @@ void initializeFixtures()
   }
 }
 
-void displayAnimation()
+void displayAnimation(void)
 {
   for (int i = 0; i < NUM_FIXTURES; i++)
   {
@@ -49,7 +49,7 @@ void displayAnimation()
   }
 }
 
-void blackout()
+void blackout(void)
 {
   for (int i = 0; i < NUM_FIXTURES; i++)
   {

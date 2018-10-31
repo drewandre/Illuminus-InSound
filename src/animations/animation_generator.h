@@ -7,7 +7,10 @@ extern CRGB colors[NUM_FIXTURES];
 
 namespace AnimationGenerator
 {
+void mapFFTMono(void);
 void mapFFTStereo(void);
+void fadeFixturesToBlack(void);
+void colorFade(void);
 } // namespace AnimationGenerator
 
 #endif

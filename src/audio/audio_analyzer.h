@@ -11,8 +11,8 @@ extern float scaledLevelsR[NUM_BANDS];
 namespace AudioAnalyzer
 {
 void initialize(void);
-void readFFTStereo(bool calculateScaledFFT,
-                   bool print);
+void readFFTStereo(void);
+void readFFTMono(void);
 } // namespace AudioAnalyzer
 
 #endif
