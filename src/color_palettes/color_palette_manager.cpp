@@ -5,14 +5,15 @@
 /*======================*/
 /*  external variables  */
 const TProgmemRGBGradientPalettePtr gGradientPalettes[] = {
+    bhw1_06_gp,
+    bhw1_04_gp,
+    rainbow,
+    rainbow,
+    rgi_13_gp, // nice really orange
     red,
-    GMT_rainbow_gp,
-    bhw1_hello_gp,
-    wr_gp,
-    rgi_13_gp,
-    Yellow_Orange_gp,
-    winter_gp,
-    GMT_rainbow_gp};
+    bhw1_purplered_gp,
+    bhw1_05_gp,
+    winter_gp}; // cool
 
 const uint8_t gGradientPaletteCount = sizeof(gGradientPalettes) /
                                       sizeof(TProgmemRGBGradientPalettePtr);
@@ -29,11 +30,16 @@ CRGBPalette16 gTargetPalette(
 
 namespace ColorPaletteManager
 {
+void initialize(void)
+{
+  gCurrentPalette = rainbow;
+}
 void runTask(void)
 {
 #if CHANGE_PALATTE_PERIODICALLY == true
   EVERY_N_SECONDS(CHANGE_PALETTE_EVERY_N_SECONDS)
   {
+    // Serial.println(gCurrentPaletteNumber);
     gCurrentPaletteNumber = addmod8(gCurrentPaletteNumber,
                                     1,
                                     gGradientPaletteCount);

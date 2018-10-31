@@ -13,6 +13,7 @@ extern CRGBPalette16 gTargetPalette;
 
 namespace ColorPaletteManager
 {
+void initialize(void);
 void runTask(void);
 } // namespace ColorPaletteManager
 

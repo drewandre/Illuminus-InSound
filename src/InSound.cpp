@@ -33,6 +33,7 @@ void setup()
 {
   DebugManager::initializeSerial();
   DebugManager::printStartupInfo(0);
+  ColorPaletteManager::initialize();
   DMXManager::initialize();
   AudioAnalyzer::initialize();
   DebugManager::printStartupInfo(1);

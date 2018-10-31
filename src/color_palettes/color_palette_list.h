@@ -1,10 +1,46 @@
 #define FASTLED_INTERNAL
 #include <FastLED.h>
 
-// Gradient palette "GMT_rainbow_gp", originally from
-// http://soliton.vm.bytemark.co.uk/pub/cpt-city/gmt/tn/GMT_rainbow.png.index.html
+// Gradient palette "bhw1_06_gp", originally from
+// http://soliton.vm.bytemark.co.uk/pub/cpt-city/bhw/bhw1/tn/bhw1_06.png.index.html
 // converted for FastLED with gammas (2.6, 2.2, 2.5)
-// Size: 1204 bytes of program space.
+// Size: 16 bytes of program space.
+
+DEFINE_GRADIENT_PALETTE(bhw1_06_gp){
+    0, 184, 1, 128,
+    160, 1, 193, 182,
+    219, 153, 227, 190,
+    255, 255, 255, 255};
+
+// Gradient palette "bhw1_purplered_gp", originally from
+// http://soliton.vm.bytemark.co.uk/pub/cpt-city/bhw/bhw1/tn/bhw1_purplered.png.index.html
+// converted for FastLED with gammas (2.6, 2.2, 2.5)
+// Size: 8 bytes of program space.
+
+DEFINE_GRADIENT_PALETTE(bhw1_purplered_gp){
+    0, 255, 0, 0,
+    255, 107, 1, 205};
+
+// Gradient palette "bhw1_05_gp", originally from
+// http://soliton.vm.bytemark.co.uk/pub/cpt-city/bhw/bhw1/tn/bhw1_05.png.index.html
+// converted for FastLED with gammas (2.6, 2.2, 2.5)
+// Size: 8 bytes of program space.
+
+DEFINE_GRADIENT_PALETTE(bhw1_05_gp){
+    0, 1, 221, 53,
+    255, 73, 3, 178};
+
+// Gradient palette "bhw1_04_gp", originally from
+// http://soliton.vm.bytemark.co.uk/pub/cpt-city/bhw/bhw1/tn/bhw1_04.png.index.html
+// converted for FastLED with gammas (2.6, 2.2, 2.5)
+// Size: 20 bytes of program space.
+
+DEFINE_GRADIENT_PALETTE(bhw1_04_gp){
+    0, 229, 227, 1,
+    15, 227, 101, 3,
+    142, 40, 1, 80,
+    198, 17, 1, 79,
+    255, 0, 0, 45};
 
 DEFINE_GRADIENT_PALETTE(red){
     0, 255, 0, 0,
@@ -19,7 +55,7 @@ DEFINE_GRADIENT_PALETTE(red){
 // converted for FastLED with gammas (2.6, 2.2, 2.5)
 // Size: 1204 bytes of program space.
 
-DEFINE_GRADIENT_PALETTE(GMT_rainbow_gp){
+DEFINE_GRADIENT_PALETTE(rainbow){
     0, 0, 0, 0,
     36, 153, 0, 0,
     72, 204, 255, 0,
@@ -27,7 +63,7 @@ DEFINE_GRADIENT_PALETTE(GMT_rainbow_gp){
     144, 0, 255, 102,
     180, 0, 255, 255,
     216, 0, 102, 255,
-    255, 64, 0, 255};
+    230, 64, 0, 255};
 
 // Gradient palette "GMT_seis_gp", originally from
 //
@@ -81,19 +117,6 @@ DEFINE_GRADIENT_PALETTE(GMT_seis_gp){
     198, 0, 223, 31,
     226, 0, 19, 255,
     255, 0, 0, 147};
-
-// Gradient palette "bhw1_04_gp", originally from
-//
-// http://soliton.vm.bytemark.co.uk/pub/cpt-city/bhw/bhw1/tn/bhw1_04.png.index.html
-// converted for FastLED with gammas (2.6, 2.2, 2.5)
-// Size: 20 bytes of program space.
-
-DEFINE_GRADIENT_PALETTE(bhw1_04_gp){
-    0, 229, 227, 1,
-    15, 227, 101, 3,
-    142, 40, 1, 80,
-    198, 17, 1, 79,
-    255, 0, 0, 45};
 
 // AMERICAN/FRENCH FLAG:
 // Gradient palette "French_flag_smooth_gp", originally from
