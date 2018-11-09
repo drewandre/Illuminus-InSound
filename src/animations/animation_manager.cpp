@@ -22,7 +22,7 @@ void runTask(void)
   case 0:
     EVERY_N_MILLISECONDS(AUDIO_FRAMES_PER_SECOND)
     {
-      AudioAnalyzer::readFFTStereo();
+      AudioAnalyzer::readFFTStereo(false);
     }
     AnimationGenerator::mapFFTStereo();
     AnimationGenerator::fadeFixturesToBlack();
@@ -30,12 +30,20 @@ void runTask(void)
   case 1:
     EVERY_N_MILLISECONDS(AUDIO_FRAMES_PER_SECOND)
     {
-      AudioAnalyzer::readFFTMono();
+      AudioAnalyzer::readFFTLeft();
     }
-    AnimationGenerator::mapFFTMono();
+    AnimationGenerator::mirrorFFTLeft();
     AnimationGenerator::fadeFixturesToBlack();
     break;
   case 2:
+    EVERY_N_MILLISECONDS(AUDIO_FRAMES_PER_SECOND)
+    {
+      AudioAnalyzer::readFFTLeft();
+    }
+    AnimationGenerator::mapFFTLeft();
+    AnimationGenerator::fadeFixturesToBlack();
+    break;
+  case 3:
     AnimationGenerator::colorFade();
     break;
   default:
