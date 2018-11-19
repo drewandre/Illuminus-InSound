@@ -42,6 +42,7 @@ void runTask(void)
     }
     AnimationGenerator::mapFFTLeft();
     AnimationGenerator::fadeFixturesToBlack();
+    AnimationGenerator::customMappingForPeobody();
     break;
   case 3:
     AnimationGenerator::colorFade();

@@ -10,7 +10,7 @@ CRGB colors[NUM_FIXTURES];
 int fadeToBlackValues[NUM_FIXTURES_PER_CHANNEL] = {FADE_TO_BLACK_VALUES};
 int nscaleValues[NUM_FIXTURES_PER_CHANNEL] = {NSCALE_VALUES};
 
-const int MAP_FFT_FIXTURE_VALUES[NUM_FIXTURES_PER_CHANNEL] = {4, 2, 2, 2, 2, 1, 1};
+const int MAP_FFT_FIXTURE_VALUES[NUM_FIXTURES_PER_CHANNEL] = {2, 1, 1, 1, 1, 1, 2};
 //   [ 0, 1, 2, 3 ],
 //   [ 4, 5 ],
 //   [ 6, 7 ],
@@ -146,4 +146,34 @@ void colorFade(void)
   }
   blur1d(colors, NUM_FIXTURES, 10);
 }
+
+void customMappingForPeobody(void)
+{
+  // pod 1
+  // colors[0] = colors[0];
+  // colors[1] = colors[1];
+
+  // CRGB c = colors[5];
+
+  // colors[5] = colors[7];
+  // colors[6] = colors[7];
+  // colors[7] = colors[7];
+
+  // // pod 2
+  // colors[7] = colors[4];
+  // colors[8] = c;
+
+  // pod 3
+  // colors[6] = colors[5];
+}
+
 } // namespace AnimationGenerator
+
+/*
+  // const int MAP_FFT_FIXTURE_VALUES[NUM_FIXTURES_PER_CHANNEL] = {2, 1, 1, 1, 1, 1, 2};
+  static int customMappingValuesForPeobody[NUM_FIXTURES] = {0, 1, 2, 3, 4, 5, 6, 7, 8};
+  for (int i = 0; i < NUM_FIXTURES; i++)
+  {
+    colors[i] = colors[customMappingValuesForPeobody[i]];
+  }
+*/

@@ -11,6 +11,7 @@ void mirrorFFTLeft(void);
 void mapFFTStereo(void);
 void mapFFTLeft(void);
 void fadeFixturesToBlack(void);
+void customMappingForPeobody(void);
 void colorFade(void);
 } // namespace AnimationGenerator
 
