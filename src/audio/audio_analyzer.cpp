@@ -4,12 +4,14 @@
 /*  external variables  */
 float levelsL[NUM_BANDS];
 float levelsR[NUM_BANDS];
+float levelsMono[NUM_BANDS];
 float scaledLevelsL[NUM_BANDS];
 float scaledLevelsR[NUM_BANDS];
 
 /*======================*/
 
 float smoothing[NUM_FIXTURES_PER_CHANNEL] = {SMOOTHING_ARR};
+float filterMaxValues[NUM_FIXTURES_PER_CHANNEL] = {FILTER_MAX_VALUES};
 
 namespace AudioAnalyzer
 {
@@ -44,7 +46,7 @@ void initialize()
   Serial.println();
 }
 
-void readFFTStereo(void)
+void readFFTStereo(bool createMonoArray)
 {
   static float currentLeftAmp, currentRightAmp;
   static float previousLeftAmp, previousRightAmp;
@@ -73,12 +75,17 @@ void readFFTStereo(void)
 
     previousRightAmp = levelsR[band];
     currentRightAmp = analogRead(AUDIO_RIGHT_PIN);
-    currentRightAmp = constrain(currentRightAmp, FILTER_MIN, FILTER_MAX);
+    currentRightAmp = constrain(currentRightAmp, FILTER_MIN, filterMaxValues[band]);
     currentRightAmp = map(currentRightAmp, FILTER_MIN, FILTER_MAX, 0, AUDIO_BAND_MAX_AMPLITUDE);
     levelsR[band] = previousRightAmp + (currentRightAmp - previousRightAmp) * smoothing[band];
 
     digitalWrite(MSGEQ7_STROBE_PIN, HIGH);
     delayMicroseconds(1);
+
+    if (createMonoArray)
+    {
+      levelsMono[band] = (levelsR[band] + levelsL[band]) * 0.5;
+    }
   }
 #if MONO_SUM_LOWEST_BIN == true
   monoBassSum = (levelsL[0] + levelsR[0]) * 0.5;
@@ -90,7 +97,7 @@ void readFFTStereo(void)
 #endif
 }
 
-void readFFTMono(void)
+void readFFTLeft(void)
 {
   static float currentLeftAmp, previousLeftAmp;
 

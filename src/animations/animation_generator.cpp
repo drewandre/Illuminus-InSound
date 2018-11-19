@@ -10,9 +10,19 @@ CRGB colors[NUM_FIXTURES];
 int fadeToBlackValues[NUM_FIXTURES_PER_CHANNEL] = {FADE_TO_BLACK_VALUES};
 int nscaleValues[NUM_FIXTURES_PER_CHANNEL] = {NSCALE_VALUES};
 
+const int MAP_FFT_FIXTURE_VALUES[NUM_FIXTURES_PER_CHANNEL] = {4, 2, 2, 2, 2, 1, 1};
+//   [ 0, 1, 2, 3 ],
+//   [ 4, 5 ],
+//   [ 6, 7 ],
+//   [ 8, 9 ],
+//   [ 10, 11 ],
+//   [12],
+//   [13]
+// ];
+
 namespace AnimationGenerator
 {
-void mapFFTMono(void)
+void mirrorFFTLeft(void)
 {
   static float currentLeftBrightness;
   static uint8_t hueIndex;
@@ -74,6 +84,36 @@ void mapFFTStereo(void)
     colors[NUM_FIXTURES_PER_CHANNEL_MINUS_ONE - band] = currentLeftColor;
     colors[NUM_FIXTURES_PER_CHANNEL + band] = currentRightColor;
 #endif
+  }
+#if BLUR_ANIMATION == true
+  blur1d(colors, NUM_FIXTURES, BLUR_VALUE);
+#endif
+}
+
+void mapFFTLeft(void)
+{
+  static float currentLeftBrightness;
+  static uint8_t hueIndex, currentFixture;
+  static uint8_t HUE_MULTIPLIER = 255 / NUM_FIXTURES_PER_CHANNEL;
+  static CRGB currentLeftColor;
+
+  currentFixture = 0;
+
+  for (uint8_t band = 0; band < NUM_FIXTURES_PER_CHANNEL; band++)
+  {
+    currentLeftBrightness = levelsL[band];
+    hueIndex = band * HUE_MULTIPLIER;
+
+#if USE_COLOR_PALETTES
+    currentLeftColor = ColorFromPalette(gCurrentPalette, hueIndex, currentLeftBrightness);
+#else
+    currentLeftColor = CHSV(hueIndex, 255, currentLeftBrightness);
+#endif
+    for (uint8_t i = 0; i < MAP_FFT_FIXTURE_VALUES[band]; i++)
+    {
+      colors[currentFixture] = currentLeftColor;
+      currentFixture++;
+    }
   }
 #if BLUR_ANIMATION == true
   blur1d(colors, NUM_FIXTURES, BLUR_VALUE);
